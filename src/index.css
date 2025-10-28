@@ -6,6 +6,13 @@
 All colors MUST be HSL.
 */
 
+/* Import local font */
+@font-face {
+  font-family: Ginto;
+  src: url("/fonts/Ginto.woff2") format("woff2"),
+    url("/fonts/Ginto.woff") format("woff");
+}
+
 @layer base {
   :root {
     --background: 240 20% 98%;
@@ -40,9 +47,17 @@ All colors MUST be HSL.
     --ring: 280 50% 25%;
 
     --radius: 1rem;
-    
-    --gradient-primary: linear-gradient(135deg, hsl(280 50% 20%), hsl(280 60% 30%));
-    --gradient-card: linear-gradient(135deg, hsl(280 50% 25%), hsl(280 45% 20%));
+
+    --gradient-primary: linear-gradient(
+      135deg,
+      hsl(280 50% 20%),
+      hsl(280 60% 30%)
+    );
+    --gradient-card: linear-gradient(
+      135deg,
+      hsl(280 50% 25%),
+      hsl(280 45% 20%)
+    );
     --shadow-card: 0 4px 20px -2px hsl(280 50% 20% / 0.15);
 
     --sidebar-background: 0 0% 98%;
@@ -111,5 +126,6 @@ All colors MUST be HSL.
 
   body {
     @apply bg-background text-foreground;
+    font-family: Ginto, sans-serif!important;
   }
 }
