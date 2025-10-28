@@ -1,5 +1,6 @@
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { motion } from "framer-motion";
 
 interface MatchCardProps {
   homeTeam: string;
@@ -25,14 +26,21 @@ export const MatchCard = ({
   onClick,
 }: MatchCardProps) => {
   return (
-    <Card 
-      className="relative overflow-hidden cursor-pointer transition-all hover:scale-[1.02] hover:shadow-xl"
-      style={{ 
-        background: "var(--gradient-card)",
-        boxShadow: "var(--shadow-card)"
-      }}
-      onClick={onClick}
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.4 }}
+      whileHover={{ scale: 1.02 }}
+      whileTap={{ scale: 0.98 }}
     >
+      <Card 
+        className="relative overflow-hidden cursor-pointer hover:shadow-xl transition-shadow"
+        style={{ 
+          background: "var(--gradient-card)",
+          boxShadow: "var(--shadow-card)"
+        }}
+        onClick={onClick}
+      >
       <div className="p-6">
         <div className="flex items-center justify-between mb-4">
           <span className="text-sm text-primary-foreground/70 font-medium">{league}</span>
@@ -72,5 +80,6 @@ export const MatchCard = ({
         </div>
       </div>
     </Card>
+    </motion.div>
   );
 };

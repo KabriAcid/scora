@@ -1,4 +1,5 @@
 import { Badge } from "@/components/ui/badge";
+import { motion } from "framer-motion";
 
 interface MatchListItemProps {
   homeTeam: string;
@@ -22,9 +23,14 @@ export const MatchListItem = ({
   onClick,
 }: MatchListItemProps) => {
   return (
-    <div 
-      className="flex items-center justify-between p-4 bg-card rounded-xl shadow-sm hover:shadow-md transition-all cursor-pointer"
+    <motion.div 
+      className="flex items-center justify-between p-4 bg-card rounded-xl shadow-sm hover:shadow-md transition-shadow cursor-pointer"
       onClick={onClick}
+      initial={{ opacity: 0, x: -20 }}
+      animate={{ opacity: 1, x: 0 }}
+      transition={{ duration: 0.3 }}
+      whileHover={{ x: 4 }}
+      whileTap={{ scale: 0.98 }}
     >
       <div className="flex items-center gap-3 flex-1">
         <div className="w-8 h-8 rounded-full bg-secondary flex items-center justify-center text-xs font-bold">
@@ -58,6 +64,6 @@ export const MatchListItem = ({
           {awayLogo || awayTeam.substring(0, 2).toUpperCase()}
         </div>
       </div>
-    </div>
+    </motion.div>
   );
 };

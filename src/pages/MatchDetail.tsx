@@ -3,6 +3,9 @@ import { Button } from "@/components/ui/button";
 import { TeamLineup } from "@/components/TeamLineup";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
+import { Card } from "@/components/ui/card";
+import { motion } from "framer-motion";
+import { Clock, Target, Activity } from "lucide-react";
 
 interface MatchDetailProps {
   onBack: () => void;
@@ -36,11 +39,19 @@ export const MatchDetail = ({ onBack }: MatchDetailProps) => {
   ];
 
   return (
-    <div className="min-h-screen bg-background pb-20">
+    <motion.div 
+      className="min-h-screen bg-background pb-20"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.3 }}
+    >
       {/* Header */}
-      <div 
+      <motion.div 
         className="p-6 text-primary-foreground"
         style={{ background: "var(--gradient-primary)" }}
+        initial={{ y: -20, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{ duration: 0.4 }}
       >
         <div className="flex items-center justify-between mb-6">
           <Button
@@ -88,10 +99,15 @@ export const MatchDetail = ({ onBack }: MatchDetailProps) => {
             <span className="text-sm font-medium">Man Utd</span>
           </div>
         </div>
-      </div>
+      </motion.div>
 
       {/* Content */}
-      <div className="p-6">
+      <motion.div 
+        className="p-6"
+        initial={{ y: 20, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{ duration: 0.4, delay: 0.1 }}
+      >
         <Tabs defaultValue="lineups" className="w-full">
           <TabsList className="grid w-full grid-cols-4 mb-6">
             <TabsTrigger value="stats">Stats</TabsTrigger>
@@ -101,7 +117,11 @@ export const MatchDetail = ({ onBack }: MatchDetailProps) => {
           </TabsList>
 
           <TabsContent value="lineups" className="space-y-6">
-            <div>
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.3 }}
+            >
               <h3 className="font-semibold mb-3 flex items-center gap-2">
                 <div className="w-3 h-3 rounded-full bg-blue-600" />
                 Chelsea
@@ -110,9 +130,13 @@ export const MatchDetail = ({ onBack }: MatchDetailProps) => {
               <div className="mt-3 text-sm text-muted-foreground text-center">
                 Formation: 4-4-2
               </div>
-            </div>
+            </motion.div>
 
-            <div>
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.3, delay: 0.1 }}
+            >
               <h3 className="font-semibold mb-3 flex items-center gap-2">
                 <div className="w-3 h-3 rounded-full bg-red-600" />
                 Manchester United
@@ -121,28 +145,185 @@ export const MatchDetail = ({ onBack }: MatchDetailProps) => {
               <div className="mt-3 text-sm text-muted-foreground text-center">
                 Formation: 4-4-2
               </div>
-            </div>
+            </motion.div>
           </TabsContent>
 
           <TabsContent value="stats">
-            <div className="space-y-4">
-              <p className="text-center text-muted-foreground">Match statistics will appear here</p>
-            </div>
+            <motion.div 
+              className="space-y-4"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.3 }}
+            >
+              {/* Stat Bar Component */}
+              {[
+                { label: "Possession", home: 58, away: 42 },
+                { label: "Shots", home: 12, away: 8 },
+                { label: "Shots on Target", home: 5, away: 3 },
+                { label: "Corners", home: 7, away: 4 },
+                { label: "Fouls", home: 11, away: 14 },
+                { label: "Yellow Cards", home: 2, away: 3 },
+                { label: "Passes", home: 432, away: 318 },
+                { label: "Pass Accuracy", home: 85, away: 78 },
+              ].map((stat, index) => (
+                <motion.div
+                  key={stat.label}
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ duration: 0.3, delay: index * 0.05 }}
+                >
+                  <Card className="p-4">
+                    <div className="flex justify-between items-center mb-2">
+                      <span className="text-sm font-semibold">{stat.home}{stat.label.includes("Accuracy") ? "%" : ""}</span>
+                      <span className="text-sm text-muted-foreground font-medium">{stat.label}</span>
+                      <span className="text-sm font-semibold">{stat.away}{stat.label.includes("Accuracy") ? "%" : ""}</span>
+                    </div>
+                    <div className="flex gap-1 h-2 rounded-full overflow-hidden bg-secondary">
+                      <motion.div
+                        className="bg-blue-600"
+                        initial={{ width: 0 }}
+                        animate={{ width: `${(stat.home / (stat.home + stat.away)) * 100}%` }}
+                        transition={{ duration: 0.6, delay: index * 0.05 + 0.2 }}
+                      />
+                      <motion.div
+                        className="bg-red-600"
+                        initial={{ width: 0 }}
+                        animate={{ width: `${(stat.away / (stat.home + stat.away)) * 100}%` }}
+                        transition={{ duration: 0.6, delay: index * 0.05 + 0.2 }}
+                      />
+                    </div>
+                  </Card>
+                </motion.div>
+              ))}
+            </motion.div>
           </TabsContent>
 
           <TabsContent value="summary">
-            <div className="space-y-4">
-              <p className="text-center text-muted-foreground">Match summary will appear here</p>
-            </div>
+            <motion.div 
+              className="space-y-4"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.3 }}
+            >
+              {/* Match Events */}
+              {[
+                { time: "12'", team: "home", type: "goal", player: "Mason Mount", description: "Assisted by Kai Havertz" },
+                { time: "23'", team: "away", type: "yellow", player: "Bruno Fernandes", description: "Foul" },
+                { time: "38'", team: "away", type: "goal", player: "Marcus Rashford", description: "Penalty kick" },
+                { time: "45'", team: "home", type: "yellow", player: "Jorginho", description: "Tactical foul" },
+                { time: "67'", team: "home", type: "substitution", player: "Christian Pulisic ↔ Hakim Ziyech", description: "" },
+                { time: "72'", team: "away", type: "yellow", player: "Casemiro", description: "Unsporting behavior" },
+                { time: "81'", team: "away", type: "substitution", player: "Anthony Martial ↔ Jadon Sancho", description: "" },
+              ].map((event, index) => (
+                <motion.div
+                  key={index}
+                  initial={{ opacity: 0, x: event.team === "home" ? -20 : 20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ duration: 0.3, delay: index * 0.05 }}
+                >
+                  <Card className={`p-4 ${event.team === "home" ? "mr-8" : "ml-8"}`}>
+                    <div className="flex items-start gap-3">
+                      <div className="flex items-center justify-center w-12 h-12 rounded-full bg-secondary shrink-0">
+                        {event.type === "goal" && <Target className="w-5 h-5 text-success" />}
+                        {event.type === "yellow" && <div className="w-4 h-5 bg-yellow-500 rounded-sm" />}
+                        {event.type === "substitution" && <Activity className="w-5 h-5 text-accent" />}
+                      </div>
+                      <div className="flex-1">
+                        <div className="flex items-center gap-2 mb-1">
+                          <Badge variant="outline" className="text-xs">{event.time}</Badge>
+                          <span className="font-semibold text-sm">{event.player}</span>
+                        </div>
+                        {event.description && (
+                          <p className="text-xs text-muted-foreground">{event.description}</p>
+                        )}
+                      </div>
+                    </div>
+                  </Card>
+                </motion.div>
+              ))}
+            </motion.div>
           </TabsContent>
 
           <TabsContent value="h2h">
-            <div className="space-y-4">
-              <p className="text-center text-muted-foreground">Head to head statistics will appear here</p>
-            </div>
+            <motion.div 
+              className="space-y-6"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.3 }}
+            >
+              {/* Overall Stats */}
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.3 }}
+              >
+                <Card className="p-6">
+                  <h3 className="font-semibold mb-4 text-center">Last 5 Meetings</h3>
+                  <div className="flex justify-around items-center">
+                    <div className="text-center">
+                      <div className="text-3xl font-bold text-blue-600 mb-1">2</div>
+                      <div className="text-xs text-muted-foreground">Chelsea Wins</div>
+                    </div>
+                    <div className="text-center">
+                      <div className="text-3xl font-bold text-muted-foreground mb-1">1</div>
+                      <div className="text-xs text-muted-foreground">Draws</div>
+                    </div>
+                    <div className="text-center">
+                      <div className="text-3xl font-bold text-red-600 mb-1">2</div>
+                      <div className="text-xs text-muted-foreground">Man Utd Wins</div>
+                    </div>
+                  </div>
+                </Card>
+              </motion.div>
+
+              {/* Previous Matches */}
+              <div>
+                <h3 className="font-semibold mb-3">Previous Results</h3>
+                <div className="space-y-3">
+                  {[
+                    { date: "Mar 2024", home: "Man Utd", away: "Chelsea", homeScore: 2, awayScore: 1, competition: "Premier League" },
+                    { date: "Nov 2023", home: "Chelsea", away: "Man Utd", homeScore: 3, awayScore: 1, competition: "Premier League" },
+                    { date: "May 2023", home: "Man Utd", away: "Chelsea", homeScore: 1, awayScore: 1, competition: "FA Cup" },
+                    { date: "Feb 2023", home: "Chelsea", away: "Man Utd", homeScore: 0, awayScore: 2, competition: "Premier League" },
+                    { date: "Oct 2022", home: "Man Utd", away: "Chelsea", homeScore: 1, awayScore: 2, competition: "Premier League" },
+                  ].map((match, index) => (
+                    <motion.div
+                      key={index}
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ duration: 0.3, delay: index * 0.05 }}
+                    >
+                      <Card className="p-4">
+                        <div className="flex items-center justify-between mb-2">
+                          <span className="text-xs text-muted-foreground">{match.date}</span>
+                          <Badge variant="secondary" className="text-xs">{match.competition}</Badge>
+                        </div>
+                        <div className="flex items-center justify-between">
+                          <div className="flex items-center gap-2 flex-1">
+                            <span className="text-sm font-medium">{match.home}</span>
+                          </div>
+                          <div className="flex items-center gap-3 mx-4">
+                            <span className={`font-bold ${match.homeScore > match.awayScore ? "text-foreground" : "text-muted-foreground"}`}>
+                              {match.homeScore}
+                            </span>
+                            <span className="text-muted-foreground">-</span>
+                            <span className={`font-bold ${match.awayScore > match.homeScore ? "text-foreground" : "text-muted-foreground"}`}>
+                              {match.awayScore}
+                            </span>
+                          </div>
+                          <div className="flex items-center gap-2 flex-1 justify-end">
+                            <span className="text-sm font-medium">{match.away}</span>
+                          </div>
+                        </div>
+                      </Card>
+                    </motion.div>
+                  ))}
+                </div>
+              </div>
+            </motion.div>
           </TabsContent>
         </Tabs>
-      </div>
-    </div>
+      </motion.div>
+    </motion.div>
   );
 };
