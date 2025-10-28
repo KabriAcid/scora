@@ -1,42 +1,68 @@
-import { ArrowLeft, MoreVertical } from "lucide-react";
+import { ArrowLeft, MoreVertical, Target, Activity } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { TeamLineup } from "@/components/TeamLineup";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
 import { motion } from "framer-motion";
-import { Clock, Target, Activity } from "lucide-react";
 
 interface MatchDetailProps {
   onBack: () => void;
 }
 
 export const MatchDetail = ({ onBack }: MatchDetailProps) => {
-  const homeLineup = [
-    { name: "Goalkeeper", number: 1, position: { x: 50, y: 85 } },
-    { name: "Defender 1", number: 2, position: { x: 20, y: 65 } },
-    { name: "Defender 2", number: 5, position: { x: 40, y: 70 } },
-    { name: "Defender 3", number: 6, position: { x: 60, y: 70 } },
-    { name: "Defender 4", number: 3, position: { x: 80, y: 65 } },
-    { name: "Midfielder 1", number: 8, position: { x: 30, y: 45 } },
-    { name: "Midfielder 2", number: 10, position: { x: 70, y: 45 } },
-    { name: "Forward 1", number: 7, position: { x: 25, y: 25 } },
-    { name: "Forward 2", number: 9, position: { x: 50, y: 20 } },
-    { name: "Forward 3", number: 11, position: { x: 75, y: 25 } },
-  ];
+  const homeTeamData = {
+    manager: "Graham Potter",
+    formation: "4-3-3",
+    lineup: [
+      { name: "Kepa Arrizabalaga", number: 1 },
+      { name: "Reece James", number: 24 },
+      { name: "Thiago Silva", number: 6 },
+      { name: "Kalidou Koulibaly", number: 26 },
+      { name: "Ben Chilwell", number: 21 },
+      { name: "Enzo Fernandez", number: 5 },
+      { name: "Mateo Kovacic", number: 8 },
+      { name: "Mason Mount", number: 19 },
+      { name: "Kai Havertz", number: 29 },
+      { name: "Raheem Sterling", number: 17 },
+      { name: "Pierre-Emerick Aubameyang", number: 9 },
+    ],
+    substitutes: [
+      { name: "Edouard Mendy", number: 16 },
+      { name: "Cesar Azpilicueta", number: 28 },
+      { name: "Jorginho", number: 23 },
+      { name: "Christian Pulisic", number: 10 },
+      { name: "Hakim Ziyech", number: 22 },
+      { name: "Conor Gallagher", number: 30 },
+      { name: "Armando Broja", number: 18 },
+    ],
+  };
 
-  const awayLineup = [
-    { name: "Goalkeeper", number: 1, position: { x: 50, y: 15 } },
-    { name: "Defender 1", number: 2, position: { x: 20, y: 35 } },
-    { name: "Defender 2", number: 5, position: { x: 40, y: 30 } },
-    { name: "Defender 3", number: 6, position: { x: 60, y: 30 } },
-    { name: "Defender 4", number: 3, position: { x: 80, y: 35 } },
-    { name: "Midfielder 1", number: 8, position: { x: 30, y: 55 } },
-    { name: "Midfielder 2", number: 10, position: { x: 70, y: 55 } },
-    { name: "Forward 1", number: 7, position: { x: 25, y: 75 } },
-    { name: "Forward 2", number: 9, position: { x: 50, y: 80 } },
-    { name: "Forward 3", number: 11, position: { x: 75, y: 75 } },
-  ];
+  const awayTeamData = {
+    manager: "E. ten Hag",
+    formation: "4-2-3-1",
+    lineup: [
+      { name: "David de Gea", number: 1 },
+      { name: "Diogo Dalot", number: 20 },
+      { name: "Raphael Varane", number: 19 },
+      { name: "Lisandro Martinez", number: 6 },
+      { name: "Luke Shaw", number: 23 },
+      { name: "Casemiro", number: 18 },
+      { name: "Christian Eriksen", number: 14 },
+      { name: "Antony", number: 21 },
+      { name: "Bruno Fernandes", number: 8 },
+      { name: "Jadon Sancho", number: 25 },
+      { name: "Marcus Rashford", number: 10 },
+    ],
+    substitutes: [
+      { name: "Tom Heaton", number: 22 },
+      { name: "Harry Maguire", number: 5 },
+      { name: "Fred", number: 17 },
+      { name: "Scott McTominay", number: 39 },
+      { name: "Anthony Martial", number: 9 },
+      { name: "Alejandro Garnacho", number: 49 },
+      { name: "Facundo Pellistri", number: 28 },
+    ],
+  };
 
   return (
     <motion.div 
@@ -117,34 +143,146 @@ export const MatchDetail = ({ onBack }: MatchDetailProps) => {
           </TabsList>
 
           <TabsContent value="lineups" className="space-y-6">
+            {/* Managers */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.3 }}
             >
-              <h3 className="font-semibold mb-3 flex items-center gap-2">
-                <div className="w-3 h-3 rounded-full bg-blue-600" />
-                Chelsea
-              </h3>
-              <TeamLineup players={homeLineup} color="blue" />
-              <div className="mt-3 text-sm text-muted-foreground text-center">
-                Formation: 4-4-2
-              </div>
+              <Card className="p-4">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center">
+                      <span className="text-sm font-bold text-blue-600">GP</span>
+                    </div>
+                    <div>
+                      <p className="text-sm font-semibold">{homeTeamData.manager}</p>
+                      <p className="text-xs text-muted-foreground">Chelsea Manager</p>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <div className="text-right">
+                      <p className="text-sm font-semibold">{awayTeamData.manager}</p>
+                      <p className="text-xs text-muted-foreground">Man Utd Manager</p>
+                    </div>
+                    <div className="w-10 h-10 rounded-full bg-red-100 flex items-center justify-center">
+                      <span className="text-sm font-bold text-red-600">EH</span>
+                    </div>
+                  </div>
+                </div>
+              </Card>
             </motion.div>
 
+            {/* Lineups */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.3, delay: 0.1 }}
             >
-              <h3 className="font-semibold mb-3 flex items-center gap-2">
-                <div className="w-3 h-3 rounded-full bg-red-600" />
-                Manchester United
-              </h3>
-              <TeamLineup players={awayLineup} color="red" />
-              <div className="mt-3 text-sm text-muted-foreground text-center">
-                Formation: 4-4-2
-              </div>
+              <h3 className="font-semibold mb-4">Lineups</h3>
+              <Card className="p-4">
+                <div className="grid grid-cols-2 gap-4">
+                  {/* Home Team */}
+                  <div className="space-y-3">
+                    {homeTeamData.lineup.map((player, index) => (
+                      <motion.div
+                        key={player.number}
+                        className="flex items-center gap-2"
+                        initial={{ opacity: 0, x: -20 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ duration: 0.3, delay: index * 0.03 }}
+                      >
+                        <div className="w-7 h-7 rounded-full bg-blue-600 flex items-center justify-center shrink-0">
+                          <span className="text-xs font-bold text-white">{player.number}</span>
+                        </div>
+                        <span className="text-sm font-medium truncate">{player.name}</span>
+                      </motion.div>
+                    ))}
+                  </div>
+
+                  {/* Away Team */}
+                  <div className="space-y-3">
+                    {awayTeamData.lineup.map((player, index) => (
+                      <motion.div
+                        key={player.number}
+                        className="flex items-center gap-2 justify-end"
+                        initial={{ opacity: 0, x: 20 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ duration: 0.3, delay: index * 0.03 }}
+                      >
+                        <span className="text-sm font-medium truncate text-right">{player.name}</span>
+                        <div className="w-7 h-7 rounded-full bg-red-600 flex items-center justify-center shrink-0">
+                          <span className="text-xs font-bold text-white">{player.number}</span>
+                        </div>
+                      </motion.div>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Formation */}
+                <div className="flex items-center justify-between mt-6 pt-4 border-t border-border">
+                  <div className="flex items-center gap-2">
+                    <Badge variant="secondary" className="text-xs">
+                      {homeTeamData.formation}
+                    </Badge>
+                    <span className="text-xs text-muted-foreground">Formation</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <span className="text-xs text-muted-foreground">Formation</span>
+                    <Badge variant="secondary" className="text-xs">
+                      {awayTeamData.formation}
+                    </Badge>
+                  </div>
+                </div>
+              </Card>
+            </motion.div>
+
+            {/* Substitutes */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.3, delay: 0.2 }}
+            >
+              <h3 className="font-semibold mb-4">Substitutes</h3>
+              <Card className="p-4">
+                <div className="grid grid-cols-2 gap-4">
+                  {/* Home Team Subs */}
+                  <div className="space-y-3">
+                    {homeTeamData.substitutes.map((player, index) => (
+                      <motion.div
+                        key={player.number}
+                        className="flex items-center gap-2"
+                        initial={{ opacity: 0, x: -20 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ duration: 0.3, delay: index * 0.03 }}
+                      >
+                        <div className="w-7 h-7 rounded-full bg-blue-100 flex items-center justify-center shrink-0">
+                          <span className="text-xs font-bold text-blue-600">{player.number}</span>
+                        </div>
+                        <span className="text-sm truncate">{player.name}</span>
+                      </motion.div>
+                    ))}
+                  </div>
+
+                  {/* Away Team Subs */}
+                  <div className="space-y-3">
+                    {awayTeamData.substitutes.map((player, index) => (
+                      <motion.div
+                        key={player.number}
+                        className="flex items-center gap-2 justify-end"
+                        initial={{ opacity: 0, x: 20 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ duration: 0.3, delay: index * 0.03 }}
+                      >
+                        <span className="text-sm truncate text-right">{player.name}</span>
+                        <div className="w-7 h-7 rounded-full bg-red-100 flex items-center justify-center shrink-0">
+                          <span className="text-xs font-bold text-red-600">{player.number}</span>
+                        </div>
+                      </motion.div>
+                    ))}
+                  </div>
+                </div>
+              </Card>
             </motion.div>
           </TabsContent>
 
