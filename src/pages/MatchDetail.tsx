@@ -4,12 +4,11 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
 import { motion } from "framer-motion";
+import { useNavigate } from "react-router-dom";
 
-interface MatchDetailProps {
-  onBack: () => void;
-}
-
-export const MatchDetail = ({ onBack }: MatchDetailProps) => {
+const MatchDetail = () => {
+  const navigate = useNavigate();
+  
   const homeTeamData = {
     manager: "Graham Potter",
     formation: "4-3-3",
@@ -83,7 +82,7 @@ export const MatchDetail = ({ onBack }: MatchDetailProps) => {
           <Button
             variant="ghost"
             size="icon"
-            onClick={onBack}
+            onClick={() => navigate(-1)}
             className="text-primary-foreground hover:bg-primary-foreground/10"
           >
             <ArrowLeft className="w-5 h-5" />
@@ -465,3 +464,5 @@ export const MatchDetail = ({ onBack }: MatchDetailProps) => {
     </motion.div>
   );
 };
+
+export default MatchDetail;

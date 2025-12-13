@@ -5,12 +5,12 @@ import { MatchCard } from "@/components/MatchCard";
 import { MatchListItem } from "@/components/MatchListItem";
 import { Navigation } from "@/components/Navigation";
 import { DateSelector } from "@/components/DateSelector";
-import { MatchDetail } from "./MatchDetail";
+import { useNavigate } from "react-router-dom";
 
 const Index = () => {
+  const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState("home");
   const [selectedDate, setSelectedDate] = useState(17);
-  const [selectedMatch, setSelectedMatch] = useState<string | null>(null);
 
   const featuredMatch = {
     id: "1",
@@ -28,9 +28,9 @@ const Index = () => {
     { id: "4", homeTeam: "Wolves", awayTeam: "Leicester", homeScore: 1, awayScore: 0, status: "live" as const },
   ];
 
-  if (selectedMatch) {
-    return <MatchDetail onBack={() => setSelectedMatch(null)} />;
-  }
+  const handleMatchClick = (matchId: string) => {
+    navigate(`/match/${matchId}`);
+  };
 
   return (
     <div className="min-h-screen bg-background pb-20">
@@ -70,7 +70,7 @@ const Index = () => {
           </div>
           <MatchCard
             {...featuredMatch}
-            onClick={() => setSelectedMatch(featuredMatch.id)}
+            onClick={() => handleMatchClick(featuredMatch.id)}
           />
         </section>
 
@@ -87,7 +87,7 @@ const Index = () => {
               <MatchListItem
                 key={match.id}
                 {...match}
-                onClick={() => setSelectedMatch(match.id)}
+                onClick={() => handleMatchClick(match.id)}
               />
             ))}
           </div>
