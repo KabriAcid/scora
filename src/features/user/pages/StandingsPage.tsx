@@ -7,14 +7,6 @@ import {
   Minus,
   ChevronDown,
 } from "lucide-react";
-import {
-  Table,
-  TableHeader,
-  TableRow,
-  TableHead,
-  TableBody,
-  TableCell,
-} from "@/components/ui/table";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Card } from "@/components/ui/card";
 import { standingsData, TeamStanding } from "@/data/standings";
@@ -161,14 +153,18 @@ const StandingsPage = () => {
               <motion.div
                 initial={{ opacity: 0, y: -10 }}
                 animate={{ opacity: 1, y: 0 }}
-                className="grid grid-cols-[40px_1fr_32px_32px_32px_40px_64px] gap-1 px-3 py-2 text-[10px] font-semibold text-muted-foreground uppercase tracking-wider"
+                className="grid grid-cols-[28px_48px_24px_24px_24px_24px_32px_32px_32px_32px_56px] sm:grid-cols-[32px_1fr_28px_28px_28px_28px_36px_36px_36px_32px_64px] gap-1 px-3 py-2 text-[10px] font-semibold text-muted-foreground uppercase tracking-wider"
               >
                 <span>#</span>
                 <span>Team</span>
+                <span className="text-center">P</span>
                 <span className="text-center">W</span>
                 <span className="text-center">D</span>
                 <span className="text-center">L</span>
-                <span className="text-right">Pts</span>
+                <span className="text-center">GF</span>
+                <span className="text-center">GA</span>
+                <span className="text-center">GD</span>
+                <span className="text-right">PTS</span>
                 <span className="text-center">Form</span>
               </motion.div>
 
@@ -188,14 +184,14 @@ const StandingsPage = () => {
                       scale: 1.01,
                       backgroundColor: "hsl(var(--accent)/0.1)",
                     }}
-                    className="relative grid grid-cols-[40px_1fr_32px_32px_32px_40px_64px] gap-1 items-center p-3 bg-card/50 rounded-xl cursor-pointer transition-colors"
+                    className="relative grid grid-cols-[28px_48px_24px_24px_24px_24px_32px_32px_32px_32px_56px] sm:grid-cols-[32px_1fr_28px_28px_28px_28px_36px_36px_36px_32px_64px] gap-1 items-center p-3 bg-card/50 rounded-xl cursor-pointer transition-colors"
                   >
                     <PositionIndicator position={entry.position} />
 
                     {/* Position */}
                     <span
                       className={cn(
-                        "text-sm font-bold pl-2",
+                        "text-xs font-bold pl-2",
                         entry.position <= 4 && "text-success",
                         entry.position >= 18 && "text-destructive"
                       )}
@@ -211,20 +207,52 @@ const StandingsPage = () => {
                         alt={entry.team.shortName}
                         className="w-7 h-7 object-contain flex-shrink-0"
                       />
-                      <span className="text-sm font-medium truncate">
+                      <span className="text-xs font-medium truncate hidden sm:inline">
                         {entry.team.responsiveName}
                       </span>
                     </div>
 
-                    {/* W D L */}
+                    {/* P */}
+                    <span className="text-xs text-center font-medium">
+                      {entry.played}
+                    </span>
+
+                    {/* W */}
                     <span className="text-xs text-center text-success font-medium">
                       {entry.win}
                     </span>
+
+                    {/* D */}
                     <span className="text-xs text-center text-muted-foreground font-medium">
                       {entry.draw}
                     </span>
+
+                    {/* L */}
                     <span className="text-xs text-center text-destructive font-medium">
                       {entry.loss}
+                    </span>
+
+                    {/* GF (Goals For) */}
+                    <span className="text-xs text-center font-medium text-success/80">
+                      {entry.gf}
+                    </span>
+
+                    {/* GA (Goals Against) */}
+                    <span className="text-xs text-center font-medium text-destructive/80">
+                      {entry.ga}
+                    </span>
+
+                    {/* GD (Goal Difference) */}
+                    <span
+                      className={cn(
+                        "text-xs text-center font-bold",
+                        entry.gd > 0 && "text-success",
+                        entry.gd < 0 && "text-destructive",
+                        entry.gd === 0 && "text-muted-foreground"
+                      )}
+                    >
+                      {entry.gd > 0 ? "+" : ""}
+                      {entry.gd}
                     </span>
 
                     {/* Points */}
