@@ -9,8 +9,10 @@ All colors MUST be HSL.
 /* Import local font */
 @font-face {
   font-family: Ginto;
-  src: url("/fonts/Ginto.woff2") format("woff2"),
-    url("/fonts/Ginto.woff") format("woff");
+  src: url("/font/Ginto.woff2") format("woff2");
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
 }
 
 @layer base {
