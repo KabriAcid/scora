@@ -1,4 +1,4 @@
-import { Home, TrendingUp, Calendar, User } from "lucide-react";
+import { Home, TrendingUp, Calendar, BarChart3 } from "lucide-react";
 import { cn } from "@/shared/utils/cn";
 import { useNavigate, useLocation } from "react-router-dom";
 import { motion } from "framer-motion";
@@ -21,7 +21,7 @@ export const Navigation = ({ activeTab, onTabChange }: NavigationProps) => {
       path: "/standings",
     },
     { id: "calendar", icon: Calendar, label: "Calendar", path: "/calendar" },
-    { id: "profile", icon: User, label: "Profile", path: "/profile" },
+    { id: "stats", icon: BarChart3, label: "Stats", path: "/stats" },
   ];
 
   const handleTabClick = (tab: (typeof tabs)[0]) => {

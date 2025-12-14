@@ -12,7 +12,7 @@ export const ROUTES = {
     STANDINGS: "/standings",
     CALENDAR: "/calendar",
     TEAM_DETAIL: "/team/:id",
-    PROFILE: "/profile",
+    STATS: "/stats",
   },
 
   // Live Agent routes

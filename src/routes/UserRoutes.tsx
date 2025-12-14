@@ -4,6 +4,7 @@ import MatchDetailPage from "@/features/user/pages/MatchDetailPage";
 import StandingsPage from "@/features/user/pages/StandingsPage";
 import CalendarPage from "@/features/user/pages/CalendarPage";
 import TeamDetailPage from "@/features/user/pages/TeamDetailPage";
+import StatsPage from "@/features/user/pages/StatsPage";
 import NotFound from "@/NotFound";
 import { ROUTES } from "@/shared/config/routes";
 
@@ -15,6 +16,7 @@ export const UserRoutes = () => {
       <Route path={ROUTES.USER.STANDINGS} element={<StandingsPage />} />
       <Route path={ROUTES.USER.CALENDAR} element={<CalendarPage />} />
       <Route path={ROUTES.USER.TEAM_DETAIL} element={<TeamDetailPage />} />
+      <Route path={ROUTES.USER.STATS} element={<StatsPage />} />
       <Route path={ROUTES.NOT_FOUND} element={<NotFound />} />
     </Routes>
   );
