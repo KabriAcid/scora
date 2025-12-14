@@ -11,15 +11,20 @@ interface NavigationProps {
 export const Navigation = ({ activeTab, onTabChange }: NavigationProps) => {
   const navigate = useNavigate();
   const location = useLocation();
-  
+
   const tabs = [
     { id: "home", icon: Home, label: "Home", path: "/" },
-    { id: "standings", icon: TrendingUp, label: "Standings", path: "/standings" },
+    {
+      id: "standings",
+      icon: TrendingUp,
+      label: "Standings",
+      path: "/standings",
+    },
     { id: "calendar", icon: Calendar, label: "Calendar", path: "/calendar" },
     { id: "profile", icon: User, label: "Profile", path: "/profile" },
   ];
 
-  const handleTabClick = (tab: typeof tabs[0]) => {
+  const handleTabClick = (tab: (typeof tabs)[0]) => {
     if (onTabChange) {
       onTabChange(tab.id);
     }
@@ -28,12 +33,12 @@ export const Navigation = ({ activeTab, onTabChange }: NavigationProps) => {
 
   const getCurrentTab = () => {
     const currentPath = location.pathname;
-    const matchedTab = tabs.find(tab => tab.path === currentPath);
+    const matchedTab = tabs.find((tab) => tab.path === currentPath);
     return matchedTab?.id || activeTab || "home";
   };
 
   return (
-    <motion.nav 
+    <motion.nav
       initial={{ y: 100 }}
       animate={{ y: 0 }}
       transition={{ type: "spring", stiffness: 300, damping: 30 }}
@@ -44,7 +49,7 @@ export const Navigation = ({ activeTab, onTabChange }: NavigationProps) => {
           const Icon = tab.icon;
           const currentTab = getCurrentTab();
           const isActive = currentTab === tab.id;
-          
+
           return (
             <motion.button
               key={tab.id}
@@ -52,7 +57,9 @@ export const Navigation = ({ activeTab, onTabChange }: NavigationProps) => {
               whileTap={{ scale: 0.9 }}
               className={cn(
                 "relative flex flex-col items-center justify-center gap-1 flex-1 h-full transition-colors",
-                isActive ? "text-primary" : "text-muted-foreground hover:text-foreground"
+                isActive
+                  ? "text-primary"
+                  : "text-muted-foreground hover:text-foreground"
               )}
             >
               {isActive && (
@@ -63,7 +70,14 @@ export const Navigation = ({ activeTab, onTabChange }: NavigationProps) => {
                 />
               )}
               <Icon className={cn("w-5 h-5", isActive && "text-primary")} />
-              <span className={cn("text-[10px] font-medium", isActive && "text-primary")}>{tab.label}</span>
+              <span
+                className={cn(
+                  "text-[10px] font-medium",
+                  isActive && "text-primary"
+                )}
+              >
+                {tab.label}
+              </span>
             </motion.button>
           );
         })}

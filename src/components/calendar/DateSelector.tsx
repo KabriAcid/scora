@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { cn } from "@/lib/utils";
+import { cn } from "@/shared/utils/cn";
 import { format, addDays, startOfWeek, isSameDay } from "date-fns";
 import { Calendar } from "@/components/ui/calendar";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
