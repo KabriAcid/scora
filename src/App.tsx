@@ -7,6 +7,7 @@ import HomePage from "@/features/user/pages/HomePage";
 import MatchDetailPage from "@/features/user/pages/MatchDetailPage";
 import StandingsPage from "@/features/user/pages/StandingsPage";
 import CalendarPage from "@/features/user/pages/CalendarPage";
+import StatsPage from "@/features/user/pages/StatsPage";
 import NotFound from "@/NotFound";
 
 const queryClient = new QueryClient();
@@ -22,6 +23,7 @@ const App = () => (
           <Route path="/match/:id" element={<MatchDetailPage />} />
           <Route path="/standings" element={<StandingsPage />} />
           <Route path="/calendar" element={<CalendarPage />} />
+          <Route path="/stats" element={<StatsPage />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>

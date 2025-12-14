@@ -52,8 +52,7 @@ const StatItem = ({
   category: StatCategory | "all";
 }) => {
   const getStatColor = () => {
-    if (category === "scorers" || category === "assists")
-      return "text-success";
+    if (category === "scorers" || category === "assists") return "text-success";
     if (category === "red") return "text-destructive";
     if (category === "yellow") return "text-yellow-500";
     if (category === "cleansheets") return "text-primary";
