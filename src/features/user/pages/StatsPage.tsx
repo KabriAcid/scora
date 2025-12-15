@@ -153,8 +153,8 @@ const StatsPage = () => {
                   className={cn(
                     "flex items-center gap-2 px-4 py-2 rounded-full text-xs font-semibold whitespace-nowrap transition-all",
                     activeTab === tab.id
-                      ? "bg-primary text-primary-foreground shadow-lg"
-                      : "bg-card text-muted-foreground hover:bg-card/80"
+                      ? "bg-accent text-accent-foreground shadow-lg"
+                      : "bg-card text-muted-foreground hover:bg-accent/20"
                   )}
                 >
                   {tab.icon && <tab.icon className="w-3.5 h-3.5" />}
