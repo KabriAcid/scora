@@ -124,7 +124,7 @@ const Index = () => {
             {/* Featured Match */}
             <section>
               <div className="flex items-center justify-between mb-4">
-                <h2 className="text-lg font-bold">Live Match</h2>
+                <h2 className="text-sm text-gray-800 font-semibold">Live Matches</h2>
               </div>
               <MatchCard
                 {...featuredMatch}
@@ -135,7 +135,7 @@ const Index = () => {
             {/* Today's Matches */}
             <section>
               <div className="flex items-center justify-between mb-4">
-                <h2 className="text-lg font-bold">Today Match</h2>
+                <h2 className="text-sm text-gray-800 font-semibold">Today's Matches</h2>
                 <Button
                   variant="ghost"
                   size="sm"
