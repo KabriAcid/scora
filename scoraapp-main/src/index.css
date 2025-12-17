@@ -1,0 +1,163 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Definition of the design system. All colors, gradients, fonts, etc should be defined here. 
+All colors MUST be HSL.
+*/
+
+/* Import local font */
+@font-face {
+  font-family: Ginto;
+  src: url("/font/Ginto.woff2") format("woff2");
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+@layer base {
+  :root {
+    --background: 240 20% 98%;
+    --foreground: 280 50% 15%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 280 50% 15%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 280 50% 15%;
+
+    --primary: 280 50% 25%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 240 15% 95%;
+    --secondary-foreground: 280 50% 15%;
+
+    --muted: 240 15% 95%;
+    --muted-foreground: 280 20% 50%;
+
+    --accent: 330 100% 55%;
+    --accent-foreground: 0 0% 100%;
+
+    --success: 140 60% 50%;
+    --success-foreground: 0 0% 100%;
+
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 240 15% 90%;
+    --input: 240 15% 92%;
+    --ring: 280 50% 25%;
+
+    --radius: 1rem;
+
+    --gradient-primary: linear-gradient(
+      135deg,
+      hsl(280 50% 20%),
+      hsl(280 60% 30%)
+    );
+    --gradient-card: linear-gradient(
+      135deg,
+      hsl(280 50% 25%),
+      hsl(280 45% 20%)
+    );
+    --shadow-card: 0 4px 20px -2px hsl(280 50% 20% / 0.15);
+
+    --sidebar-background: 0 0% 98%;
+
+    --sidebar-foreground: 240 5.3% 26.1%;
+
+    --sidebar-primary: 240 5.9% 10%;
+
+    --sidebar-primary-foreground: 0 0% 98%;
+
+    --sidebar-accent: 240 4.8% 95.9%;
+
+    --sidebar-accent-foreground: 240 5.9% 10%;
+
+    --sidebar-border: 220 13% 91%;
+
+    --sidebar-ring: 217.2 91.2% 59.8%;
+  }
+
+  .dark {
+    --background: 280 50% 5%;
+    --foreground: 0 0% 98%;
+
+    --card: 280 40% 10%;
+    --card-foreground: 0 0% 98%;
+
+    --popover: 280 40% 10%;
+    --popover-foreground: 0 0% 98%;
+
+    --primary: 280 50% 60%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 280 30% 15%;
+    --secondary-foreground: 0 0% 98%;
+
+    --muted: 280 30% 15%;
+    --muted-foreground: 280 15% 60%;
+
+    --accent: 330 100% 55%;
+    --accent-foreground: 0 0% 100%;
+
+    --success: 140 60% 50%;
+    --success-foreground: 0 0% 100%;
+
+    --destructive: 0 62.8% 50%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 280 30% 20%;
+    --input: 280 30% 20%;
+    --ring: 280 50% 60%;
+    --sidebar-background: 240 5.9% 10%;
+    --sidebar-foreground: 240 4.8% 95.9%;
+    --sidebar-primary: 224.3 76.3% 48%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 240 3.7% 15.9%;
+    --sidebar-accent-foreground: 240 4.8% 95.9%;
+    --sidebar-border: 240 3.7% 15.9%;
+    --sidebar-ring: 217.2 91.2% 59.8%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  html,
+  body {
+    @apply bg-background text-foreground;
+    font-family: Ginto, sans-serif !important;
+    overflow-x: hidden;
+  }
+
+  body {
+    overflow-y: auto;
+  }
+}
+
+/* Hide scrollbars globally while maintaining scroll functionality */
+@layer utilities {
+  /* Hide scrollbar for Chrome, Safari and Opera */
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* Hide scrollbar for IE, Edge and Firefox */
+  .scrollbar-hide {
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
+  }
+
+  /* Apply to all scrollable elements */
+  * {
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* IE and Edge */
+  }
+
+  *::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Opera */
+  }
+}
