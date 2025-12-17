@@ -77,12 +77,12 @@ export const DateSelector = ({ selectedDate, onDateChange }: DateSelectorProps) 
                 className={cn(
                   "relative flex flex-col items-center justify-center min-w-[48px] h-16 rounded-xl transition-all",
                   isSelected
-                    ? "bg-primary text-primary-foreground shadow-lg"
-                    : "bg-card text-foreground hover:bg-secondary border border-border/50"
+                    ? "bg-accent text-accent-foreground shadow-lg"
+                    : "bg-card text-muted-foreground hover:bg-accent/20"
                 )}
               >
                 {isToday && !isSelected && (
-                  <div className="absolute top-1 w-1.5 h-1.5 rounded-full bg-primary" />
+                  <div className="absolute top-1 w-1.5 h-1.5 rounded-full bg-accent" />
                 )}
                 <span className="text-[10px] font-medium mb-1 uppercase opacity-70">
                   {format(date, "EEE")}

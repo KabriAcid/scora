@@ -37,7 +37,6 @@ export const Logo = ({
             variant === "white" ? "text-white" : "text-foreground"
           )}
         >
-          Scora
         </span>
       )}
     </div>

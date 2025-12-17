@@ -8,6 +8,7 @@ import { DateSelector } from "@/components/calendar/DateSelector";
 import { HomeSkeleton } from "@/features/user/components/HomeSkeleton";
 import { useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
+import { Logo } from "@/components/common/Logo";
 
 const Index = () => {
   const navigate = useNavigate();
@@ -81,12 +82,8 @@ const Index = () => {
           <Button variant="ghost" size="icon" className="rounded-xl">
             <Menu className="w-5 h-5" />
           </Button>
-          <h1 className="text-xl font-bold">Scora</h1>
-          <div className="flex items-center gap-1">
-            <Button variant="ghost" size="icon" className="relative rounded-xl">
-              <Bell className="w-5 h-5" />
-              <span className="absolute top-2 right-2 w-2 h-2 bg-destructive rounded-full" />
-            </Button>
+          <Logo />
+          <div className="flex items-center">
             <Button variant="ghost" size="icon" className="rounded-xl">
               <Search className="w-5 h-5" />
             </Button>
@@ -124,7 +121,9 @@ const Index = () => {
             {/* Featured Match */}
             <section>
               <div className="flex items-center justify-between mb-4">
-                <h2 className="text-sm text-gray-800 font-semibold">Live Matches</h2>
+                <h2 className="text-sm text-gray-800 font-semibold">
+                  Live Matches
+                </h2>
               </div>
               <MatchCard
                 {...featuredMatch}
@@ -135,7 +134,9 @@ const Index = () => {
             {/* Today's Matches */}
             <section>
               <div className="flex items-center justify-between mb-4">
-                <h2 className="text-sm text-gray-800 font-semibold">Today's Matches</h2>
+                <h2 className="text-sm text-gray-800 font-semibold">
+                  Today's Matches
+                </h2>
                 <Button
                   variant="ghost"
                   size="sm"

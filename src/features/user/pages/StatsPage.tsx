@@ -64,7 +64,7 @@ const StatItem = ({
       initial={{ opacity: 0, x: -20 }}
       animate={{ opacity: 1, x: 0 }}
       transition={{ delay: index * 0.03 }}
-      whileHover={{ scale: 1.02, backgroundColor: "hsl(var(--accent)/0.1)" }}
+      whileHover={{ backgroundColor: "hsl(var(--accent)/0.1)" }}
       className="flex items-center gap-3 p-4 bg-card/50 rounded-xl cursor-pointer transition-colors"
     >
       {/* Position */}
@@ -148,7 +148,6 @@ const StatsPage = () => {
                 <motion.button
                   key={tab.id}
                   onClick={() => setActiveTab(tab.id)}
-                  whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                   className={cn(
                     "flex items-center gap-2 px-4 py-2 rounded-full text-xs font-semibold whitespace-nowrap transition-all",
