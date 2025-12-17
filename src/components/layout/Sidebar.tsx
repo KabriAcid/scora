@@ -11,6 +11,7 @@ import {
     ChevronRight,
 } from "lucide-react";
 import NavItem from "./NavItem.tsx";
+import { Logo } from "@/components/common/Logo";
 
 interface NavItemType {
     id: string;
@@ -117,15 +118,18 @@ const Sidebar = ({
             >
                 {/* Header with close button */}
                 <div className="p-4 flex items-center justify-between border-b border-border">
-                    {!isCollapsed && (
+                    {!isCollapsed ? (
                         <motion.div
                             initial={{ opacity: 0 }}
                             animate={{ opacity: 1 }}
                             transition={{ delay: 0.1 }}
-                            className="text-sm md:text-base lg:text-lg font-bold"
+                            className="flex items-center gap-2"
                         >
-                            Scora Agent
+                            <Logo size="md" showText={true} />
+                            <span className="text-xs text-muted-foreground">Agent</span>
                         </motion.div>
+                    ) : (
+                        <Logo size="sm" showText={false} />
                     )}
                     {isMobile && (
                         <button
