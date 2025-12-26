@@ -34,7 +34,6 @@ const LiveMatchHeader = ({ match, homeScore, awayScore }: LiveMatchHeaderProps) 
                     />
                     <div className="text-center">
                         <h3 className="text-lg md:text-2xl font-bold">{match.homeTeam}</h3>
-                        <p className="text-xs md:text-sm text-muted-foreground">{match.venue}</p>
                     </div>
                 </div>
 
@@ -43,7 +42,6 @@ const LiveMatchHeader = ({ match, homeScore, awayScore }: LiveMatchHeaderProps) 
                     <div className="text-3xl md:text-5xl font-bold">
                         {homeScore} - {awayScore}
                     </div>
-                    <p className="text-xs md:text-sm text-muted-foreground font-semibold">{match.league}</p>
                 </div>
 
                 {/* Away Team */}
@@ -55,7 +53,6 @@ const LiveMatchHeader = ({ match, homeScore, awayScore }: LiveMatchHeaderProps) 
                     />
                     <div className="text-center">
                         <h3 className="text-lg md:text-2xl font-bold">{match.awayTeam}</h3>
-                        <p className="text-xs md:text-sm text-muted-foreground">{match.venue}</p>
                     </div>
                 </div>
             </div>

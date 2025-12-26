@@ -25,8 +25,8 @@ const MatchControlPanel = ({
         <Card className="p-6">
             <div className="flex items-center justify-between">
                 <div className="flex items-center gap-4">
-                    <h2 className="text-xl font-bold">Match Controls</h2>
-                    <Badge variant={isMatchActive ? "default" : "secondary"}>
+                    <h2 className="text-xl font-bold block">Match Controls</h2>
+                    <Badge variant={isMatchActive ? "success" : "secondary"}>
                         {isMatchActive ? "LIVE" : "PAUSED"}
                     </Badge>
                 </div>

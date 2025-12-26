@@ -13,7 +13,6 @@ import AgentLoginPage from "@/features/agent/pages/AgentLoginPage";
 import AgentDashboard from "@/features/agent/pages/AgentDashboard";
 import LiveMatchPage from "@/features/agent/pages/LiveMatchPage";
 // import AssignedMatchesPage from "@/features/agent/pages/AssignedMatchesPage";
-// import EventLogPage from "@/features/agent/pages/EventLogPage";
 import NotFound from "@/NotFound";
 
 const queryClient = new QueryClient();
@@ -38,7 +37,6 @@ const App = () => (
           <Route path="/agent/dashboard" element={<AgentDashboard />} />
           <Route path="/agent/match/:id" element={<LiveMatchPage />} />
           {/* <Route path="/agent/matches" element={<AssignedMatchesPage />} /> */}
-          {/* <Route path="/agent/event-log" element={<EventLogPage />} /> */}
 
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />

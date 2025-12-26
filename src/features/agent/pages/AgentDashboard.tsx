@@ -7,7 +7,6 @@ import AgentLayout from "@/components/layout/AgentLayout";
 import LiveMatchCard from "@/components/agent/LiveMatchCard";
 import {
     WelcomeCardSkeleton,
-    MatchCardSkeleton,
     EventListSkeleton,
 } from "@/components/common/Skeleton";
 import {

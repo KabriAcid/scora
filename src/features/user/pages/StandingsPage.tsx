@@ -181,7 +181,6 @@ const StandingsPage = () => {
                       stiffness: 100,
                     }}
                     whileHover={{
-                      scale: 1.01,
                       backgroundColor: "hsl(var(--accent)/0.1)",
                     }}
                     className="relative grid grid-cols-[28px_48px_24px_24px_24px_24px_32px_32px_32px_32px_56px] sm:grid-cols-[32px_1fr_28px_28px_28px_28px_36px_36px_36px_32px_64px] gap-1 items-center p-3 bg-card/50 rounded-xl cursor-pointer transition-colors"
