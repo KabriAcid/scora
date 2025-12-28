@@ -1,7 +1,6 @@
 import { motion, AnimatePresence } from "framer-motion";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Target, AlertTriangle, Users, CornerDownRight } from "lucide-react";
 
 interface MatchEvent {
     id: string;
@@ -17,27 +16,37 @@ interface MatchTimelineProps {
     events: MatchEvent[];
 }
 
-const eventIcons = {
-    goal: <Target className="w-5 h-5 text-green-500" />,
-    yellow_card: <AlertTriangle className="w-5 h-5 text-yellow-500" />,
-    red_card: <AlertTriangle className="w-5 h-5 text-red-600" />,
-    substitution: <Users className="w-5 h-5 text-blue-500" />,
-    foul: <AlertTriangle className="w-5 h-5 text-orange-500" />,
-    corner: <CornerDownRight className="w-5 h-5 text-purple-500" />,
-    offside: <AlertTriangle className="w-5 h-5 text-gray-500" />,
-    injury: <AlertTriangle className="w-5 h-5 text-red-700" />,
+// Custom SVG icon paths for each event type
+const eventIconPaths: Record<MatchEvent['type'], string> = {
+    goal: "/images/event-goal.svg",
+    yellow_card: "/images/event-yellow-card.svg",
+    red_card: "/images/event-red-card.svg",
+    substitution: "/images/event-substitution.svg",
+    foul: "/images/event-foul.svg",
+    corner: "/images/event-corner.svg",
+    offside: "/images/event-offside.svg",
+    injury: "/images/event-injury.svg",
 };
 
 const MatchTimeline = ({ events }: MatchTimelineProps) => {
     return (
-        <Card className="p-6">
-            <h2 className="text-xl font-bold mb-6">Match Timeline</h2>
-            <div className="space-y-3">
+        <Card className="p-6 md:p-8 shadow-lg border border-border">
+            <h2 className="text-lg md:text-xl font-bold text-foreground mb-6 md:mb-8">
+                Match Timeline
+            </h2>
+            <div className="space-y-2 md:space-y-3">
                 <AnimatePresence>
                     {events.length === 0 ? (
-                        <div className="text-center py-8 text-muted-foreground">
-                            No events logged yet
-                        </div>
+                        <motion.div
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            className="text-center py-8 md:py-12 text-muted-foreground"
+                        >
+                            <div className="w-8 h-8 md:w-10 md:h-10 mx-auto mb-3 opacity-40">
+                                <img src="/images/event-goal.svg" alt="No events" className="w-full h-full" />
+                            </div>
+                            <p className="text-sm md:text-base">No events logged yet</p>
+                        </motion.div>
                     ) : (
                         events.map((event, index) => (
                             <motion.div
@@ -46,23 +55,33 @@ const MatchTimeline = ({ events }: MatchTimelineProps) => {
                                 animate={{ opacity: 1, x: 0 }}
                                 exit={{ opacity: 0, x: 20 }}
                                 transition={{ delay: index * 0.05 }}
-                                className="flex items-center gap-4 p-4 bg-secondary/50 rounded-lg hover:bg-secondary/70 transition-colors"
+                                className="flex items-center gap-3 md:gap-4 p-3 md:p-4 bg-secondary/40 dark:bg-secondary/30 rounded-lg hover:bg-secondary/60 dark:hover:bg-secondary/50 transition-all duration-200 border border-transparent hover:border-primary/20"
                             >
-                                <div className="flex-shrink-0">
-                                    {eventIcons[event.type]}
+                                <div className="flex-shrink-0 bg-primary/10 p-2 md:p-2.5 rounded-lg flex items-center justify-center">
+                                    <img
+                                        src={eventIconPaths[event.type]}
+                                        alt={event.type}
+                                        className="w-5 h-5 md:w-6 md:h-6"
+                                        style={{ filter: "var(--icon-filter, invert(0.4))" }}
+                                    />
                                 </div>
-                                <div className="flex-1">
+                                <div className="flex-1 min-w-0">
                                     <div className="flex items-center gap-2 mb-1">
-                                        <span className="font-semibold">{event.player}</span>
-                                        <Badge variant="outline" className="text-xs">
+                                        <span className="font-semibold text-sm md:text-base text-foreground truncate">
+                                            {event.player}
+                                        </span>
+                                        <Badge
+                                            variant="outline"
+                                            className="text-xs flex-shrink-0"
+                                        >
                                             {event.team}
                                         </Badge>
                                     </div>
-                                    <p className="text-sm text-muted-foreground">
-                                        {event.description || event.type.replace('_', ' ')}
+                                    <p className="text-xs md:text-sm text-muted-foreground">
+                                        {event.description || event.type.replace(/_/g, ' ').charAt(0).toUpperCase() + event.type.replace(/_/g, ' ').slice(1)}
                                     </p>
                                 </div>
-                                <div className="text-sm font-mono font-bold">
+                                <div className="text-sm md:text-base font-mono font-bold text-primary flex-shrink-0">
                                     {event.minute}'
                                 </div>
                             </motion.div>
