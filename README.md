@@ -64,7 +64,7 @@ The project is currently focused on designing and implementing the **Regular Use
 
 ### Development Tools
 
-- **Package Manager**: Bun
+- **Package Manager**: Npm
 - **Linting**: ESLint
 - **Type Checking**: TypeScript
 

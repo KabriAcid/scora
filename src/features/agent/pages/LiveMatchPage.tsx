@@ -1,10 +1,11 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo, useCallback } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
-import { ArrowLeft, BarChart3, Settings } from "lucide-react";
+import { ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { toast } from "sonner";
 import AgentLayout from "@/components/layout/AgentLayout";
 import LiveMatchHeader from "@/components/agent/LiveMatchHeader";
 import MatchControlPanel from "@/components/agent/MatchControlPanel";
@@ -12,56 +13,61 @@ import MatchTimeline from "@/components/agent/MatchTimeline";
 import EventTypeButtons from "@/components/agent/EventTypeButtons";
 import TeamSelector from "@/components/agent/TeamSelector";
 import EventLoggingForm from "@/components/agent/EventLoggingForm";
+import MatchStats from "@/components/agent/MatchStats";
+import QuickActions from "@/components/agent/QuickActions";
+import { LiveMatchPageSkeleton } from "@/components/agent/LiveMatchSkeleton";
 import { mockAssignedMatches } from "@/data/agentMockData";
-
-interface MatchEvent {
-    id: string;
-    type: "goal" | "yellow_card" | "red_card" | "substitution" | "foul" | "corner" | "offside" | "injury";
-    player: string;
-    team: string;
-    minute: number;
-    description?: string;
-    timestamp: Date;
-}
+import type { MatchEvent, AssignedMatch } from "@/shared/types/agent";
 
 const LiveMatchPage = () => {
     const { id } = useParams<{ id: string }>();
     const navigate = useNavigate();
+    const [isLoading, setIsLoading] = useState(true);
     const [isMatchActive, setIsMatchActive] = useState(false);
     const [currentTime, setCurrentTime] = useState(0);
     const [events, setEvents] = useState<MatchEvent[]>([]);
     const [activeTeam, setActiveTeam] = useState<string | null>(null);
     const [selectedEventType, setSelectedEventType] = useState<string | null>(null);
 
-    const match = mockAssignedMatches.find(m => m.id === id);
+    const match = useMemo(() => mockAssignedMatches.find(m => m.id === id), [id]);
     const [homeScore, setHomeScore] = useState(match?.homeScore || 0);
     const [awayScore, setAwayScore] = useState(match?.awayScore || 0);
 
+    // Simulate initial page load
+    useEffect(() => {
+        const timer = setTimeout(() => setIsLoading(false), 800);
+        return () => clearTimeout(timer);
+    }, [id]);
+
+    // Set match as active if it's already live
     useEffect(() => {
         if (match && match.status === "live") {
             setIsMatchActive(true);
         }
     }, [match]);
 
+    // Timer effect
     useEffect(() => {
         let interval: NodeJS.Timeout;
-        if (isMatchActive) {
+        if (isMatchActive && !isLoading) {
             interval = setInterval(() => {
                 setCurrentTime(prev => prev + 1);
             }, 1000);
         }
         return () => clearInterval(interval);
-    }, [isMatchActive]);
+    }, [isMatchActive, isLoading]);
 
-    const formatTime = (seconds: number) => {
+    // Memoized formatTime to prevent unnecessary recalculations
+    const formatTime = useCallback((seconds: number) => {
         const mins = Math.floor(seconds / 60);
         const secs = seconds % 60;
         return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
-    };
+    }, []);
 
-    const getCurrentMinute = () => Math.floor(currentTime / 60) + 1;
+    const getCurrentMinute = useCallback(() => Math.floor(currentTime / 60) + 1, [currentTime]);
 
-    const handleLogEvent = (data: {
+    // Optimized event logging handler
+    const handleLogEvent = useCallback((data: {
         player: string;
         team: string;
         description?: string;
@@ -83,39 +89,78 @@ const LiveMatchPage = () => {
         if (data.type === "goal") {
             if (data.team === match?.homeTeam) {
                 setHomeScore(prev => prev + 1);
+                toast.success(`⚽ Goal by ${data.player}!`);
             } else if (data.team === match?.awayTeam) {
                 setAwayScore(prev => prev + 1);
+                toast.success(`⚽ Goal by ${data.player}!`);
             }
+        } else {
+            // Success feedback for other events
+            const eventLabel = data.type.replace('_', ' ');
+            toast.success(`✓ ${eventLabel} logged for ${data.player}`);
         }
 
         setSelectedEventType(null);
-    };
+    }, [match, getCurrentMinute]);
 
     if (!match) {
         return (
             <AgentLayout>
-                <div className="min-h-screen flex items-center justify-center">
-                    <Card className="p-8 text-center">
-                        <h2 className="text-2xl font-bold mb-4">Match Not Found</h2>
-                        <Button onClick={() => navigate("/agent/dashboard")}>
-                            Back to Dashboard
-                        </Button>
-                    </Card>
+                <div className="min-h-screen flex items-center justify-center px-4 py-8">
+                    <motion.div
+                        initial={{ opacity: 0, scale: 0.9 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                    >
+                        <Card className="p-8 text-center">
+                            <h2 className="text-2xl font-bold mb-4 text-foreground">
+                                Match Not Found
+                            </h2>
+                            <p className="text-muted-foreground mb-6">
+                                The match you're looking for doesn't exist.
+                            </p>
+                            <Button onClick={() => navigate("/agent/dashboard")}>
+                                Back to Dashboard
+                            </Button>
+                        </Card>
+                    </motion.div>
                 </div>
             </AgentLayout>
         );
     }
 
+    // Show skeleton loader during initial load
+    if (isLoading) {
+        return (
+            <AgentLayout>
+                <LiveMatchPageSkeleton />
+            </AgentLayout>
+        );
+    }
+
+    const containerVariants = {
+        hidden: { opacity: 0 },
+        visible: {
+            opacity: 1,
+            transition: { staggerChildren: 0.08, delayChildren: 0.1 },
+        },
+    };
+
+    const itemVariants = {
+        hidden: { opacity: 0, y: 20 },
+        visible: { opacity: 1, y: 0, transition: { duration: 0.5 } },
+    };
+
     return (
         <AgentLayout>
             <div className="min-h-screen bg-gradient-to-br from-background via-background to-secondary/10 py-6 md:py-8 lg:py-10 px-4 md:px-6 lg:px-8">
                 <motion.div
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
+                    variants={containerVariants}
+                    initial="hidden"
+                    animate="visible"
                     className="max-w-7xl mx-auto space-y-6 md:space-y-8"
                 >
                     {/* Header */}
-                    <div className="flex items-center justify-between">
+                    <motion.div variants={itemVariants} className="flex items-center justify-between">
                         <Button
                             variant="ghost"
                             onClick={() => navigate("/agent/dashboard")}
@@ -124,49 +169,57 @@ const LiveMatchPage = () => {
                             <ArrowLeft className="w-4 h-4" />
                             Back
                         </Button>
-                        <div className="flex items-center gap-4">
+                        <div className="flex items-center gap-3 md:gap-4">
                             <Badge variant={isMatchActive ? "default" : "secondary"}>
                                 {isMatchActive ? "LIVE" : "PAUSED"}
                             </Badge>
-                            <div className="text-2xl font-mono font-bold">
+                            <div className="text-2xl md:text-3xl font-mono font-bold text-primary">
                                 {formatTime(currentTime)}
                             </div>
                         </div>
-                    </div>
+                    </motion.div>
 
                     {/* Match Header */}
-                    <LiveMatchHeader match={match} homeScore={homeScore} awayScore={awayScore} />
+                    <motion.div variants={itemVariants}>
+                        <LiveMatchHeader match={match} homeScore={homeScore} awayScore={awayScore} />
+                    </motion.div>
 
                     {/* Control Panel */}
-                    <MatchControlPanel
-                        isMatchActive={isMatchActive}
-                        matchStatus={match.status}
-                        formattedTime={formatTime(currentTime)}
-                        onStart={() => setIsMatchActive(true)}
-                        onPause={() => setIsMatchActive(false)}
-                        onEnd={() => setIsMatchActive(false)}
-                    />
+                    <motion.div variants={itemVariants}>
+                        <MatchControlPanel
+                            isMatchActive={isMatchActive}
+                            matchStatus={match.status}
+                            formattedTime={formatTime(currentTime)}
+                            onStart={() => setIsMatchActive(true)}
+                            onPause={() => setIsMatchActive(false)}
+                            onEnd={() => setIsMatchActive(false)}
+                        />
+                    </motion.div>
 
-                    <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                    <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 md:gap-8">
                         {/* Event Logging Panel */}
-                        <div className="lg:col-span-2 space-y-6">
+                        <div className="lg:col-span-2 space-y-6 md:space-y-8">
                             {/* Team Selector */}
-                            <TeamSelector
-                                homeTeam={match.homeTeam}
-                                awayTeam={match.awayTeam}
-                                activeTeam={activeTeam}
-                                onSelectTeam={setActiveTeam}
-                                homeTeamLogo={match.homeTeamLogo}
-                                awayTeamLogo={match.awayTeamLogo}
-                            />
+                            <motion.div variants={itemVariants}>
+                                <TeamSelector
+                                    homeTeam={match.homeTeam}
+                                    awayTeam={match.awayTeam}
+                                    activeTeam={activeTeam}
+                                    onSelectTeam={setActiveTeam}
+                                    homeTeamLogo={match.homeTeamLogo}
+                                    awayTeamLogo={match.awayTeamLogo}
+                                />
+                            </motion.div>
 
                             {/* Event Type Buttons */}
-                            <EventTypeButtons
-                                onSelectEventType={setSelectedEventType}
-                                activeEventType={selectedEventType}
-                            />
+                            <motion.div variants={itemVariants}>
+                                <EventTypeButtons
+                                    onSelectEventType={setSelectedEventType}
+                                    activeEventType={selectedEventType}
+                                />
+                            </motion.div>
 
-                            {/* Event Logging Form - Hidden until event is selected */}
+                            {/* Event Logging Form */}
                             <AnimatePresence>
                                 {selectedEventType && activeTeam && (
                                     <EventLoggingForm
@@ -182,42 +235,24 @@ const LiveMatchPage = () => {
                             </AnimatePresence>
 
                             {/* Match Timeline */}
-                            <MatchTimeline events={events} />
+                            <motion.div variants={itemVariants}>
+                                <MatchTimeline events={events} />
+                            </motion.div>
                         </div>
 
                         {/* Stats & Info Panel */}
-                        <div className="space-y-6">
-                            <Card className="p-6">
-                                <h3 className="text-lg font-bold mb-4">Match Stats</h3>
-                                <div className="space-y-3">
-                                    <div className="flex justify-between">
-                                        <span>Score</span>
-                                        <span className="font-bold">{homeScore} - {awayScore}</span>
-                                    </div>
-                                    <div className="flex justify-between">
-                                        <span>Events Logged</span>
-                                        <span className="font-bold">{events.length}</span>
-                                    </div>
-                                    <div className="flex justify-between">
-                                        <span>Match Time</span>
-                                        <span className="font-bold">{formatTime(currentTime)}</span>
-                                    </div>
-                                </div>
-                            </Card>
+                        <div className="space-y-6 md:space-y-8">
+                            <MatchStats
+                                homeScore={homeScore}
+                                awayScore={awayScore}
+                                eventsCount={events.length}
+                                matchTime={formatTime(currentTime)}
+                            />
 
-                            <Card className="p-6">
-                                <h3 className="text-lg font-bold mb-4">Quick Actions</h3>
-                                <div className="space-y-3">
-                                    <Button variant="outline" className="w-full justify-start gap-2">
-                                        <BarChart3 className="w-4 h-4" />
-                                        Statistics
-                                    </Button>
-                                    <Button variant="outline" className="w-full justify-start gap-2">
-                                        <Settings className="w-4 h-4" />
-                                        Settings
-                                    </Button>
-                                </div>
-                            </Card>
+                            <QuickActions
+                                onStatistics={() => toast.info("Statistics feature coming soon")}
+                                onSettings={() => toast.info("Settings feature coming soon")}
+                            />
                         </div>
                     </div>
                 </motion.div>
