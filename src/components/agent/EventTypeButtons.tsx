@@ -31,7 +31,7 @@ const EventTypeButtons = ({ onSelectEventType, activeEventType }: EventTypeButto
                     return (
                         <motion.button
                             key={type}
-                            whileHover={{ scale: 1.12, y: -3 }}
+                            whileHover={{ y: -3 }}
                             whileTap={{ scale: 0.9 }}
                             onClick={() => onSelectEventType(type)}
                             title={title}
@@ -45,10 +45,7 @@ const EventTypeButtons = ({ onSelectEventType, activeEventType }: EventTypeButto
                                 <img
                                     src={icon}
                                     alt={title}
-                                    className={`w-full h-full transition-all duration-200 ${isActive
-                                            ? "brightness-0 saturate-200 invert"
-                                            : "brightness-75 group-hover:brightness-90"
-                                        }`}
+                                    className={`w-full h-full transition-all duration-200`}
                                 />
                             </div>
 

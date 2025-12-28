@@ -1,6 +1,5 @@
 import { motion } from "framer-motion";
 import { Card } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
 import { Play, Pause, Square } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
@@ -29,9 +28,14 @@ const MatchControlPanel = ({
                     <h2 className="text-lg md:text-xl font-bold text-foreground">
                         Match Controls
                     </h2>
-                    <Badge variant={isMatchActive ? "default" : "secondary"} className="whitespace-nowrap">
-                        {isMatchActive ? "🔴 LIVE" : "⏸ PAUSED"}
-                    </Badge>
+                    {isMatchActive && (
+                        <motion.div
+                            className="w-3 h-3 rounded-full bg-green-500"
+                            animate={{ opacity: [1, 0.5, 1] }}
+                            transition={{ duration: 1.5, repeat: Infinity }}
+                            title="Live"
+                        />
+                    )}
                 </div>
 
                 {/* Right Section - Timer & Buttons */}

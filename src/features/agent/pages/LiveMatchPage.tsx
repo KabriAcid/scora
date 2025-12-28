@@ -46,6 +46,13 @@ const LiveMatchPage = () => {
         }
     }, [match]);
 
+    // Set home team as default active team
+    useEffect(() => {
+        if (match && !activeTeam) {
+            setActiveTeam(match.homeTeam);
+        }
+    }, [match, activeTeam]);
+
     // Timer effect
     useEffect(() => {
         let interval: NodeJS.Timeout;

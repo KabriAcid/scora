@@ -1,6 +1,5 @@
 import { motion } from "framer-motion";
 import { Card } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
 
 interface TeamSelectorProps {
     homeTeam: string;
@@ -25,12 +24,11 @@ const TeamSelector = ({
             <div className="grid grid-cols-2 gap-4">
                 {/* Home Team */}
                 <motion.button
-                    whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
                     onClick={() => onSelectTeam(homeTeam)}
                     className={`p-4 rounded-lg border-2 transition-all ${activeTeam === homeTeam
-                            ? "border-primary bg-primary/10"
-                            : "border-border hover:border-primary/50"
+                        ? "border-primary bg-primary/10"
+                        : "border-border hover:border-primary/50"
                         }`}
                 >
                     <img
@@ -40,18 +38,21 @@ const TeamSelector = ({
                     />
                     <p className="text-sm font-semibold">{homeTeam}</p>
                     {activeTeam === homeTeam && (
-                        <Badge className="mt-2 w-full justify-center">Active</Badge>
+                        <motion.div
+                            className="w-2.5 h-2.5 rounded-full bg-green-500 mx-auto mt-2"
+                            animate={{ opacity: [1, 0.6, 1] }}
+                            transition={{ duration: 1.5, repeat: Infinity }}
+                        />
                     )}
                 </motion.button>
 
                 {/* Away Team */}
                 <motion.button
-                    whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
                     onClick={() => onSelectTeam(awayTeam)}
                     className={`p-4 rounded-lg border-2 transition-all ${activeTeam === awayTeam
-                            ? "border-accent bg-accent/10"
-                            : "border-border hover:border-accent/50"
+                        ? "border-accent bg-accent/10"
+                        : "border-border hover:border-accent/50"
                         }`}
                 >
                     <img
@@ -61,7 +62,11 @@ const TeamSelector = ({
                     />
                     <p className="text-sm font-semibold">{awayTeam}</p>
                     {activeTeam === awayTeam && (
-                        <Badge variant="secondary" className="mt-2 w-full justify-center">Active</Badge>
+                        <motion.div
+                            className="w-2.5 h-2.5 rounded-full bg-green-500 mx-auto mt-2"
+                            animate={{ opacity: [1, 0.6, 1] }}
+                            transition={{ duration: 1.5, repeat: Infinity }}
+                        />
                     )}
                 </motion.button>
             </div>
