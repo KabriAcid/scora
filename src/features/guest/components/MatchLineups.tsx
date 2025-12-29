@@ -1,8 +1,63 @@
 import { Card } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
 import { motion } from "framer-motion";
 import { TeamLineup, Player } from "@/data/matchDetails";
-import { cn } from "@/shared/utils/utils";
+
+// Formation position mappings (x: 0-100%, y: 0-100%)
+// Home team uses left side (0-48%), Away team mirrors to right side (52-100%)
+const FORMATION_POSITIONS: Record<string, Array<{ x: number; y: number }>> = {
+    "4-3-3": [
+        { x: 5, y: 50 },   // GK
+        { x: 18, y: 15 },  // LB
+        { x: 18, y: 38 },  // CB
+        { x: 18, y: 62 },  // CB
+        { x: 18, y: 85 },  // RB
+        { x: 32, y: 30 },  // CM
+        { x: 32, y: 50 },  // CM
+        { x: 32, y: 70 },  // CM
+        { x: 44, y: 20 },  // LW
+        { x: 44, y: 50 },  // ST
+        { x: 44, y: 80 },  // RW
+    ],
+    "4-2-3-1": [
+        { x: 5, y: 50 },   // GK
+        { x: 18, y: 15 },  // LB
+        { x: 18, y: 38 },  // CB
+        { x: 18, y: 62 },  // CB
+        { x: 18, y: 85 },  // RB
+        { x: 28, y: 35 },  // CDM
+        { x: 28, y: 65 },  // CDM
+        { x: 38, y: 20 },  // LM
+        { x: 38, y: 50 },  // CAM
+        { x: 38, y: 80 },  // RM
+        { x: 46, y: 50 },  // ST
+    ],
+    "4-4-2": [
+        { x: 5, y: 50 },   // GK
+        { x: 18, y: 15 },  // LB
+        { x: 18, y: 38 },  // CB
+        { x: 18, y: 62 },  // CB
+        { x: 18, y: 85 },  // RB
+        { x: 32, y: 15 },  // LM
+        { x: 32, y: 40 },  // CM
+        { x: 32, y: 60 },  // CM
+        { x: 32, y: 85 },  // RM
+        { x: 44, y: 38 },  // ST
+        { x: 44, y: 62 },  // ST
+    ],
+    "4-1-4-1": [
+        { x: 5, y: 50 },   // GK
+        { x: 18, y: 15 },  // LB
+        { x: 18, y: 38 },  // CB
+        { x: 18, y: 62 },  // CB
+        { x: 18, y: 85 },  // RB
+        { x: 28, y: 50 },  // CDM
+        { x: 36, y: 15 },  // LM
+        { x: 36, y: 40 },  // CM
+        { x: 36, y: 60 },  // CM
+        { x: 36, y: 85 },  // RM
+        { x: 46, y: 50 },  // ST
+    ],
+};
 
 interface FormationVisualizationProps {
     homeFormation: string;
@@ -17,79 +72,78 @@ const FormationVisualization = ({
     homeLineup,
     awayLineup,
 }: FormationVisualizationProps) => {
-    // Get formation array (e.g., "4-2-3-1" => [4, 2, 3, 1])
-    const getFormationLines = (formation: string, lineup: Player[]) => {
-        const lines = formation.split("-").map(Number);
-        const players = [...lineup].reverse(); // Start from GK
-
-        const formationLines: Player[][] = [[players[0]]]; // GK first
-        let playerIndex = 1;
-
-        lines.forEach((count) => {
-            formationLines.push(players.slice(playerIndex, playerIndex + count));
-            playerIndex += count;
-        });
-
-        return formationLines;
-    };
-
-    const homeLines = getFormationLines(homeFormation, homeLineup);
-    const awayLines = getFormationLines(awayFormation, awayLineup);
+    const homePositions = FORMATION_POSITIONS[homeFormation] || FORMATION_POSITIONS["4-3-3"];
+    const awayPositions = FORMATION_POSITIONS[awayFormation] || FORMATION_POSITIONS["4-3-3"];
 
     return (
-        <div className="relative w-full h-[280px] rounded-lg overflow-hidden" style={{
-            background: "linear-gradient(to bottom, #1a5a3a 0%, #1a5a3a 50%, #2d4a5a 50%, #2d4a5a 100%)"
-        }}>
-            {/* Middle Line */}
-            <div className="absolute top-1/2 left-0 right-0 h-px bg-white/30" />
-            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-16 h-16 rounded-full border-2 border-white/30" />
-            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-2 h-2 rounded-full bg-white/50" />
+        <div className="relative w-full aspect-[2/1] rounded-lg overflow-hidden bg-[hsl(220,18%,12%)]">
+            {/* Pitch Lines */}
+            {/* Center Line */}
+            <div className="absolute left-1/2 top-0 bottom-0 w-px bg-[hsl(220,10%,35%)]" />
 
-            {/* Home Team (Top) */}
-            <div className="absolute top-2 left-0 right-0 flex flex-col gap-6">
-                {homeLines.map((line, lineIndex) => (
-                    <div key={`home-${lineIndex}`} className="flex justify-around px-4">
-                        {line.map((player, playerIndex) => (
-                            <motion.div
-                                key={player.id}
-                                initial={{ scale: 0, opacity: 0 }}
-                                animate={{ scale: 1, opacity: 1 }}
-                                transition={{ delay: lineIndex * 0.1 + playerIndex * 0.05 }}
-                                className="flex flex-col items-center"
-                            >
-                                <div className="w-7 h-7 rounded-full bg-blue-600 border-2 border-white flex items-center justify-center shadow-lg">
-                                    <span className="text-[10px] font-bold text-white">
-                                        {player.number}
-                                    </span>
-                                </div>
-                            </motion.div>
-                        ))}
-                    </div>
-                ))}
-            </div>
+            {/* Center Circle */}
+            <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-20 h-20 rounded-full border-2 border-[hsl(220,10%,35%)]" />
+            <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-2 h-2 rounded-full bg-[hsl(220,10%,45%)]" />
 
-            {/* Away Team (Bottom) */}
-            <div className="absolute bottom-2 left-0 right-0 flex flex-col-reverse gap-6">
-                {awayLines.map((line, lineIndex) => (
-                    <div key={`away-${lineIndex}`} className="flex justify-around px-4">
-                        {line.map((player, playerIndex) => (
-                            <motion.div
-                                key={player.id}
-                                initial={{ scale: 0, opacity: 0 }}
-                                animate={{ scale: 1, opacity: 1 }}
-                                transition={{ delay: lineIndex * 0.1 + playerIndex * 0.05 }}
-                                className="flex flex-col items-center"
-                            >
-                                <div className="w-7 h-7 rounded-full bg-red-600 border-2 border-white flex items-center justify-center shadow-lg">
-                                    <span className="text-[10px] font-bold text-white">
-                                        {player.number}
-                                    </span>
-                                </div>
-                            </motion.div>
-                        ))}
-                    </div>
-                ))}
-            </div>
+            {/* Penalty Areas */}
+            {/* Left Penalty Area */}
+            <div className="absolute left-0 top-1/2 -translate-y-1/2 w-[15%] h-[60%] border-2 border-l-0 border-[hsl(220,10%,35%)]" />
+            <div className="absolute left-0 top-1/2 -translate-y-1/2 w-[8%] h-[35%] border-2 border-l-0 border-[hsl(220,10%,35%)]" />
+
+            {/* Right Penalty Area */}
+            <div className="absolute right-0 top-1/2 -translate-y-1/2 w-[15%] h-[60%] border-2 border-r-0 border-[hsl(220,10%,35%)]" />
+            <div className="absolute right-0 top-1/2 -translate-y-1/2 w-[8%] h-[35%] border-2 border-r-0 border-[hsl(220,10%,35%)]" />
+
+            {/* Home Team Players (Left Side) */}
+            {homeLineup.slice(0, 11).map((player, index) => {
+                const position = homePositions[index] || { x: 25, y: 50 };
+                return (
+                    <motion.div
+                        key={player.id}
+                        initial={{ scale: 0, opacity: 0 }}
+                        animate={{ scale: 1, opacity: 1 }}
+                        transition={{ delay: index * 0.05, type: "spring", stiffness: 200 }}
+                        className="absolute"
+                        style={{
+                            left: `${position.x}%`,
+                            top: `${position.y}%`,
+                            transform: "translate(-50%, -50%)",
+                        }}
+                    >
+                        <div className="w-8 h-8 rounded-full bg-primary border-2 border-white flex items-center justify-center shadow-lg">
+                            <span className="text-[11px] font-bold text-primary-foreground">
+                                {player.number}
+                            </span>
+                        </div>
+                    </motion.div>
+                );
+            })}
+
+            {/* Away Team Players (Right Side - Mirrored) */}
+            {awayLineup.slice(0, 11).map((player, index) => {
+                const position = awayPositions[index] || { x: 25, y: 50 };
+                const mirroredX = 100 - position.x; // Mirror horizontally
+                return (
+                    <motion.div
+                        key={player.id}
+                        initial={{ scale: 0, opacity: 0 }}
+                        animate={{ scale: 1, opacity: 1 }}
+                        transition={{ delay: index * 0.05, type: "spring", stiffness: 200 }}
+                        className="absolute"
+                        style={{
+                            left: `${mirroredX}%`,
+                            top: `${position.y}%`,
+                            transform: "translate(-50%, -50%)",
+                        }}
+                    >
+                        <div className="w-8 h-8 rounded-full bg-accent border-2 border-white flex items-center justify-center shadow-lg">
+                            <span className="text-[11px] font-bold text-accent-foreground">
+                                {player.number}
+                            </span>
+                        </div>
+                    </motion.div>
+                );
+            })}
         </div>
     );
 };
@@ -177,8 +231,8 @@ export const MatchLineups = ({
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.3, delay: 0.2 }}
             >
-                <h3 className="font-semibold mb-3 text-sm">Manager</h3>
-                <Card className="p-4">
+                <h3 className="font-semibold mb-3 text-center text-sm">Manager</h3>
+                <Card className="p-4 border-none">
                     <div className="flex items-center justify-between">
                         <span className="text-sm font-medium">{homeTeam.manager}</span>
                         <span className="text-sm font-medium">{awayTeam.manager}</span>
@@ -193,7 +247,7 @@ export const MatchLineups = ({
                 transition={{ duration: 0.3, delay: 0.3 }}
             >
                 <h3 className="font-semibold mb-3 text-sm">Lineups</h3>
-                <Card className="p-4">
+                <Card className="p-4 border-none">
                     <div className="grid grid-cols-2 gap-x-4">
                         {/* Home Team */}
                         <div className="space-y-2">
@@ -245,7 +299,7 @@ export const MatchLineups = ({
                 transition={{ duration: 0.3, delay: 0.4 }}
             >
                 <h3 className="font-semibold mb-3 text-sm">Substitutes</h3>
-                <Card className="p-4">
+                <Card className="p-4 border-none">
                     <div className="grid grid-cols-2 gap-x-4">
                         {/* Home Team Subs */}
                         <div className="space-y-2">
