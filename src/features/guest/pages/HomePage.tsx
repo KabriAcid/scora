@@ -5,7 +5,7 @@ import { MatchCard } from "@/components/match/MatchCard";
 import { MatchListItem } from "@/components/match/MatchListItem";
 import { Navigation } from "@/components/common/Navigation";
 import { DateSelector } from "@/components/calendar/DateSelector";
-import { HomeSkeleton } from "@/features/user/components/HomeSkeleton";
+import { HomeSkeleton } from "@/features/guest/components/HomeSkeleton";
 import { useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { Logo } from "@/components/common/Logo";

@@ -1,10 +1,10 @@
 import { Routes, Route } from "react-router-dom";
-import HomePage from "@/features/user/pages/HomePage";
-import MatchDetailPage from "@/features/user/pages/MatchDetailPage";
-import StandingsPage from "@/features/user/pages/StandingsPage";
-import CalendarPage from "@/features/user/pages/CalendarPage";
-import TeamDetailPage from "@/features/user/pages/TeamDetailPage";
-import StatsPage from "@/features/user/pages/StatsPage";
+import HomePage from "@/features/guest/pages/HomePage";
+import MatchDetailPage from "@/features/guest/pages/MatchDetailPage";
+import StandingsPage from "@/features/guest/pages/StandingsPage";
+import CalendarPage from "@/features/guest/pages/CalendarPage";
+import TeamDetailPage from "@/features/guest/pages/TeamDetailPage";
+import StatsPage from "@/features/guest/pages/StatsPage";
 import NotFound from "@/NotFound";
 import { ROUTES } from "@/shared/config/routes";
 
