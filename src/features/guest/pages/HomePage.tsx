@@ -36,7 +36,10 @@ const Index = () => {
     homeScore: 1,
     awayScore: 1,
     status: "live" as const,
-    league: "Premier League",
+    stadium: "Stamford Bridge",
+    week: "Week 10",
+    matchTime: "90+4",
+    variant: "dark" as const,
   };
 
   const liveMatches = [

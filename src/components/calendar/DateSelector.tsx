@@ -84,7 +84,7 @@ export const DateSelector = ({ selectedDate, onDateChange }: DateSelectorProps) 
                 {isToday && !isSelected && (
                   <div className="absolute top-1 w-1.5 h-1.5 rounded-full bg-accent" />
                 )}
-                <span className="text-[10px] font-medium mb-1 uppercase text-gray-400">
+                <span className="text-[10px] font-medium mb-1 uppercase opacity-70">
                   {format(date, "EEE")}
                 </span>
                 <span className="text-lg font-bold">{format(date, "d")}</span>

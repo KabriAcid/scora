@@ -1,5 +1,4 @@
 In the live match header, omit the stadium and the league title. 
-In the #file:MatchControlPanel.tsx consider the repsonsiveness/adaptiveness of the component.
 - Reduce the paddings and let's have a 3 in a row even button in the SM screens
 - Add icons in the match stats cards #file:MatchStats.tsx 
 - Also be smart to make the fields for players names a select or <datalist> with search functionality.
