@@ -9,6 +9,7 @@ import { HomeSkeleton } from "@/features/guest/components/HomeSkeleton";
 import { useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { Logo } from "@/components/common/Logo";
+import { getFeaturedMatch, getTodayMatches } from "@/data/matches";
 
 const Index = () => {
   const navigate = useNavigate();
@@ -29,45 +30,9 @@ const Index = () => {
     setSelectedDate(date);
   };
 
-  const featuredMatch = {
-    id: "1",
-    homeTeam: "Chelsea",
-    awayTeam: "Man Utd",
-    homeScore: 1,
-    awayScore: 1,
-    status: "live" as const,
-    stadium: "Stamford Bridge",
-    week: "Week 10",
-    matchTime: "90+4",
-    variant: "dark" as const,
-  };
-
-  const liveMatches = [
-    {
-      id: "2",
-      homeTeam: "N Forest",
-      awayTeam: "Liverpool",
-      homeScore: 0,
-      awayScore: 3,
-      status: "live" as const,
-    },
-    {
-      id: "3",
-      homeTeam: "Man City",
-      awayTeam: "Brighton",
-      homeScore: 2,
-      awayScore: 1,
-      status: "live" as const,
-    },
-    {
-      id: "4",
-      homeTeam: "Wolves",
-      awayTeam: "Leicester",
-      homeScore: 1,
-      awayScore: 0,
-      status: "live" as const,
-    },
-  ];
+  // Get matches from API data
+  const featuredMatch = getFeaturedMatch();
+  const todayMatchesList = getTodayMatches();
 
   const handleMatchClick = (matchId: string) => {
     navigate(`/match/${matchId}`);
@@ -129,7 +94,17 @@ const Index = () => {
                 </h2>
               </div>
               <MatchCard
-                {...featuredMatch}
+                homeTeam={featuredMatch.homeTeam.responsiveName}
+                awayTeam={featuredMatch.awayTeam.responsiveName}
+                homeScore={featuredMatch.homeScore}
+                awayScore={featuredMatch.awayScore}
+                status={featuredMatch.status}
+                stadium={featuredMatch.stadium}
+                week={featuredMatch.week}
+                matchTime={featuredMatch.matchTime}
+                homeLogo={featuredMatch.homeTeam.badgeUrl}
+                awayLogo={featuredMatch.awayTeam.badgeUrl}
+                variant="dark"
                 onClick={() => handleMatchClick(featuredMatch.id)}
               />
             </section>
@@ -149,7 +124,7 @@ const Index = () => {
                 </Button>
               </div>
               <div className="space-y-3">
-                {liveMatches.map((match, index) => (
+                {todayMatchesList.map((match, index) => (
                   <motion.div
                     key={match.id}
                     initial={{ opacity: 0, y: 10 }}
@@ -157,7 +132,14 @@ const Index = () => {
                     transition={{ delay: index * 0.05 }}
                   >
                     <MatchListItem
-                      {...match}
+                      homeTeam={match.homeTeam.responsiveName}
+                      awayTeam={match.awayTeam.responsiveName}
+                      homeScore={match.homeScore}
+                      awayScore={match.awayScore}
+                      status={match.status}
+                      homeLogo={match.homeTeam.badgeUrl}
+                      awayLogo={match.awayTeam.badgeUrl}
+                      time={match.time || match.matchTime}
                       onClick={() => handleMatchClick(match.id)}
                     />
                   </motion.div>

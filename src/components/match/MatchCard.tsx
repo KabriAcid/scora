@@ -2,6 +2,7 @@ import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { motion } from "framer-motion";
 import { cn } from "@/shared/utils/utils";
+import { useState, useEffect } from "react";
 
 interface MatchCardProps {
   homeTeam: string;
@@ -33,6 +34,42 @@ export const MatchCard = ({
   onClick,
 }: MatchCardProps) => {
   const isDark = variant === "dark";
+  const [displayTime, setDisplayTime] = useState<string>("0");
+
+  useEffect(() => {
+    if (status === "live" && matchTime) {
+      // Parse the matchTime to start animation from a lower value
+      const targetMinute = matchTime.includes("+")
+        ? parseInt(matchTime.split("+")[0])
+        : parseInt(matchTime);
+      const extraTime = matchTime.includes("+")
+        ? parseInt(matchTime.split("+")[1])
+        : 0;
+
+      // Start from a few minutes earlier
+      const startMinute = Math.max(0, targetMinute - 8);
+      let currentMinute = startMinute;
+      let currentExtra = 0;
+
+      setDisplayTime(currentMinute.toString());
+
+      const interval = setInterval(() => {
+        if (currentMinute < targetMinute) {
+          currentMinute += 1;
+          setDisplayTime(currentMinute.toString());
+        } else if (currentExtra < extraTime) {
+          currentExtra += 1;
+          setDisplayTime(`${targetMinute}+${currentExtra}`);
+        } else {
+          clearInterval(interval);
+        }
+      }, 60000); // Update every 60 seconds (1 minute) for realistic match time
+
+      return () => clearInterval(interval);
+    } else if (matchTime) {
+      setDisplayTime(matchTime);
+    }
+  }, [status, matchTime]);
 
   return (
     <motion.div
@@ -129,16 +166,22 @@ export const MatchCard = ({
 
               {/* Live Match Time Badge */}
               {status === "live" && matchTime && (
-                <Badge
-                  className={cn(
-                    "px-3 py-1 text-xs font-semibold rounded-full",
-                    isDark
-                      ? "bg-success/20 text-success border border-success/30"
-                      : "bg-success/10 text-success border border-success/20"
-                  )}
+                <motion.div
+                  initial={{ scale: 0.8, opacity: 0 }}
+                  animate={{ scale: 1, opacity: 1 }}
+                  transition={{ duration: 0.3, delay: 0.2 }}
                 >
-                  {matchTime}'
-                </Badge>
+                  <Badge
+                    className={cn(
+                      "px-3 py-1 text-xs font-semibold rounded-full animate-pulse",
+                      isDark
+                        ? "bg-success/20 text-success border border-success/30"
+                        : "bg-success/10 text-success border border-success/20"
+                    )}
+                  >
+                    {displayTime}'
+                  </Badge>
+                </motion.div>
               )}
             </div>
 

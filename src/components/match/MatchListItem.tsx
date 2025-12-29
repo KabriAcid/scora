@@ -9,6 +9,7 @@ interface MatchListItemProps {
   status: "live" | "finished" | "upcoming";
   homeLogo?: string;
   awayLogo?: string;
+  time?: string;
   onClick?: () => void;
 }
 
@@ -20,10 +21,11 @@ export const MatchListItem = ({
   status,
   homeLogo,
   awayLogo,
+  time,
   onClick,
 }: MatchListItemProps) => {
   return (
-    <motion.div 
+    <motion.div
       className="flex items-center justify-between p-4 bg-card rounded-xl shadow-sm hover:shadow-md transition-shadow cursor-pointer"
       onClick={onClick}
       initial={{ opacity: 0, x: -20 }}
@@ -33,8 +35,12 @@ export const MatchListItem = ({
       whileTap={{ scale: 0.98 }}
     >
       <div className="flex items-center gap-3 flex-1">
-        <div className="w-8 h-8 rounded-full bg-secondary flex items-center justify-center text-xs font-bold">
-          {homeLogo || homeTeam.substring(0, 2).toUpperCase()}
+        <div className="w-8 h-8 rounded-full bg-secondary flex items-center justify-center overflow-hidden">
+          {homeLogo ? (
+            <img src={homeLogo} alt={homeTeam} className="w-6 h-6 object-contain" />
+          ) : (
+            <span className="text-xs font-bold">{homeTeam.substring(0, 2).toUpperCase()}</span>
+          )}
         </div>
         <span className="font-medium text-sm">{homeTeam}</span>
       </div>
@@ -49,6 +55,8 @@ export const MatchListItem = ({
               {awayScore}
             </Badge>
           </>
+        ) : status === "upcoming" ? (
+          <span className="text-xs font-semibold text-muted-foreground">{time || "TBD"}</span>
         ) : (
           <>
             <span className="font-bold text-lg">{homeScore}</span>
@@ -60,8 +68,12 @@ export const MatchListItem = ({
 
       <div className="flex items-center gap-3 flex-1 justify-end">
         <span className="font-medium text-sm text-right">{awayTeam}</span>
-        <div className="w-8 h-8 rounded-full bg-secondary flex items-center justify-center text-xs font-bold">
-          {awayLogo || awayTeam.substring(0, 2).toUpperCase()}
+        <div className="w-8 h-8 rounded-full bg-secondary flex items-center justify-center overflow-hidden">
+          {awayLogo ? (
+            <img src={awayLogo} alt={awayTeam} className="w-6 h-6 object-contain" />
+          ) : (
+            <span className="text-xs font-bold">{awayTeam.substring(0, 2).toUpperCase()}</span>
+          )}
         </div>
       </div>
     </motion.div>
