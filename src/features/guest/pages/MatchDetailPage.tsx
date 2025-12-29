@@ -97,83 +97,88 @@ const MatchDetail = () => {
       animate={{ opacity: 1 }}
       transition={{ duration: 0.3 }}
     >
-      {/* Header with Gradient Background */}
+      {/* Purple Gradient Background - Takes 30% of viewport */}
       <div
-        className="pb-6"
-        style={{ background: "linear-gradient(135deg, #5b21b6 0%, #7c3aed 100%)" }}
+        className="relative h-[30vh] min-h-[200px]"
+        style={{ background: "var(--gradient-primary)" }}
       >
         <MatchDetailHeader
           league={matchDetails?.league || "Premier League"}
           onBack={() => navigate(-1)}
         />
-        <MatchDetailScore
-          homeTeam={match.homeTeam}
-          awayTeam={match.awayTeam}
-          homeScore={match.homeScore}
-          awayScore={match.awayScore}
-          status={match.status}
-          stadium={match.stadium}
-          week={match.week}
-          matchTime={match.matchTime}
-        />
       </div>
 
-      {/* Content Tabs */}
-      <motion.div
-        className="p-6"
-        initial={{ y: 20, opacity: 0 }}
-        animate={{ y: 0, opacity: 1 }}
-        transition={{ duration: 0.4, delay: 0.1 }}
-      >
-        <Tabs defaultValue="lineups" className="w-full">
-          <TabsList className="grid w-full grid-cols-4 mb-6 bg-card">
-            <TabsTrigger value="stats" className="text-xs">Stats</TabsTrigger>
-            <TabsTrigger value="summary" className="text-xs">Summary</TabsTrigger>
-            <TabsTrigger value="lineups" className="text-xs">Lineups</TabsTrigger>
-            <TabsTrigger value="h2h" className="text-xs">H2H</TabsTrigger>
-          </TabsList>
+      {/* White Match Card - Overlaps Purple Background */}
+      <div className="px-4 -mt-[20vh] relative z-10">
+        <Card className="bg-white rounded-2xl shadow-2xl overflow-hidden mb-6">
+          <MatchDetailScore
+            homeTeam={match.homeTeam}
+            awayTeam={match.awayTeam}
+            homeScore={match.homeScore}
+            awayScore={match.awayScore}
+            status={match.status}
+            stadium={match.stadium}
+            week={match.week}
+            matchTime={match.matchTime}
+          />
+        </Card>
 
-          <TabsContent value="stats">
-            <MatchStatsTab stats={matchDetails?.stats || []} />
-          </TabsContent>
+        {/* Content Tabs */}
+        <motion.div
+          initial={{ y: 20, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ duration: 0.4, delay: 0.1 }}
+        >
+          <Tabs defaultValue="lineups" className="w-full">
+            <TabsList className="grid w-full grid-cols-4 mb-6 bg-card">
+              <TabsTrigger value="stats" className="text-xs">Stats</TabsTrigger>
+              <TabsTrigger value="summary" className="text-xs">Summary</TabsTrigger>
+              <TabsTrigger value="lineups" className="text-xs">Lineups</TabsTrigger>
+              <TabsTrigger value="h2h" className="text-xs">H2H</TabsTrigger>
+            </TabsList>
 
-          <TabsContent value="summary">
-            <MatchSummary events={matchDetails?.events || []} />
-          </TabsContent>
+            <TabsContent value="stats">
+              <MatchStatsTab stats={matchDetails?.stats || []} />
+            </TabsContent>
 
-          <TabsContent value="lineups">
-            {matchDetails?.homeTeam && matchDetails?.awayTeam ? (
-              <MatchLineups
-                homeTeam={matchDetails.homeTeam}
-                awayTeam={matchDetails.awayTeam}
-                homeTeamName={match.homeTeam.responsiveName}
-                awayTeamName={match.awayTeam.responsiveName}
-              />
-            ) : (
-              <div className="text-center py-12 text-muted-foreground">
-                <p>Lineup information not available</p>
-              </div>
-            )}
-          </TabsContent>
+            <TabsContent value="summary">
+              <MatchSummary events={matchDetails?.events || []} />
+            </TabsContent>
 
-          <TabsContent value="h2h">
-            {matchDetails?.h2h ? (
-              <MatchH2H
-                homeWins={matchDetails.h2h.homeWins}
-                draws={matchDetails.h2h.draws}
-                awayWins={matchDetails.h2h.awayWins}
-                previousMatches={matchDetails.h2h.previousMatches}
-                homeTeamName={match.homeTeam.responsiveName}
-                awayTeamName={match.awayTeam.responsiveName}
-              />
-            ) : (
-              <div className="text-center py-12 text-muted-foreground">
-                <p>Head-to-head data not available</p>
-              </div>
-            )}
-          </TabsContent>
-        </Tabs>
-      </motion.div>
+            <TabsContent value="lineups">
+              {matchDetails?.homeTeam && matchDetails?.awayTeam ? (
+                <MatchLineups
+                  homeTeam={matchDetails.homeTeam}
+                  awayTeam={matchDetails.awayTeam}
+                  homeTeamName={match.homeTeam.responsiveName}
+                  awayTeamName={match.awayTeam.responsiveName}
+                />
+              ) : (
+                <div className="text-center py-12 text-muted-foreground">
+                  <p>Lineup information not available</p>
+                </div>
+              )}
+            </TabsContent>
+
+            <TabsContent value="h2h">
+              {matchDetails?.h2h ? (
+                <MatchH2H
+                  homeWins={matchDetails.h2h.homeWins}
+                  draws={matchDetails.h2h.draws}
+                  awayWins={matchDetails.h2h.awayWins}
+                  previousMatches={matchDetails.h2h.previousMatches}
+                  homeTeamName={match.homeTeam.responsiveName}
+                  awayTeamName={match.awayTeam.responsiveName}
+                />
+              ) : (
+                <div className="text-center py-12 text-muted-foreground">
+                  <p>Head-to-head data not available</p>
+                </div>
+              )}
+            </TabsContent>
+          </Tabs>
+        </motion.div>
+      </div>
     </motion.div>
   );
 };
