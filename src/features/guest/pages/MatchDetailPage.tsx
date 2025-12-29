@@ -4,7 +4,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { motion } from "framer-motion";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { MatchDetailHeader } from "@/features/guest/components/MatchDetailHeader";
-import { MatchDetailScore } from "@/features/guest/components/MatchDetailScore";
+import { MatchCard } from "@/components/match/MatchCard";
 import { MatchLineups } from "@/features/guest/components/MatchLineups";
 import { MatchSummary } from "@/features/guest/components/MatchSummary";
 import { MatchH2H } from "@/features/guest/components/MatchH2H";
@@ -110,25 +110,27 @@ const MatchDetail = () => {
       </div>
 
       {/* White Match Card - Overlaps Purple Background */}
-      <div className="px-4 -mt-[20vh] relative z-10">
-        <Card className="bg-white rounded-2xl shadow-2xl overflow-hidden mb-6">
-          <MatchDetailScore
-            homeTeam={match.homeTeam}
-            awayTeam={match.awayTeam}
-            homeScore={match.homeScore}
-            awayScore={match.awayScore}
-            status={match.status}
-            stadium={match.stadium}
-            week={match.week}
-            matchTime={match.matchTime}
-          />
-        </Card>
+      <div className="px-4 -mt-[20vh] relative z-10 mb-6">
+        <MatchCard
+          homeTeam={match.homeTeam.responsiveName}
+          awayTeam={match.awayTeam.responsiveName}
+          homeScore={match.homeScore}
+          awayScore={match.awayScore}
+          status={match.status}
+          stadium={match.stadium}
+          week={match.week}
+          matchTime={match.matchTime}
+          homeLogo={match.homeTeam.badgeUrl}
+          awayLogo={match.awayTeam.badgeUrl}
+          variant="light"
+        />
 
         {/* Content Tabs */}
         <motion.div
           initial={{ y: 20, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           transition={{ duration: 0.4, delay: 0.1 }}
+          className="mt-6"
         >
           <Tabs defaultValue="lineups" className="w-full">
             <TabsList className="grid w-full grid-cols-5 mb-6">
@@ -154,6 +156,8 @@ const MatchDetail = () => {
                   awayTeam={matchDetails.awayTeam}
                   homeTeamName={match.homeTeam.responsiveName}
                   awayTeamName={match.awayTeam.responsiveName}
+                  homeTeamLogo={match.homeTeam.badgeUrl}
+                  awayTeamLogo={match.awayTeam.badgeUrl}
                 />
               ) : (
                 <div className="text-center py-12 text-muted-foreground">

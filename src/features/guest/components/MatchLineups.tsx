@@ -99,6 +99,8 @@ interface MatchLineupsProps {
     awayTeam: TeamLineup;
     homeTeamName: string;
     awayTeamName: string;
+    homeTeamLogo?: string;
+    awayTeamLogo?: string;
 }
 
 export const MatchLineups = ({
@@ -106,6 +108,8 @@ export const MatchLineups = ({
     awayTeam,
     homeTeamName,
     awayTeamName,
+    homeTeamLogo,
+    awayTeamLogo,
 }: MatchLineupsProps) => {
     if (!homeTeam || !awayTeam) {
         return (
@@ -128,22 +132,29 @@ export const MatchLineups = ({
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.3 }}
             >
-                <Card className="p-4">
-                    <div className="flex items-center justify-between">
+                <div className="flex items-start justify-between px-2">
+                    {/* Home Team */}
+                    <div className="flex flex-col gap-1">
                         <div className="flex items-center gap-2">
+                            {homeTeamLogo && (
+                                <img src={homeTeamLogo} alt={homeTeamName} className="w-6 h-6 object-contain" />
+                            )}
                             <span className="text-sm font-semibold">{homeTeamName}</span>
-                            <Badge variant="secondary" className="text-xs">
-                                {homeTeam.formation}
-                            </Badge>
                         </div>
-                        <div className="flex items-center gap-2">
-                            <Badge variant="secondary" className="text-xs">
-                                {awayTeam.formation}
-                            </Badge>
-                            <span className="text-sm font-semibold">{awayTeamName}</span>
-                        </div>
+                        <span className="text-xs text-muted-foreground ml-8">{homeTeam.formation}</span>
                     </div>
-                </Card>
+
+                    {/* Away Team */}
+                    <div className="flex flex-col gap-1 items-end">
+                        <div className="flex items-center gap-2">
+                            <span className="text-sm font-semibold">{awayTeamName}</span>
+                            {awayTeamLogo && (
+                                <img src={awayTeamLogo} alt={awayTeamName} className="w-6 h-6 object-contain" />
+                            )}
+                        </div>
+                        <span className="text-xs text-muted-foreground mr-8">{awayTeam.formation}</span>
+                    </div>
+                </div>
             </motion.div>
 
             {/* Formation Visualization */}
