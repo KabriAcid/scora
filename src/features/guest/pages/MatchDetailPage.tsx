@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { motion } from "framer-motion";
@@ -36,42 +35,122 @@ const MatchDetail = () => {
   // Loading state
   if (loading) {
     return (
-      <div className="min-h-screen bg-background">
+      <motion.div
+        className="min-h-screen bg-background pb-20"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.3 }}
+      >
+        {/* Purple Gradient Background */}
         <div
-          className="p-6 pb-8"
-          style={{ background: "linear-gradient(135deg, #5b21b6 0%, #7c3aed 100%)" }}
+          className="relative h-[30vh] min-h-[200px]"
+          style={{ background: "var(--gradient-primary)" }}
         >
-          <div className="flex items-center justify-between mb-6">
-            <Skeleton className="w-10 h-10 rounded-full bg-white/20" />
-            <Skeleton className="h-5 w-32 bg-white/20" />
-            <Skeleton className="w-10 h-10 rounded-full bg-white/20" />
-          </div>
-          <div className="text-center space-y-3">
-            <Skeleton className="h-4 w-32 mx-auto bg-white/20" />
-            <Skeleton className="h-3 w-20 mx-auto bg-white/20" />
-            <div className="flex items-center justify-center gap-6 mt-6">
-              <div className="flex flex-col items-center gap-2">
-                <Skeleton className="w-16 h-16 rounded-full bg-white/90" />
-                <Skeleton className="h-4 w-16 bg-white/20" />
-              </div>
-              <div className="flex items-center gap-3">
-                <Skeleton className="h-12 w-12 bg-white/20" />
-                <Skeleton className="h-8 w-4 bg-white/20" />
-                <Skeleton className="h-12 w-12 bg-white/20" />
-              </div>
-              <div className="flex flex-col items-center gap-2">
-                <Skeleton className="w-16 h-16 rounded-full bg-white/90" />
-                <Skeleton className="h-4 w-16 bg-white/20" />
+          <MatchDetailHeader league="Loading..." onBack={() => navigate(-1)} />
+        </div>
+
+        {/* White Match Card with Skeletons */}
+        <div className="px-4 -mt-[20vh] relative z-10 mb-6">
+          <Card className="bg-card rounded-xl shadow-lg p-6">
+            <div className="text-center space-y-4">
+              <Skeleton className="h-4 w-32 mx-auto bg-muted" />
+              <Skeleton className="h-3 w-24 mx-auto bg-muted" />
+              <div className="flex items-center justify-center gap-6 mt-6">
+                <div className="flex flex-col items-center gap-2">
+                  <Skeleton className="w-16 h-16 rounded-full bg-muted" />
+                  <Skeleton className="h-4 w-20 bg-muted" />
+                </div>
+                <div className="flex items-center gap-3">
+                  <Skeleton className="h-10 w-10 bg-muted" />
+                  <Skeleton className="h-6 w-3 bg-muted" />
+                  <Skeleton className="h-10 w-10 bg-muted" />
+                </div>
+                <div className="flex flex-col items-center gap-2">
+                  <Skeleton className="w-16 h-16 rounded-full bg-muted" />
+                  <Skeleton className="h-4 w-20 bg-muted" />
+                </div>
               </div>
             </div>
-          </div>
+          </Card>
+
+          {/* Real Tabs with Skeleton Content */}
+          <motion.div
+            initial={{ y: 20, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ duration: 0.4, delay: 0.1 }}
+            className="mt-6"
+          >
+            <Tabs defaultValue="lineups" className="w-full">
+              <TabsList className="grid w-full grid-cols-5 mb-6">
+                <TabsTrigger
+                  value="stats"
+                  className="text-xs data-[state=active]:bg-accent data-[state=active]:text-accent-foreground"
+                >
+                  Stats
+                </TabsTrigger>
+                <TabsTrigger
+                  value="summary"
+                  className="text-xs data-[state=active]:bg-accent data-[state=active]:text-accent-foreground"
+                >
+                  Summary
+                </TabsTrigger>
+                <TabsTrigger
+                  value="lineups"
+                  className="text-xs data-[state=active]:bg-accent data-[state=active]:text-accent-foreground"
+                >
+                  Lineups
+                </TabsTrigger>
+                <TabsTrigger
+                  value="table"
+                  className="text-xs data-[state=active]:bg-accent data-[state=active]:text-accent-foreground"
+                >
+                  Table
+                </TabsTrigger>
+                <TabsTrigger
+                  value="h2h"
+                  className="text-xs data-[state=active]:bg-accent data-[state=active]:text-accent-foreground"
+                >
+                  H2H
+                </TabsTrigger>
+              </TabsList>
+
+              <TabsContent value="lineups">
+                <div className="space-y-4">
+                  <Skeleton className="h-32 w-full bg-muted" />
+                  <Skeleton className="h-48 w-full bg-muted" />
+                  <Skeleton className="h-32 w-full bg-muted" />
+                </div>
+              </TabsContent>
+
+              <TabsContent value="stats">
+                <div className="space-y-4">
+                  <Skeleton className="h-24 w-full bg-muted" />
+                  <Skeleton className="h-24 w-full bg-muted" />
+                </div>
+              </TabsContent>
+
+              <TabsContent value="summary">
+                <div className="space-y-4">
+                  <Skeleton className="h-40 w-full bg-muted" />
+                </div>
+              </TabsContent>
+
+              <TabsContent value="table">
+                <div className="space-y-4">
+                  <Skeleton className="h-64 w-full bg-muted" />
+                </div>
+              </TabsContent>
+
+              <TabsContent value="h2h">
+                <div className="space-y-4">
+                  <Skeleton className="h-32 w-full bg-muted" />
+                  <Skeleton className="h-32 w-full bg-muted" />
+                </div>
+              </TabsContent>
+            </Tabs>
+          </motion.div>
         </div>
-        <div className="p-6 space-y-4">
-          <Skeleton className="h-10 w-full" />
-          <Skeleton className="h-32 w-full" />
-          <Skeleton className="h-32 w-full" />
-        </div>
-      </div>
+      </motion.div>
     );
   }
 
@@ -134,11 +213,36 @@ const MatchDetail = () => {
         >
           <Tabs defaultValue="lineups" className="w-full">
             <TabsList className="grid w-full grid-cols-5 mb-6">
-              <TabsTrigger value="stats" className="text-xs data-[state=active]:bg-accent data-[state=active]:text-accent-foreground">Stats</TabsTrigger>
-              <TabsTrigger value="summary" className="text-xs data-[state=active]:bg-accent data-[state=active]:text-accent-foreground">Summary</TabsTrigger>
-              <TabsTrigger value="lineups" className="text-xs data-[state=active]:bg-accent data-[state=active]:text-accent-foreground">Lineups</TabsTrigger>
-              <TabsTrigger value="table" className="text-xs data-[state=active]:bg-accent data-[state=active]:text-accent-foreground">Table</TabsTrigger>
-              <TabsTrigger value="h2h" className="text-xs data-[state=active]:bg-accent data-[state=active]:text-accent-foreground">H2H</TabsTrigger>
+              <TabsTrigger
+                value="stats"
+                className="text-xs data-[state=active]:bg-accent data-[state=active]:text-accent-foreground"
+              >
+                Stats
+              </TabsTrigger>
+              <TabsTrigger
+                value="summary"
+                className="text-xs data-[state=active]:bg-accent data-[state=active]:text-accent-foreground"
+              >
+                Summary
+              </TabsTrigger>
+              <TabsTrigger
+                value="lineups"
+                className="text-xs data-[state=active]:bg-accent data-[state=active]:text-accent-foreground"
+              >
+                Lineups
+              </TabsTrigger>
+              <TabsTrigger
+                value="table"
+                className="text-xs data-[state=active]:bg-accent data-[state=active]:text-accent-foreground"
+              >
+                Table
+              </TabsTrigger>
+              <TabsTrigger
+                value="h2h"
+                className="text-xs data-[state=active]:bg-accent data-[state=active]:text-accent-foreground"
+              >
+                H2H
+              </TabsTrigger>
             </TabsList>
 
             <TabsContent value="stats">
