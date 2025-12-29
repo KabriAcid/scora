@@ -24,7 +24,7 @@ const App = () => (
       <Sonner />
       <BrowserRouter>
         <Routes>
-          {/* User Routes */}
+          {/* Guest Routes (Public Access) */}
           <Route path="/" element={<HomePage />} />
           <Route path="/match/:id" element={<MatchDetailPage />} />
           <Route path="/standings" element={<StandingsPage />} />

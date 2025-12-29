@@ -5,8 +5,8 @@ export const ROUTES = {
   LOGIN: "/login",
   REGISTER: "/register",
 
-  // Regular User routes
-  USER: {
+  // Guest routes (public access)
+  GUEST: {
     HOME: "/",
     MATCH_DETAIL: "/match/:id",
     STANDINGS: "/standings",
