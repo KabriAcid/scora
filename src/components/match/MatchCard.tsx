@@ -85,9 +85,9 @@ export const MatchCard = ({
         )}
         onClick={onClick}
       >
-        <div className="py-5">
+        <div className="py-3">
           {/* Stadium and Week */}
-          <div className="text-center mb-5">
+          <div className="text-center mb-3">
             {stadium && (
               <h3 className={cn(
                 "font-semibold text-base mb-1",
@@ -109,7 +109,7 @@ export const MatchCard = ({
           {/* Match Content */}
           <div className="flex items-center justify-between gap-4">
             {/* Home Team */}
-            <div className="flex flex-col items-center flex-1 gap-2">
+            <div className="flex flex-col items-center flex-1 gap-1.5">
               <div className={cn(
                 "w-16 h-16 rounded-full flex items-center justify-center overflow-hidden",
                 isDark ? "bg-white/10" : "bg-gray-100"
@@ -186,7 +186,7 @@ export const MatchCard = ({
             </div>
 
             {/* Away Team */}
-            <div className="flex flex-col items-center flex-1 gap-2">
+            <div className="flex flex-col items-center flex-1 gap-1.5">
               <div className={cn(
                 "w-16 h-16 rounded-full flex items-center justify-center overflow-hidden",
                 isDark ? "bg-white/10" : "bg-gray-100"

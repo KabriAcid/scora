@@ -1,4 +1,5 @@
 import { getClubById } from "./clubs";
+import { TeamStanding } from "./standings";
 
 export interface Player {
     id: string;
@@ -52,6 +53,10 @@ export interface MatchDetail {
         draws: number;
         awayWins: number;
         previousMatches: HeadToHead[];
+    };
+    standings: {
+        homeTeamStanding: TeamStanding;
+        awayTeamStanding: TeamStanding;
     };
 }
 
@@ -227,6 +232,34 @@ export const matchDetailsData: Record<string, MatchDetail> = {
                     competition: "Premier League",
                 },
             ],
+        },
+        standings: {
+            homeTeamStanding: {
+                position: 4,
+                team: getClubById("chelsea")!,
+                played: 15,
+                win: 8,
+                draw: 4,
+                loss: 3,
+                gf: 28,
+                ga: 18,
+                gd: 10,
+                points: 28,
+                form: ["W", "D", "W", "L", "W"],
+            },
+            awayTeamStanding: {
+                position: 7,
+                team: getClubById("man-utd")!,
+                played: 15,
+                win: 7,
+                draw: 3,
+                loss: 5,
+                gf: 22,
+                ga: 20,
+                gd: 2,
+                points: 24,
+                form: ["L", "W", "D", "W", "L"],
+            },
         },
     },
 };

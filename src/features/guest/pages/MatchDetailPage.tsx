@@ -9,6 +9,7 @@ import { MatchLineups } from "@/features/guest/components/MatchLineups";
 import { MatchSummary } from "@/features/guest/components/MatchSummary";
 import { MatchH2H } from "@/features/guest/components/MatchH2H";
 import { MatchStatsTab } from "@/features/guest/components/MatchStatsTab";
+import { MatchStandingsTable } from "@/features/guest/components/MatchStandingsTable";
 import { getMatchById } from "@/data/matches";
 import { getMatchDetails } from "@/data/matchDetails";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -130,11 +131,12 @@ const MatchDetail = () => {
           transition={{ duration: 0.4, delay: 0.1 }}
         >
           <Tabs defaultValue="lineups" className="w-full">
-            <TabsList className="grid w-full grid-cols-4 mb-6 bg-card">
-              <TabsTrigger value="stats" className="text-xs">Stats</TabsTrigger>
-              <TabsTrigger value="summary" className="text-xs">Summary</TabsTrigger>
-              <TabsTrigger value="lineups" className="text-xs">Lineups</TabsTrigger>
-              <TabsTrigger value="h2h" className="text-xs">H2H</TabsTrigger>
+            <TabsList className="grid w-full grid-cols-5 mb-6">
+              <TabsTrigger value="stats" className="text-xs data-[state=active]:bg-accent data-[state=active]:text-accent-foreground">Stats</TabsTrigger>
+              <TabsTrigger value="summary" className="text-xs data-[state=active]:bg-accent data-[state=active]:text-accent-foreground">Summary</TabsTrigger>
+              <TabsTrigger value="lineups" className="text-xs data-[state=active]:bg-accent data-[state=active]:text-accent-foreground">Lineups</TabsTrigger>
+              <TabsTrigger value="table" className="text-xs data-[state=active]:bg-accent data-[state=active]:text-accent-foreground">Table</TabsTrigger>
+              <TabsTrigger value="h2h" className="text-xs data-[state=active]:bg-accent data-[state=active]:text-accent-foreground">H2H</TabsTrigger>
             </TabsList>
 
             <TabsContent value="stats">
@@ -156,6 +158,19 @@ const MatchDetail = () => {
               ) : (
                 <div className="text-center py-12 text-muted-foreground">
                   <p>Lineup information not available</p>
+                </div>
+              )}
+            </TabsContent>
+
+            <TabsContent value="table">
+              {matchDetails?.standings ? (
+                <MatchStandingsTable
+                  homeTeamStanding={matchDetails.standings.homeTeamStanding}
+                  awayTeamStanding={matchDetails.standings.awayTeamStanding}
+                />
+              ) : (
+                <div className="text-center py-12 text-muted-foreground">
+                  <p>Standings data not available</p>
                 </div>
               )}
             </TabsContent>
