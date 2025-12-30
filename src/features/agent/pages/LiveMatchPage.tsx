@@ -10,11 +10,10 @@ import AgentLayout from "@/components/layout/AgentLayout";
 import LiveMatchHeader from "@/components/agent/LiveMatchHeader";
 import MatchControlPanel from "@/components/agent/MatchControlPanel";
 import MatchTimeline from "@/components/agent/MatchTimeline";
-import EventTypeButtons from "@/components/agent/EventTypeButtons";
 import TeamSelector from "@/components/agent/TeamSelector";
-import EventLoggingForm from "@/components/agent/EventLoggingForm";
 import MatchStats from "@/components/agent/MatchStats";
 import QuickActions from "@/components/agent/QuickActions";
+import { PlayerRosterQuickActions } from "@/components/agent/PlayerRosterQuickActions";
 import { LiveMatchPageSkeleton } from "@/components/agent/LiveMatchSkeleton";
 import { mockAssignedMatches } from "@/data/agentMockData";
 import type { MatchEvent, AssignedMatch } from "@/shared/types/agent";
@@ -27,7 +26,6 @@ const LiveMatchPage = () => {
     const [currentTime, setCurrentTime] = useState(0);
     const [events, setEvents] = useState<MatchEvent[]>([]);
     const [activeTeam, setActiveTeam] = useState<string | null>(null);
-    const [selectedEventType, setSelectedEventType] = useState<string | null>(null);
 
     const match = useMemo(() => mockAssignedMatches.find(m => m.id === id), [id]);
     const [homeScore, setHomeScore] = useState(match?.homeScore || 0);
@@ -74,41 +72,18 @@ const LiveMatchPage = () => {
     const getCurrentMinute = useCallback(() => Math.floor(currentTime / 60) + 1, [currentTime]);
 
     // Optimized event logging handler
-    const handleLogEvent = useCallback((data: {
-        player: string;
-        team: string;
-        description?: string;
-        type: string;
-    }) => {
-        const newEvent: MatchEvent = {
-            id: `event-${Date.now()}`,
-            type: data.type as MatchEvent['type'],
-            player: data.player,
-            team: data.team,
-            minute: getCurrentMinute(),
-            description: data.description,
-            timestamp: new Date(),
-        };
-
-        setEvents(prev => [newEvent, ...prev]);
+    const handleLogEvent = useCallback((event: MatchEvent) => {
+        setEvents(prev => [event, ...prev]);
 
         // Update scores if goal
-        if (data.type === "goal") {
-            if (data.team === match?.homeTeam) {
+        if (event.type === "goal") {
+            if (event.team === match?.homeTeam) {
                 setHomeScore(prev => prev + 1);
-                toast.success(`⚽ Goal by ${data.player}!`);
-            } else if (data.team === match?.awayTeam) {
+            } else if (event.team === match?.awayTeam) {
                 setAwayScore(prev => prev + 1);
-                toast.success(`⚽ Goal by ${data.player}!`);
             }
-        } else {
-            // Success feedback for other events
-            const eventLabel = data.type.replace('_', ' ');
-            toast.success(`✓ ${eventLabel} logged for ${data.player}`);
         }
-
-        setSelectedEventType(null);
-    }, [match, getCurrentMinute]);
+    }, [match]);
 
     if (!match) {
         return (
@@ -218,28 +193,19 @@ const LiveMatchPage = () => {
                                 />
                             </motion.div>
 
-                            {/* Event Type Buttons */}
-                            <motion.div variants={itemVariants}>
-                                <EventTypeButtons
-                                    onSelectEventType={setSelectedEventType}
-                                    activeEventType={selectedEventType}
-                                />
-                            </motion.div>
-
-                            {/* Event Logging Form */}
-                            <AnimatePresence>
-                                {selectedEventType && activeTeam && (
-                                    <EventLoggingForm
+                            {/* Player Roster with Quick Actions */}
+                            {activeTeam && (
+                                <motion.div variants={itemVariants}>
+                                    <PlayerRosterQuickActions
+                                        matchId={id}
+                                        activeTeam={activeTeam}
                                         homeTeam={match.homeTeam}
                                         awayTeam={match.awayTeam}
-                                        activeTeam={activeTeam}
-                                        eventType={selectedEventType}
                                         currentMinute={getCurrentMinute()}
-                                        onSubmit={handleLogEvent}
-                                        onClose={() => setSelectedEventType(null)}
+                                        onEventLogged={handleLogEvent}
                                     />
-                                )}
-                            </AnimatePresence>
+                                </motion.div>
+                            )}
 
                             {/* Match Timeline */}
                             <motion.div variants={itemVariants}>
