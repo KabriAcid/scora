@@ -16,6 +16,7 @@ interface PlayerRosterQuickActionsProps {
     awayTeamLogo: string;
     currentMinute: number;
     onEventLogged: (event: MatchEvent) => void;
+    onSelectTeam: (team: string) => void;
 }
 
 const eventTypes = [
@@ -47,6 +48,7 @@ export const PlayerRosterQuickActions = ({
     awayTeamLogo,
     currentMinute,
     onEventLogged,
+    onSelectTeam,
 }: PlayerRosterQuickActionsProps) => {
     // Extract numeric ID from matchId (e.g., "match-1" -> "1")
     const numericMatchId = matchId?.replace("match-", "") || "";
@@ -106,6 +108,43 @@ export const PlayerRosterQuickActions = ({
 
     return (
         <Card className="p-4 bg-card/50 backdrop-blur-sm border-primary/10">
+            {/* Fixed Header with Team Tabs */}
+            <div className="mb-4 flex gap-2 sticky top-0 z-20">
+                {/* Home Team Tab */}
+                <motion.button
+                    whileTap={{ scale: 0.95 }}
+                    onClick={() => onSelectTeam(homeTeam)}
+                    className={`flex-1 p-2 rounded-lg border-2 transition-all ${activeTeam === homeTeam
+                            ? "border-primary bg-primary/10"
+                            : "border-border hover:border-primary/50"
+                        }`}
+                >
+                    <img
+                        src={homeTeamLogo}
+                        alt={homeTeam}
+                        className="w-4 h-4 object-contain mx-auto mb-0.5"
+                    />
+                    <p className="text-xs font-semibold">{homeTeam}</p>
+                </motion.button>
+
+                {/* Away Team Tab */}
+                <motion.button
+                    whileTap={{ scale: 0.95 }}
+                    onClick={() => onSelectTeam(awayTeam)}
+                    className={`flex-1 p-2 rounded-lg border-2 transition-all ${activeTeam === awayTeam
+                            ? "border-accent bg-accent/10"
+                            : "border-border hover:border-accent/50"
+                        }`}
+                >
+                    <img
+                        src={awayTeamLogo}
+                        alt={awayTeam}
+                        className="w-4 h-4 object-contain mx-auto mb-0.5"
+                    />
+                    <p className="text-xs font-semibold">{awayTeam}</p>
+                </motion.button>
+            </div>
+
             <div className="mb-4 flex items-center gap-3">
                 <img
                     src={teamLogo}

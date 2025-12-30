@@ -10,7 +10,6 @@ import AgentLayout from "@/components/layout/AgentLayout";
 import LiveMatchHeader from "@/components/agent/LiveMatchHeader";
 import MatchControlPanel from "@/components/agent/MatchControlPanel";
 import { EventTimeline } from "@/components/agent/EventTimeline";
-import TeamSelector from "@/components/agent/TeamSelector";
 import MatchStats from "@/components/agent/MatchStats";
 import QuickActions from "@/components/agent/QuickActions";
 import { PlayerRosterQuickActions } from "@/components/agent/PlayerRosterQuickActions";
@@ -181,20 +180,8 @@ const LiveMatchPage = () => {
                     <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 md:gap-8">
                         {/* Event Logging Panel */}
                         <div className="lg:col-span-2 space-y-6 md:space-y-8">
-                            {/* Team Selector */}
-                            <motion.div variants={itemVariants}>
-                                <TeamSelector
-                                    homeTeam={match.homeTeam}
-                                    awayTeam={match.awayTeam}
-                                    activeTeam={activeTeam}
-                                    onSelectTeam={setActiveTeam}
-                                    homeTeamLogo={match.homeTeamLogo}
-                                    awayTeamLogo={match.awayTeamLogo}
-                                />
-                            </motion.div>
-
                             {/* Player Roster with Quick Actions */}
-                            {activeTeam && (
+                            {isMatchActive && activeTeam ? (
                                 <motion.div variants={itemVariants}>
                                     <PlayerRosterQuickActions
                                         matchId={id}
@@ -205,16 +192,28 @@ const LiveMatchPage = () => {
                                         awayTeamLogo={match.awayTeamLogo}
                                         currentMinute={getCurrentMinute()}
                                         onEventLogged={handleLogEvent}
+                                        onSelectTeam={setActiveTeam}
                                     />
+                                </motion.div>
+                            ) : (
+                                <motion.div variants={itemVariants}>
+                                    <Card className="p-6 text-center">
+                                        <p className="text-sm text-muted-foreground">
+                                            {!isMatchActive
+                                                ? "Start the match to begin logging events"
+                                                : "Select a team to log events"}
+                                        </p>
+                                    </Card>
                                 </motion.div>
                             )}
 
-                            {/* Event Timeline */}
+                            {/* Event Timeline with Team Tabs */}
                             <motion.div variants={itemVariants}>
-                                <Card className="p-6 bg-card/50">
-                                    <h2 className="text-lg font-bold text-foreground mb-4">Match Timeline</h2>
-                                    <EventTimeline events={events} />
-                                </Card>
+                                <EventTimeline
+                                    events={events}
+                                    homeTeam={match.homeTeam}
+                                    awayTeam={match.awayTeam}
+                                />
                             </motion.div>
                         </div>
 
