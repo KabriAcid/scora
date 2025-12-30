@@ -48,30 +48,26 @@ export const MatchSummary = ({ events }: MatchSummaryProps) => {
             </div>
 
             {event.team === "home" ? (
-              // Home Team Event (Right Side) - Text aligned right to be close to timeline
-              <div className="flex items-center justify-start pl-8">
-                <div className="space-y-1 max-w-[45%] text-right">
+              // Home Team Event (Left Side) - Text aligned right to be close to timeline
+              <div className="w-1/2 flex justify-end pr-10">
+                <div className="space-y-1 text-right">
                   <div className="text-sm font-bold text-green-400">
                     {event.time}'
                   </div>
-                  <div className="font-semibold text-sm truncate">
-                    {event.player}
-                  </div>
+                  <div className="font-semibold text-sm">{event.player}</div>
                   <span className="text-xs block text-muted-foreground">
                     {getEventTitle(event.type)}
                   </span>
                 </div>
               </div>
             ) : (
-              // Away Team Event (Left Side) - Text aligned left to be close to timeline
-              <div className="flex items-center justify-end pr-8">
-                <div className="space-y-1 max-w-[45%] text-left">
+              // Away Team Event (Right Side) - Text aligned left to be close to timeline
+              <div className="w-1/2 ml-auto flex justify-start pl-10">
+                <div className="space-y-1 text-left">
                   <div className="text-sm font-bold text-green-400">
                     {event.time}'
                   </div>
-                  <div className="font-semibold text-sm truncate">
-                    {event.player}
-                  </div>
+                  <div className="font-semibold text-sm">{event.player}</div>
                   <span className="text-xs block text-muted-foreground">
                     {getEventTitle(event.type)}
                   </span>

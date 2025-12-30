@@ -215,15 +215,6 @@ export const matchDetailsData: Record<string, MatchDetail> = {
         player: "Anthony Martial",
         description: "↔ Jadon Sancho",
       },
-      {
-        id: "e12",
-        time: "88",
-        team: "home",
-        type: "goal",
-        player: "Hakim Ziyech",
-        assist: "Reece James",
-        description: "Assisted by Reece James",
-      },
     ],
     stats: [
       { label: "Possession", home: 58, away: 42, isPercentage: true },
