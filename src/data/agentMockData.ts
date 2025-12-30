@@ -110,7 +110,7 @@ export const mockAssignedMatches: AssignedMatch[] = [
         awayTeamLogo: clubs[5].badgeUrl,
         status: "live",
         startTime: new Date(),
-        venue: "Katsina Sports Complex",
+        venue: "Karkanda Stadium",
         league: "Katsina League",
         homeScore: 2,
         awayScore: 1,

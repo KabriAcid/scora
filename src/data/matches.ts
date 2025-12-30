@@ -23,7 +23,7 @@ export const liveMatches: Match[] = [
         homeScore: 1,
         awayScore: 1,
         status: "live",
-        stadium: "Katsina Sports Complex",
+        stadium: "Karkanda Stadium",
         week: "Week 10",
         matchTime: "90+4",
     },
