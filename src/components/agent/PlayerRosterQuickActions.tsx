@@ -1,9 +1,11 @@
+import { useState } from "react";
 import { motion } from "framer-motion";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 import { EVENT_TYPES } from "@/shared/utils/eventIcons";
 import { matchDetailsData } from "@/data/matchDetails";
+import { SubstitutionSelector } from "./SubstitutionSelector";
 import type { Player } from "@/data/matchDetails";
 import type { MatchEvent } from "@/shared/types/agent";
 
@@ -50,6 +52,11 @@ export const PlayerRosterQuickActions = ({
     onEventLogged,
     onSelectTeam,
 }: PlayerRosterQuickActionsProps) => {
+    const [showSubstitutionSelector, setShowSubstitutionSelector] = useState(false);
+    const [substitutedPlayers, setSubstitutedPlayers] = useState<{
+        out: Set<string>;
+        in: Set<string>;
+    }>({ out: new Set(), in: new Set() });
     // Extract numeric ID from matchId (e.g., "match-1" -> "1")
     const numericMatchId = matchId?.replace("match-", "") || "";
     const matchDetail = matchDetailsData[numericMatchId];
@@ -106,17 +113,29 @@ export const PlayerRosterQuickActions = ({
         );
     };
 
+    const handleSubstitutionRecorded = (event: MatchEvent, playerIn: Player, playerOut: Player) => {
+        onEventLogged(event);
+
+        // Update substituted players tracking
+        const newOutSet = new Set(substitutedPlayers.out);
+        const newInSet = new Set(substitutedPlayers.in);
+        newOutSet.add(playerOut.id);
+        newInSet.add(playerIn.id);
+
+        setSubstitutedPlayers({ out: newOutSet, in: newInSet });
+    };
+
     return (
         <Card className="p-4 bg-card/50 backdrop-blur-sm border-primary/10">
             {/* Fixed Header with Team Tabs */}
-            <div className="mb-4 flex gap-2 sticky top-0 z-20">
+            <div className="mb-4 flex gap-2 sticky top-0 z-20 bg-card -mx-4 px-4 py-2 -mt-4">
                 {/* Home Team Tab */}
                 <motion.button
                     whileTap={{ scale: 0.95 }}
                     onClick={() => onSelectTeam(homeTeam)}
                     className={`flex-1 p-2 rounded-lg border-2 transition-all ${activeTeam === homeTeam
-                            ? "border-primary bg-primary/10"
-                            : "border-border hover:border-primary/50"
+                        ? "border-primary bg-primary/10"
+                        : "border-border hover:border-primary/50"
                         }`}
                 >
                     <img
@@ -132,8 +151,8 @@ export const PlayerRosterQuickActions = ({
                     whileTap={{ scale: 0.95 }}
                     onClick={() => onSelectTeam(awayTeam)}
                     className={`flex-1 p-2 rounded-lg border-2 transition-all ${activeTeam === awayTeam
-                            ? "border-accent bg-accent/10"
-                            : "border-border hover:border-accent/50"
+                        ? "border-accent bg-accent/10"
+                        : "border-border hover:border-accent/50"
                         }`}
                 >
                     <img
@@ -221,6 +240,32 @@ export const PlayerRosterQuickActions = ({
                             ))}
                         </motion.div>
                     </div>
+
+                    {/* Substitution Trigger Button */}
+                    <div className="pt-2 border-t border-border">
+                        <Button
+                            size="sm"
+                            variant="outline"
+                            onClick={() => setShowSubstitutionSelector(!showSubstitutionSelector)}
+                            className="w-full text-xs h-8"
+                        >
+                            {showSubstitutionSelector ? "Hide Subs" : "Manage Subs"}
+                        </Button>
+                    </div>
+
+                    {/* Substitution Selector Component */}
+                    {showSubstitutionSelector && (
+                        <div className="pt-2">
+                            <SubstitutionSelector
+                                team={activeTeam}
+                                onPitch={teamLineup.lineup.filter(p => !substitutedPlayers.out.has(p.id))}
+                                offPitch={teamLineup.substitutes.filter(p => !substitutedPlayers.in.has(p.id))}
+                                currentMinute={currentMinute}
+                                onSubstitutionRecorded={handleSubstitutionRecorded}
+                                onClose={() => setShowSubstitutionSelector(false)}
+                            />
+                        </div>
+                    )}
                 </motion.div>
             </div>
         </Card>

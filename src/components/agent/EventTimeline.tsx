@@ -31,7 +31,7 @@ export const EventTimeline = ({
     <Card className="p-6 bg-card/50">
       <h2 className="text-sm font-semibold text-muted-foreground uppercase mb-4">Match Timeline</h2>
       <motion.div
-        className="relative py-4"
+        className="relative py-4 flex flex-col-reverse"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.3 }}
@@ -40,7 +40,7 @@ export const EventTimeline = ({
         <div className="absolute left-1/2 top-0 bottom-0 w-0.5 bg-border -translate-x-1/2" />
 
         <div className="space-y-8">
-          {[...events].reverse().map((event, index) => {
+          {events.map((event, index) => {
             const isHomeTeamEvent = event.team === homeTeam;
 
             return (
@@ -49,8 +49,9 @@ export const EventTimeline = ({
                 initial={{
                   opacity: 0,
                   x: isHomeTeamEvent ? -20 : 20,
+                  y: 10,
                 }}
-                animate={{ opacity: 1, x: 0 }}
+                animate={{ opacity: 1, x: 0, y: 0 }}
                 transition={{
                   duration: 0.3,
                   delay: index * 0.05,
@@ -72,7 +73,7 @@ export const EventTimeline = ({
                   // Home Team Event (Left Side)
                   <div className="w-1/2 flex justify-end pr-10">
                     <div className="space-y-1 text-right">
-                      <div className="text-sm font-bold text-primary">
+                      <div className="text-sm font-bold text-green-400">
                         {event.minute}'
                       </div>
                       <div className="font-semibold text-sm text-foreground">
@@ -87,7 +88,7 @@ export const EventTimeline = ({
                   // Away Team Event (Right Side)
                   <div className="w-1/2 ml-auto flex justify-start pl-10">
                     <div className="space-y-1 text-left">
-                      <div className="text-sm font-bold text-primary">
+                      <div className="text-sm font-bold text-green-400">
                         {event.minute}'
                       </div>
                       <div className="font-semibold text-sm text-foreground">
