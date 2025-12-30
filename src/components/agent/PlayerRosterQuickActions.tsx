@@ -144,7 +144,7 @@ export const PlayerRosterQuickActions = ({
                     <img
                         src={homeTeamLogo}
                         alt={homeTeam}
-                        className="w-4 h-4 object-contain mx-auto mb-0.5"
+                        className="w-8 h-8 object-contain mx-auto mb-0.5"
                     />
                     <p className="text-xs font-semibold">{homeTeam}</p>
                 </motion.button>
@@ -161,7 +161,7 @@ export const PlayerRosterQuickActions = ({
                     <img
                         src={awayTeamLogo}
                         alt={awayTeam}
-                        className="w-4 h-4 object-contain mx-auto mb-0.5"
+                        className="w-8 h-8 object-contain mx-auto mb-0.5"
                     />
                     <p className="text-xs font-semibold">{awayTeam}</p>
                 </motion.button>

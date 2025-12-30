@@ -62,7 +62,7 @@ export const EventTimeline = ({
                 <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-10">
                   <div className="flex items-center justify-center w-10 h-10 rounded-full bg-background border-2 border-border shadow-lg">
                     <img
-                      src={getEventIconPath(event.type)}
+                      src={event.type === "penalty" ? "/images/event-penalty.svg" : getEventIconPath(event.type)}
                       alt={getEventTitle(event.type)}
                       className="w-5 h-5"
                     />
