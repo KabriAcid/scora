@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
-import { Target, Activity, AlertCircle, ArrowLeftRight } from "lucide-react";
+import { Activity } from "lucide-react";
 import { MatchEvent } from "@/data/matchDetails";
+import { getEventIconPath, getEventTitle } from "@/shared/utils/eventIcons";
 
 interface MatchSummaryProps {
   events: MatchEvent[];
@@ -16,39 +17,6 @@ export const MatchSummary = ({ events }: MatchSummaryProps) => {
     );
   }
 
-  const getEventIcon = (type: string) => {
-    switch (type) {
-      case "goal":
-      case "penalty":
-        return <Target className="w-5 h-5 text-green-400" />;
-      case "yellow":
-        return <div className="w-3 h-4 bg-yellow-500 rounded-sm" />;
-      case "red":
-        return <div className="w-3 h-4 bg-destructive rounded-sm" />;
-      case "substitution":
-        return <ArrowLeftRight className="w-5 h-5 text-blue-600" />;
-      default:
-        return <AlertCircle className="w-5 h-5 text-muted-foreground" />;
-    }
-  };
-
-  const getEventLabel = (type: string) => {
-    switch (type) {
-      case "goal":
-        return "Goal";
-      case "penalty":
-        return "Penalty";
-      case "yellow":
-        return "Yellow Card";
-      case "red":
-        return "Red Card";
-      case "substitution":
-        return "Substitution";
-      default:
-        return "Event";
-    }
-  };
-
   return (
     <motion.div
       className="relative py-4"
@@ -60,7 +28,7 @@ export const MatchSummary = ({ events }: MatchSummaryProps) => {
       <div className="absolute left-1/2 top-0 bottom-0 w-0.5 border border-gray-100 -translate-x-1/2" />
 
       <div className="space-y-8">
-        {events.map((event, index) => (
+        {[...events].reverse().map((event, index) => (
           <motion.div
             key={event.id}
             initial={{ opacity: 0, x: event.team === "home" ? -20 : 20 }}
@@ -70,8 +38,12 @@ export const MatchSummary = ({ events }: MatchSummaryProps) => {
           >
             {/* Event Icon on Center Line */}
             <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-10">
-              <div className="flex items-center justify-center p-2 rounded-full shadow-xl">
-                {getEventIcon(event.type)}
+              <div className="flex items-center justify-center w-10 h-10 rounded-full bg-background border-2 border-border shadow-lg">
+                <img
+                  src={getEventIconPath(event.type)}
+                  alt={getEventTitle(event.type)}
+                  className="w-5 h-5"
+                />
               </div>
             </div>
 
@@ -85,10 +57,8 @@ export const MatchSummary = ({ events }: MatchSummaryProps) => {
                   <div className="font-semibold text-left text-sm truncate">
                     {event.player}
                   </div>
-                  <span
-                    className="text-xs block text-left text-muted-foreground"
-                  >
-                    {getEventLabel(event.type)}
+                  <span className="text-xs block text-left text-muted-foreground">
+                    {getEventTitle(event.type)}
                   </span>
                 </div>
               </div>
@@ -102,10 +72,8 @@ export const MatchSummary = ({ events }: MatchSummaryProps) => {
                   <div className="font-semibold text-right text-sm truncate">
                     {event.player}
                   </div>
-                  <span
-                    className="text-xs block text-right text-muted-foreground"
-                  >
-                    {getEventLabel(event.type)}
+                  <span className="text-xs block text-right text-muted-foreground">
+                    {getEventTitle(event.type)}
                   </span>
                 </div>
               </div>

@@ -1,30 +1,11 @@
 import { motion } from "framer-motion";
 import { Card } from "@/components/ui/card";
+import { EVENT_TYPES } from "@/shared/utils/eventIcons";
 
 interface EventTypeButtonsProps {
   onSelectEventType: (type: string) => void;
   activeEventType: string | null;
 }
-
-// Custom SVG icon paths for each event type
-const eventTypes = [
-  { type: "goal", icon: "/images/event-goal.png", title: "Goal" },
-  {
-    type: "yellow_card",
-    icon: "/images/event-yellow-card.svg",
-    title: "Yellow Card",
-  },
-  { type: "red_card", icon: "/images/event-red-card.svg", title: "Red Card" },
-  {
-    type: "substitution",
-    icon: "/images/event-substitution.svg",
-    title: "Substitution",
-  },
-  { type: "foul", icon: "/images/event-foul.svg", title: "Foul" },
-  { type: "corner", icon: "/images/event-corner.svg", title: "Corner" },
-  { type: "offside", icon: "/images/event-offside.svg", title: "Offside" },
-  { type: "injury", icon: "/images/event-injury.svg", title: "Injury" },
-];
 
 const EventTypeButtons = ({
   onSelectEventType,
@@ -36,7 +17,7 @@ const EventTypeButtons = ({
         Select Event
       </h3>
       <div className="grid grid-cols-4 md:grid-cols-4 lg:grid-cols-4 gap-2 md:gap-3">
-        {eventTypes.map(({ type, icon, title }) => {
+        {EVENT_TYPES.map(({ type, icon, title }) => {
           const isActive = activeEventType === type;
 
           return (
