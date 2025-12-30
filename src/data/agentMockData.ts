@@ -110,8 +110,8 @@ export const mockAssignedMatches: AssignedMatch[] = [
         awayTeamLogo: clubs[5].badgeUrl,
         status: "live",
         startTime: new Date(),
-        venue: "Emirates Stadium, London",
-        league: "Premier League",
+        venue: "Katsina Sports Complex",
+        league: "Katsina League",
         homeScore: 2,
         awayScore: 1,
     },
@@ -123,8 +123,8 @@ export const mockAssignedMatches: AssignedMatch[] = [
         awayTeamLogo: clubs[12].badgeUrl,
         status: "scheduled",
         startTime: new Date(Date.now() + 1000 * 60 * 60 * 4), // 4 hours from now
-        venue: "Anfield, Liverpool",
-        league: "Premier League",
+        venue: "Lazio Stadium, Katsina",
+        league: "Katsina League",
     },
     {
         id: "match-3",
@@ -134,8 +134,8 @@ export const mockAssignedMatches: AssignedMatch[] = [
         awayTeamLogo: clubs[13].badgeUrl,
         status: "completed",
         startTime: new Date(Date.now() - 1000 * 60 * 60 * 2), // 2 hours ago
-        venue: "Tottenham Hotspur Stadium, London",
-        league: "Premier League",
+        venue: "Southern Stars Park, Katsina",
+        league: "Katsina League",
         homeScore: 1,
         awayScore: 1,
     },
@@ -146,7 +146,7 @@ export const mockRecentEvents: RecentEvent[] = [
     {
         id: "event-1",
         type: "goal",
-        player: "Bukayo Saka",
+        player: "Ahmad Hassan",
         team: clubs[0].responsiveName,
         minute: 45,
         timestamp: new Date(Date.now() - 1000 * 60 * 2),
@@ -155,7 +155,7 @@ export const mockRecentEvents: RecentEvent[] = [
     {
         id: "event-2",
         type: "yellow_card",
-        player: "Mason Mount",
+        player: "Sani Ibrahim",
         team: clubs[5].responsiveName,
         minute: 38,
         timestamp: new Date(Date.now() - 1000 * 60 * 10),
@@ -164,7 +164,7 @@ export const mockRecentEvents: RecentEvent[] = [
     {
         id: "event-3",
         type: "substitution",
-        player: "Mohamed Salah → Darwin Núñez",
+        player: "Adamu Maliki → Tanko Usman",
         team: clubs[11].responsiveName,
         minute: 35,
         timestamp: new Date(Date.now() - 1000 * 60 * 15),
@@ -182,7 +182,7 @@ export const mockRecentEvents: RecentEvent[] = [
     {
         id: "event-5",
         type: "goal",
-        player: "Kevin De Bruyne",
+        player: "Lawal Mohammed",
         team: clubs[12].responsiveName,
         minute: 12,
         timestamp: new Date(Date.now() - 1000 * 60 * 35),

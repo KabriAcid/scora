@@ -269,14 +269,14 @@ export const matchDetailsData: Record<string, MatchDetail> = {
           awayTeam: "Chelsea",
           homeScore: 1,
           awayScore: 2,
-          competition: "Premier League",
+          competition: "Katsina League",
         },
       ],
     },
     standings: {
       homeTeamStanding: {
         position: 4,
-        team: getClubById("chelsea")!,
+        team: getClubById("sheffield-guga")!,
         played: 15,
         win: 8,
         draw: 4,
@@ -289,7 +289,7 @@ export const matchDetailsData: Record<string, MatchDetail> = {
       },
       awayTeamStanding: {
         position: 7,
-        team: getClubById("man-utd")!,
+        team: getClubById("mani-ultimate")!,
         played: 15,
         win: 7,
         draw: 3,

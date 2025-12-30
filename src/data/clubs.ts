@@ -9,164 +9,164 @@ export interface PremierLeagueClub {
 
 export const clubs: PremierLeagueClub[] = [
   {
-    id: "arsenal",
-    name: "Arsenal",
-    shortName: "ARS",
-    responsiveName: "Arsenal",
+    id: "katsina-united",
+    name: "Katsina United FC",
+    shortName: "KTS",
+    responsiveName: "Katsina Utd",
     badgeUrl: "https://resources.premierleague.com/premierleague/badges/t3.svg",
-    primaryColor: "#EF0107"
+    primaryColor: "#008000"
   },
   {
-    id: "aston-villa",
-    name: "Aston Villa",
-    shortName: "AVL",
-    responsiveName: "Aston Villa",
+    id: "malumfashi-fc",
+    name: "Malumfashi FC",
+    shortName: "MAL",
+    responsiveName: "Malumfashi",
     badgeUrl: "https://resources.premierleague.com/premierleague/badges/t7.svg",
-    primaryColor: "#670E36"
+    primaryColor: "#0000FF"
   },
   {
-    id: "bournemouth",
-    name: "AFC Bournemouth",
-    shortName: "BOU",
-    responsiveName: "Bournemouth",
+    id: "katsina-city",
+    name: "Katsina City FC",
+    shortName: "KCT",
+    responsiveName: "Katsina City",
     badgeUrl: "https://resources.premierleague.com/premierleague/badges/t91.svg",
-    primaryColor: "#DA291C"
+    primaryColor: "#FFD700"
   },
   {
-    id: "brentford",
-    name: "Brentford",
-    shortName: "BRE",
-    responsiveName: "Brentford",
+    id: "dan-buran-daura",
+    name: "Dan Buran FC Daura",
+    shortName: "DAN",
+    responsiveName: "Dan Buran",
     badgeUrl: "https://resources.premierleague.com/premierleague/badges/t94.svg",
-    primaryColor: "#E30613"
+    primaryColor: "#FFFFFF"
   },
   {
-    id: "brighton",
-    name: "Brighton & Hove Albion",
-    shortName: "BHA",
-    responsiveName: "Brighton",
+    id: "katsina-academy",
+    name: "Katsina Football Academy",
+    shortName: "KFA",
+    responsiveName: "Katsina Acad",
     badgeUrl: "https://resources.premierleague.com/premierleague/badges/t36.svg",
-    primaryColor: "#0057B8"
+    primaryColor: "#006400"
   },
   {
-    id: "chelsea",
-    name: "Chelsea",
-    shortName: "CHE",
-    responsiveName: "Chelsea",
+    id: "sheffield-guga",
+    name: "FC Sheffield K/Guga",
+    shortName: "SHE",
+    responsiveName: "Sheffield Guga",
     badgeUrl: "https://resources.premierleague.com/premierleague/badges/t8.svg",
-    primaryColor: "#034694"
+    primaryColor: "#CC0000"
   },
   {
-    id: "crystal-palace",
-    name: "Crystal Palace",
-    shortName: "CRY",
-    responsiveName: "Crystal Palace",
+    id: "afdin-fc",
+    name: "J. Afdin FC",
+    shortName: "AFD",
+    responsiveName: "Afdin FC",
     badgeUrl: "https://resources.premierleague.com/premierleague/badges/t31.svg",
-    primaryColor: "#1B458F"
+    primaryColor: "#800080"
   },
   {
-    id: "everton",
-    name: "Everton",
-    shortName: "EVE",
-    responsiveName: "Everton",
+    id: "k-soro-united",
+    name: "K-Soro United",
+    shortName: "KSR",
+    responsiveName: "K-Soro",
     badgeUrl: "https://resources.premierleague.com/premierleague/badges/t11.svg",
-    primaryColor: "#003399"
+    primaryColor: "#FFA500"
   },
   {
-    id: "fulham",
-    name: "Fulham",
-    shortName: "FUL",
-    responsiveName: "Fulham",
+    id: "saulawa-united",
+    name: "Saulawa United",
+    shortName: "SAU",
+    responsiveName: "Saulawa",
     badgeUrl: "https://resources.premierleague.com/premierleague/badges/t54.svg",
     primaryColor: "#000000"
   },
   {
-    id: "ipswich",
-    name: "Ipswich Town",
-    shortName: "IPS",
-    responsiveName: "Ipswich",
+    id: "ranchers-katsina",
+    name: "Ranchers FC Katsina",
+    shortName: "RAN",
+    responsiveName: "Ranchers",
     badgeUrl: "https://resources.premierleague.com/premierleague/badges/t40.svg",
-    primaryColor: "#0044AA"
+    primaryColor: "#FFFF00"
   },
   {
-    id: "leicester",
-    name: "Leicester City",
-    shortName: "LEI",
-    responsiveName: "Leicester",
+    id: "lazio-katsina",
+    name: "Lazio FC Katsina",
+    shortName: "LAZ",
+    responsiveName: "Lazio KTS",
     badgeUrl: "https://resources.premierleague.com/premierleague/badges/t13.svg",
-    primaryColor: "#003090"
+    primaryColor: "#ADD8E6"
   },
   {
-    id: "liverpool",
-    name: "Liverpool",
-    shortName: "LIV",
-    responsiveName: "Liverpool",
+    id: "nursing-home",
+    name: "Nursing Home FC",
+    shortName: "NUR",
+    responsiveName: "Nursing Home",
     badgeUrl: "https://resources.premierleague.com/premierleague/badges/t14.svg",
-    primaryColor: "#C8102E"
+    primaryColor: "#00FF00"
   },
   {
-    id: "man-city",
-    name: "Manchester City",
-    shortName: "MCI",
-    responsiveName: "Man City",
+    id: "gawo-united",
+    name: "Gawo United",
+    shortName: "GAW",
+    responsiveName: "Gawo Utd",
     badgeUrl: "https://resources.premierleague.com/premierleague/badges/t43.svg",
-    primaryColor: "#6CABDD"
+    primaryColor: "#A52A2A"
   },
   {
-    id: "man-utd",
-    name: "Manchester United",
-    shortName: "MUN",
-    responsiveName: "Man United",
+    id: "southern-stars",
+    name: "Southern Stars Katsina",
+    shortName: "SST",
+    responsiveName: "S. Stars",
     badgeUrl: "https://resources.premierleague.com/premierleague/badges/t1.svg",
-    primaryColor: "#DA291C"
+    primaryColor: "#000080"
   },
   {
-    id: "newcastle",
-    name: "Newcastle United",
-    shortName: "NEW",
-    responsiveName: "Newcastle",
+    id: "golden-arrow",
+    name: "Golden Arrow FC",
+    shortName: "GAR",
+    responsiveName: "G. Arrow",
     badgeUrl: "https://resources.premierleague.com/premierleague/badges/t4.svg",
-    primaryColor: "#241F20"
+    primaryColor: "#DAA520"
   },
   {
-    id: "nottm-forest",
-    name: "Nottingham Forest",
-    shortName: "NFO",
-    responsiveName: "Nott'm Forest",
+    id: "faskari-united",
+    name: "Faskari United",
+    shortName: "FAS",
+    responsiveName: "Faskari",
     badgeUrl: "https://resources.premierleague.com/premierleague/badges/t17.svg",
-    primaryColor: "#DD0000"
+    primaryColor: "#2E8B57"
   },
   {
-    id: "southampton",
-    name: "Southampton",
-    shortName: "SOU",
-    responsiveName: "Southampton",
+    id: "dutsinma-united",
+    name: "Dutsin-Ma United",
+    shortName: "DUT",
+    responsiveName: "Dutsin-Ma",
     badgeUrl: "https://resources.premierleague.com/premierleague/badges/t20.svg",
-    primaryColor: "#D71920"
+    primaryColor: "#FF4500"
   },
   {
-    id: "tottenham",
-    name: "Tottenham Hotspur",
-    shortName: "TOT",
-    responsiveName: "Tottenham",
+    id: "mani-ultimate",
+    name: "Mani Ultimate FC",
+    shortName: "MAN",
+    responsiveName: "Mani Ult.",
     badgeUrl: "https://resources.premierleague.com/premierleague/badges/t6.svg",
-    primaryColor: "#132257"
+    primaryColor: "#4682B4"
   },
   {
-    id: "west-ham",
-    name: "West Ham United",
-    shortName: "WHU",
-    responsiveName: "West Ham",
+    id: "kankia-warriors",
+    name: "Kankia Warriors",
+    shortName: "KAN",
+    responsiveName: "Kankia",
     badgeUrl: "https://resources.premierleague.com/premierleague/badges/t21.svg",
-    primaryColor: "#7A263A"
+    primaryColor: "#708090"
   },
   {
-    id: "wolves",
-    name: "Wolverhampton Wanderers",
-    shortName: "WOL",
-    responsiveName: "Wolves",
+    id: "baure-flyers",
+    name: "Baure Flyers FC",
+    shortName: "BAU",
+    responsiveName: "Baure Flyers",
     badgeUrl: "https://resources.premierleague.com/premierleague/badges/t39.svg",
-    primaryColor: "#FDB913"
+    primaryColor: "#FF69B4"
   }
 ];
 
