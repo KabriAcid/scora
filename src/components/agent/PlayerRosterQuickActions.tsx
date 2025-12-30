@@ -25,6 +25,10 @@ const eventTypes = [
     { type: "goal", icon: "/images/event-goal.svg", label: "Goal" },
     { type: "yellow_card", icon: "/images/event-yellow-card.svg", label: "Yellow" },
     { type: "red_card", icon: "/images/event-red-card.svg", label: "Red" },
+    { type: "penalty", icon: "/images/event-penalty.svg", label: "Penalty" },
+    { type: "offside", icon: "/images/event-offside.svg", label: "Offside" },
+    { type: "corner", icon: "/images/event-corner.svg", label: "Corner" },
+    { type: "foul", icon: "/images/event-foul.svg", label: "Free Kick" },
 ];
 
 const containerVariants = {
