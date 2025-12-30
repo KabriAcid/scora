@@ -4,58 +4,59 @@ import { TeamLineup, Player } from "@/data/matchDetails";
 
 // Formation position mappings (x: 0-100%, y: 0-100%)
 // Home team uses left side (0-48%), Away team mirrors to right side (52-100%)
+// Positions are calculated to center players accurately on the pitch
 const FORMATION_POSITIONS: Record<string, Array<{ x: number; y: number }>> = {
   "4-3-3": [
-    { x: 5, y: 50 }, // GK
-    { x: 18, y: 15 }, // LB
-    { x: 18, y: 38 }, // CB
-    { x: 18, y: 62 }, // CB
-    { x: 18, y: 85 }, // RB
-    { x: 32, y: 30 }, // CM
+    { x: 8, y: 50 }, // GK
+    { x: 20, y: 18 }, // LB
+    { x: 20, y: 40 }, // CB
+    { x: 20, y: 60 }, // CB
+    { x: 20, y: 82 }, // RB
+    { x: 32, y: 32 }, // CM
     { x: 32, y: 50 }, // CM
-    { x: 32, y: 70 }, // CM
-    { x: 44, y: 20 }, // LW
+    { x: 32, y: 68 }, // CM
+    { x: 44, y: 22 }, // LW
     { x: 44, y: 50 }, // ST
-    { x: 44, y: 80 }, // RW
+    { x: 44, y: 78 }, // RW
   ],
   "4-2-3-1": [
-    { x: 5, y: 50 }, // GK
-    { x: 18, y: 15 }, // LB
-    { x: 18, y: 38 }, // CB
-    { x: 18, y: 62 }, // CB
-    { x: 18, y: 85 }, // RB
-    { x: 28, y: 35 }, // CDM
-    { x: 28, y: 65 }, // CDM
-    { x: 38, y: 20 }, // LM
-    { x: 38, y: 50 }, // CAM
-    { x: 38, y: 80 }, // RM
-    { x: 46, y: 50 }, // ST
+    { x: 8, y: 50 }, // GK
+    { x: 20, y: 18 }, // LB
+    { x: 20, y: 40 }, // CB
+    { x: 20, y: 60 }, // CB
+    { x: 20, y: 82 }, // RB
+    { x: 30, y: 37 }, // CDM
+    { x: 30, y: 63 }, // CDM
+    { x: 40, y: 22 }, // LM
+    { x: 40, y: 50 }, // CAM
+    { x: 40, y: 78 }, // RM
+    { x: 47, y: 50 }, // ST
   ],
   "4-4-2": [
-    { x: 5, y: 50 }, // GK
-    { x: 18, y: 15 }, // LB
-    { x: 18, y: 38 }, // CB
-    { x: 18, y: 62 }, // CB
-    { x: 18, y: 85 }, // RB
-    { x: 32, y: 15 }, // LM
-    { x: 32, y: 40 }, // CM
-    { x: 32, y: 60 }, // CM
-    { x: 32, y: 85 }, // RM
-    { x: 44, y: 38 }, // ST
-    { x: 44, y: 62 }, // ST
+    { x: 8, y: 50 }, // GK
+    { x: 20, y: 18 }, // LB
+    { x: 20, y: 40 }, // CB
+    { x: 20, y: 60 }, // CB
+    { x: 20, y: 82 }, // RB
+    { x: 34, y: 18 }, // LM
+    { x: 34, y: 40 }, // CM
+    { x: 34, y: 60 }, // CM
+    { x: 34, y: 82 }, // RM
+    { x: 45, y: 40 }, // ST
+    { x: 45, y: 60 }, // ST
   ],
   "4-1-4-1": [
-    { x: 5, y: 50 }, // GK
-    { x: 18, y: 15 }, // LB
-    { x: 18, y: 38 }, // CB
-    { x: 18, y: 62 }, // CB
-    { x: 18, y: 85 }, // RB
-    { x: 28, y: 50 }, // CDM
-    { x: 36, y: 15 }, // LM
-    { x: 36, y: 40 }, // CM
-    { x: 36, y: 60 }, // CM
-    { x: 36, y: 85 }, // RM
-    { x: 46, y: 50 }, // ST
+    { x: 8, y: 50 }, // GK
+    { x: 20, y: 18 }, // LB
+    { x: 20, y: 40 }, // CB
+    { x: 20, y: 60 }, // CB
+    { x: 20, y: 82 }, // RB
+    { x: 30, y: 50 }, // CDM
+    { x: 38, y: 18 }, // LM
+    { x: 38, y: 40 }, // CM
+    { x: 38, y: 60 }, // CM
+    { x: 38, y: 82 }, // RM
+    { x: 47, y: 50 }, // ST
   ],
 };
 
@@ -112,7 +113,7 @@ const FormationVisualization = ({
               transform: "translate(-50%, -50%)",
             }}
           >
-            <div className="w-8 h-8 rounded-full bg-primary border-2 border-white flex items-center justify-center shadow-lg">
+            <div className="w-7 h-7 rounded-full bg-primary border border-white flex items-center justify-center shadow-lg">
               <span className="text-[9px] font-bold text-primary-foreground">
                 {player.number}
               </span>
@@ -138,7 +139,7 @@ const FormationVisualization = ({
               transform: "translate(-50%, -50%)",
             }}
           >
-            <div className="w-8 h-8 rounded-full bg-accent border-2 border-white flex items-center justify-center shadow-lg">
+            <div className="w-7 h-7 rounded-full bg-accent border border-white flex items-center justify-center shadow-lg">
               <span className="text-[9px] font-bold text-accent-foreground">
                 {player.number}
               </span>
