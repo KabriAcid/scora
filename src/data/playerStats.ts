@@ -304,7 +304,7 @@ export const yellowCards: PlayerStat[] = [
 export const cleanSheets: PlayerStat[] = [
   {
     id: "1",
-    name: "Obi Martins",
+    name: "Dan Hajiya",
     teamId: clubs[7].id,
     teamName: clubs[7].name,
     teamBadge: clubs[7].badgeUrl,
@@ -360,7 +360,7 @@ export const cleanSheets: PlayerStat[] = [
   },
   {
     id: "8",
-    name: "Isa Guardian",
+    name: "Isa Gwari",
     teamId: clubs[15].id,
     teamName: clubs[15].name,
     teamBadge: clubs[15].badgeUrl,
