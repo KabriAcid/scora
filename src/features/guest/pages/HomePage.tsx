@@ -48,9 +48,6 @@ const Index = () => {
         className="sticky top-0 z-40 bg-background/80 backdrop-blur-xl border-b border-border/50"
       >
         <div className="flex items-center justify-between p-4">
-          <Button variant="ghost" size="icon" className="rounded-xl">
-            <Menu className="w-5 h-5" />
-          </Button>
           <Logo />
           <div className="flex items-center">
             <Button variant="ghost" size="icon" className="rounded-xl">
@@ -145,7 +142,8 @@ const Index = () => {
             <Button
               variant="ghost"
               size="sm"
-              className="text-primary hover:text-primary/80"
+              className="text-primary"
+              onClick={() => navigate("/calendar")}
             >
               View All →
             </Button>
