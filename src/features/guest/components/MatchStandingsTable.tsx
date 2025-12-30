@@ -29,7 +29,7 @@ export const MatchStandingsTable = ({
             <motion.div
                 initial={{ opacity: 0, y: -10 }}
                 animate={{ opacity: 1, y: 0 }}
-                className="grid grid-cols-[40px_minmax(120px,1fr)_40px_40px_40px_40px_40px_40px_48px_48px] gap-2 px-4 py-2 text-[10px] font-semibold text-muted-foreground uppercase tracking-wider min-w-[600px]"
+                className="grid grid-cols-[40px_minmax(90px,0.8fr)_40px_40px_40px_40px_40px_40px_48px_48px] gap-2 px-4 py-2 text-[10px] font-semibold text-muted-foreground uppercase tracking-wider min-w-[600px]"
             >
                 <span className="pl-2">#</span>
                 <span>Team</span>
@@ -55,7 +55,7 @@ export const MatchStandingsTable = ({
                             type: "spring",
                             stiffness: 100,
                         }}
-                        className="relative grid grid-cols-[40px_minmax(120px,1fr)_40px_40px_40px_40px_40px_40px_48px_48px] gap-2 items-center px-4 py-4 bg-card rounded-xl min-w-[600px]"
+                        className="relative grid grid-cols-[40px_minmax(90px,0.8fr)_40px_40px_40px_40px_40px_40px_48px_48px] gap-2 items-center px-4 py-4 bg-card rounded-xl min-w-[600px]"
                     >
                         <PositionIndicator position={entry.position} />
 
@@ -71,7 +71,7 @@ export const MatchStandingsTable = ({
                         </span>
 
                         {/* Team */}
-                        <div className="flex items-center gap-2">
+                        <div className="flex items-center gap-1">
                             <img
                                 src={entry.team.badgeUrl}
                                 alt={entry.team.shortName}

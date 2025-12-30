@@ -110,10 +110,7 @@ export const MatchCard = ({
           <div className="flex items-center justify-between gap-4">
             {/* Home Team */}
             <div className="flex flex-col items-center flex-1 gap-1.5">
-              <div className={cn(
-                "w-16 h-16 rounded-full flex items-center justify-center overflow-hidden",
-                isDark ? "bg-white/10" : "bg-gray-100"
-              )}>
+              <div className="w-16 h-16 rounded-full flex items-center justify-center overflow-hidden">
                 {homeLogo ? (
                   <img src={homeLogo} alt={homeTeam} className="w-12 h-12 object-contain" />
                 ) : (
@@ -187,10 +184,7 @@ export const MatchCard = ({
 
             {/* Away Team */}
             <div className="flex flex-col items-center flex-1 gap-1.5">
-              <div className={cn(
-                "w-16 h-16 rounded-full flex items-center justify-center overflow-hidden",
-                isDark ? "bg-white/10" : "bg-gray-100"
-              )}>
+              <div className="w-16 h-16 rounded-full flex items-center justify-center overflow-hidden">
                 {awayLogo ? (
                   <img src={awayLogo} alt={awayTeam} className="w-12 h-12 object-contain" />
                 ) : (

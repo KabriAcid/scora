@@ -86,30 +86,39 @@ const Index = () => {
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
               >
-                <Card className="py-5 bg-card/50 border-border/50">
-                  <div className="flex items-center justify-between px-4">
-                    {/* Home Team Skeleton */}
-                    <div className="flex flex-col items-center flex-1 gap-2">
-                      <Skeleton className="w-16 h-16 rounded-full" />
-                      <Skeleton className="h-4 w-16" />
-                      <Skeleton className="h-3 w-10" />
+                <Card className="py-3 bg-primary/80 border-0 rounded-2xl">
+                  <div className="px-4">
+                    {/* Stadium and Week Skeleton */}
+                    <div className="text-center mb-3">
+                      <Skeleton className="h-5 w-32 mx-auto mb-1 rounded" />
+                      <Skeleton className="h-3 w-20 mx-auto rounded" />
                     </div>
 
-                    {/* Score Skeleton */}
-                    <div className="flex flex-col items-center gap-2">
-                      <div className="flex items-center gap-2">
-                        <Skeleton className="h-9 w-9" />
-                        <Skeleton className="h-6 w-3" />
-                        <Skeleton className="h-9 w-9" />
+                    {/* Match Content */}
+                    <div className="flex items-center justify-between gap-4">
+                      {/* Home Team Skeleton */}
+                      <div className="flex flex-col items-center flex-1 gap-1.5">
+                        <Skeleton className="w-16 h-16 rounded-full" />
+                        <Skeleton className="h-4 w-20 rounded" />
+                        <Skeleton className="h-3 w-12 rounded" />
                       </div>
-                      <Skeleton className="h-5 w-16 rounded-full" />
-                    </div>
 
-                    {/* Away Team Skeleton */}
-                    <div className="flex flex-col items-center flex-1 gap-2">
-                      <Skeleton className="w-16 h-16 rounded-full" />
-                      <Skeleton className="h-4 w-16" />
-                      <Skeleton className="h-3 w-10" />
+                      {/* Score and Badge Skeleton */}
+                      <div className="flex flex-col items-center gap-2">
+                        <div className="flex items-center gap-1">
+                          <Skeleton className="h-10 w-8 rounded" />
+                          <Skeleton className="h-8 w-2 rounded" />
+                          <Skeleton className="h-10 w-8 rounded" />
+                        </div>
+                        <Skeleton className="h-6 w-16 rounded-full" />
+                      </div>
+
+                      {/* Away Team Skeleton */}
+                      <div className="flex flex-col items-center flex-1 gap-1.5">
+                        <Skeleton className="w-16 h-16 rounded-full" />
+                        <Skeleton className="h-4 w-20 rounded" />
+                        <Skeleton className="h-3 w-12 rounded" />
+                      </div>
                     </div>
                   </div>
                 </Card>
