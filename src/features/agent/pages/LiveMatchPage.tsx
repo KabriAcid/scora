@@ -9,7 +9,7 @@ import { toast } from "sonner";
 import AgentLayout from "@/components/layout/AgentLayout";
 import LiveMatchHeader from "@/components/agent/LiveMatchHeader";
 import MatchControlPanel from "@/components/agent/MatchControlPanel";
-import MatchTimeline from "@/components/agent/MatchTimeline";
+import { EventTimeline } from "@/components/agent/EventTimeline";
 import TeamSelector from "@/components/agent/TeamSelector";
 import MatchStats from "@/components/agent/MatchStats";
 import QuickActions from "@/components/agent/QuickActions";
@@ -201,15 +201,20 @@ const LiveMatchPage = () => {
                                         activeTeam={activeTeam}
                                         homeTeam={match.homeTeam}
                                         awayTeam={match.awayTeam}
+                                        homeTeamLogo={match.homeTeamLogo}
+                                        awayTeamLogo={match.awayTeamLogo}
                                         currentMinute={getCurrentMinute()}
                                         onEventLogged={handleLogEvent}
                                     />
                                 </motion.div>
                             )}
 
-                            {/* Match Timeline */}
+                            {/* Event Timeline */}
                             <motion.div variants={itemVariants}>
-                                <MatchTimeline events={events} />
+                                <Card className="p-6 bg-card/50">
+                                    <h2 className="text-lg font-bold text-foreground mb-4">Match Timeline</h2>
+                                    <EventTimeline events={events} />
+                                </Card>
                             </motion.div>
                         </div>
 

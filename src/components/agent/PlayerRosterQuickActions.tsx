@@ -2,6 +2,7 @@ import { motion } from "framer-motion";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
+import { EVENT_TYPES } from "@/shared/utils/eventIcons";
 import { matchDetailsData } from "@/data/matchDetails";
 import type { Player } from "@/data/matchDetails";
 import type { MatchEvent } from "@/shared/types/agent";
@@ -11,22 +12,39 @@ interface PlayerRosterQuickActionsProps {
     activeTeam: string;
     homeTeam: string;
     awayTeam: string;
+    homeTeamLogo: string;
+    awayTeamLogo: string;
     currentMinute: number;
     onEventLogged: (event: MatchEvent) => void;
 }
 
 const eventTypes = [
-    { id: "goal", label: "⚽ Goal", color: "bg-success" },
-    { id: "assist", label: "🤝 Assist", color: "bg-blue-500" },
-    { id: "yellow_card", label: "🟨 Yellow", color: "bg-yellow-500" },
-    { id: "red_card", label: "🔴 Red", color: "bg-destructive" },
+    { type: "goal", icon: "/images/event-goal.svg", label: "Goal" },
+    { type: "yellow_card", icon: "/images/event-yellow-card.svg", label: "Yellow" },
+    { type: "red_card", icon: "/images/event-red-card.svg", label: "Red" },
+    { type: "substitution", icon: "/images/event-substitution.svg", label: "Sub" },
 ];
+
+const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+        opacity: 1,
+        transition: { staggerChildren: 0.05 },
+    },
+};
+
+const playerVariants = {
+    hidden: { opacity: 0, y: 10 },
+    visible: { opacity: 1, y: 0 },
+};
 
 export const PlayerRosterQuickActions = ({
     matchId,
     activeTeam,
     homeTeam,
     awayTeam,
+    homeTeamLogo,
+    awayTeamLogo,
     currentMinute,
     onEventLogged,
 }: PlayerRosterQuickActionsProps) => {
@@ -47,7 +65,7 @@ export const PlayerRosterQuickActions = ({
 
     const isHomeTeam = activeTeam === homeTeam;
     const teamLineup = isHomeTeam ? matchDetail.homeTeam : matchDetail.awayTeam;
-    const allPlayers = [...teamLineup.lineup, ...teamLineup.substitutes];
+    const teamLogo = isHomeTeam ? homeTeamLogo : awayTeamLogo;
 
     // Debug: check if team names match
     if (!isHomeTeam && activeTeam !== awayTeam) {
@@ -72,33 +90,40 @@ export const PlayerRosterQuickActions = ({
 
         onEventLogged(newEvent);
 
-        // Show toast feedback
-        const eventLabel = eventTypes.find(e => e.id === eventType)?.label || eventType;
-        toast.success(`✓ ${eventLabel} - ${player.name} (${activeTeam})`);
-    };
+        // Show toast feedback with SVG icon
+        const eventConfig = eventTypes.find(e => e.type === eventType);
+        const eventLabel = eventConfig?.label || eventType;
+        const eventIcon = eventConfig?.icon || "/images/event-goal.svg";
 
-    const containerVariants = {
-        hidden: { opacity: 0 },
-        visible: {
-            opacity: 1,
-            transition: { staggerChildren: 0.05 },
-        },
-    };
-
-    const playerVariants = {
-        hidden: { opacity: 0, y: 10 },
-        visible: { opacity: 1, y: 0 },
+        toast.success(
+            <div className="flex items-center gap-2">
+                <img src={eventIcon} alt={eventLabel} className="w-4 h-4" />
+                <span>{eventLabel} - {player.name} ({activeTeam})</span>
+            </div>,
+            { duration: 2000 }
+        );
     };
 
     return (
         <Card className="p-4 bg-card/50 backdrop-blur-sm border-primary/10">
-            <div className="mb-4">
-                <h3 className="text-sm font-semibold text-foreground mb-1">
-                    {activeTeam}
-                </h3>
-                <p className="text-xs text-muted-foreground">
-                    Formation: {teamLineup.formation} | {allPlayers.length} players
-                </p>
+            <div className="mb-4 flex items-center gap-3">
+                <img
+                    src={teamLogo}
+                    alt={activeTeam}
+                    className="w-10 h-10 object-contain"
+                    onError={(e) => {
+                        console.error("Logo failed to load:", teamLogo);
+                        e.currentTarget.src = "/images/placeholder-logo.svg";
+                    }}
+                />
+                <div>
+                    <h3 className="text-sm font-semibold text-foreground">
+                        {activeTeam}
+                    </h3>
+                    <p className="text-xs text-muted-foreground">
+                        Formation: {teamLineup.formation}
+                    </p>
+                </div>
             </div>
 
             <div className="max-h-[600px] overflow-y-auto pr-2 space-y-2">
@@ -108,10 +133,10 @@ export const PlayerRosterQuickActions = ({
                     animate="visible"
                     className="space-y-2"
                 >
-                    {/* Starting Lineup */}
+                    {/* Starting Lineup Only - On Pitch Players */}
                     <div>
                         <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-2">
-                            Starting XI
+                            On Pitch
                         </p>
                         <motion.div className="space-y-2">
                             {teamLineup.lineup.map((player) => (
@@ -124,25 +149,31 @@ export const PlayerRosterQuickActions = ({
                                         <div className="flex-1">
                                             <p className="text-sm font-semibold text-foreground">
                                                 #{player.number} {player.name}
+                                                {player.position && (
+                                                    <span className="text-xs text-muted-foreground ml-1">
+                                                        ({player.position})
+                                                    </span>
+                                                )}
                                             </p>
-                                            {player.position && (
-                                                <p className="text-xs text-muted-foreground">
-                                                    {player.position}
-                                                </p>
-                                            )}
                                         </div>
                                     </div>
-                                    <div className="flex gap-1 flex-wrap">
+                                    <div className="flex gap-2 flex-wrap">
                                         {eventTypes.map((event) => (
                                             <Button
-                                                key={event.id}
+                                                key={event.type}
                                                 size="sm"
                                                 variant="outline"
                                                 onClick={() =>
-                                                    handleQuickAction(player, event.id)
+                                                    handleQuickAction(player, event.type)
                                                 }
-                                                className={`text-xs h-8 px-2 border-0 ${event.color} text-white hover:opacity-90`}
+                                                className="text-xs h-8 px-2 gap-1 hover:bg-primary hover:text-primary-foreground"
+                                                title={event.label}
                                             >
+                                                <img
+                                                    src={event.icon}
+                                                    alt={event.label}
+                                                    className="w-3 h-3"
+                                                />
                                                 {event.label}
                                             </Button>
                                         ))}
@@ -151,52 +182,6 @@ export const PlayerRosterQuickActions = ({
                             ))}
                         </motion.div>
                     </div>
-
-                    {/* Substitutes */}
-                    {teamLineup.substitutes.length > 0 && (
-                        <div>
-                            <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-2 mt-4">
-                                Substitutes
-                            </p>
-                            <motion.div className="space-y-2">
-                                {teamLineup.substitutes.map((player) => (
-                                    <motion.div
-                                        key={player.id}
-                                        variants={playerVariants}
-                                        className="p-3 bg-secondary/20 rounded-lg hover:bg-secondary/40 transition-colors opacity-75"
-                                    >
-                                        <div className="flex items-center justify-between mb-2">
-                                            <div className="flex-1">
-                                                <p className="text-sm font-semibold text-foreground">
-                                                    #{player.number} {player.name}
-                                                </p>
-                                                {player.position && (
-                                                    <p className="text-xs text-muted-foreground">
-                                                        {player.position}
-                                                    </p>
-                                                )}
-                                            </div>
-                                        </div>
-                                        <div className="flex gap-1 flex-wrap">
-                                            {eventTypes.map((event) => (
-                                                <Button
-                                                    key={event.id}
-                                                    size="sm"
-                                                    variant="outline"
-                                                    onClick={() =>
-                                                        handleQuickAction(player, event.id)
-                                                    }
-                                                    className={`text-xs h-8 px-2 border-0 ${event.color} text-white hover:opacity-90`}
-                                                >
-                                                    {event.label}
-                                                </Button>
-                                            ))}
-                                        </div>
-                                    </motion.div>
-                                ))}
-                            </motion.div>
-                        </div>
-                    )}
                 </motion.div>
             </div>
         </Card>
