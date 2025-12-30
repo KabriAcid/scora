@@ -193,8 +193,8 @@ export const mockRecentEvents: RecentEvent[] = [
 // Mock Agent Profile
 export const mockAgentProfile = {
     id: "agent-001",
-    name: "Seun Adeyemi",
-    email: "seun.adeyemi@scora.ng",
+    name: "Khalid Bello",
+    email: "khalid.bello@scora.ng",
     phone: "+234 801 234 5678",
     agentCode: "AG-2024-001",
     joinDate: new Date("2024-01-15"),

@@ -58,9 +58,9 @@ export const clubs: PremierLeagueClub[] = [
   },
   {
     id: "afdin-fc",
-    name: "J. Afdin FC",
-    shortName: "AFD",
-    responsiveName: "Afdin FC",
+    name: "Eleven Shooting",
+    shortName: "ELS",
+    responsiveName: "Eleven Shooting",
     badgeUrl: "https://resources.premierleague.com/premierleague/badges/t31.svg",
     primaryColor: "#800080"
   },
@@ -82,9 +82,9 @@ export const clubs: PremierLeagueClub[] = [
   },
   {
     id: "ranchers-katsina",
-    name: "Ranchers FC Katsina",
-    shortName: "RAN",
-    responsiveName: "Ranchers",
+    name: "Abukur Royals",
+    shortName: "ABR",
+    responsiveName: "Abukur Royals",
     badgeUrl: "https://resources.premierleague.com/premierleague/badges/t40.svg",
     primaryColor: "#FFFF00"
   },
@@ -98,9 +98,9 @@ export const clubs: PremierLeagueClub[] = [
   },
   {
     id: "nursing-home",
-    name: "Nursing Home FC",
-    shortName: "NUR",
-    responsiveName: "Nursing Home",
+    name: "Abukur Pillars",
+    shortName: "ABP",
+    responsiveName: "Abukur Pillars",
     badgeUrl: "https://resources.premierleague.com/premierleague/badges/t14.svg",
     primaryColor: "#00FF00"
   },

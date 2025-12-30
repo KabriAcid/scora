@@ -13,14 +13,14 @@ export interface MatchEvent {
   time: string;
   team: "home" | "away";
   type:
-    | "goal"
-    | "yellow"
-    | "red"
-    | "substitution"
-    | "penalty"
-    | "offside"
-    | "corner"
-    | "foul";
+  | "goal"
+  | "yellow"
+  | "red"
+  | "substitution"
+  | "penalty"
+  | "offside"
+  | "corner"
+  | "foul";
   player: string;
   assist?: string;
   description?: string;
