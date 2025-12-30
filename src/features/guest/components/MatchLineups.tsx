@@ -246,13 +246,25 @@ export const MatchLineups = ({
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.3, delay: 0.2 }}
       >
-        <h3 className="font-semibold mb-3 text-center text-sm">Manager</h3>
-        <Card className="p-4 border-none">
-          <div className="flex items-center justify-between">
-            <span className="text-sm font-medium">{homeTeam.manager}</span>
-            <span className="text-sm font-medium">{awayTeam.manager}</span>
-          </div>
-        </Card>
+        <h3 className="font-semibold mb-4 text-center text-sm">Manager</h3>
+        <div className="flex items-center justify-between px-2">
+          <span className="text-sm">
+            <span className="text-muted-foreground">
+              {homeTeam.manager.split(" ")[0]}
+            </span>{" "}
+            <span className="font-bold">
+              {homeTeam.manager.split(" ").slice(1).join(" ").toUpperCase()}
+            </span>
+          </span>
+          <span className="text-sm">
+            <span className="text-muted-foreground">
+              {awayTeam.manager.split(" ")[0]}
+            </span>{" "}
+            <span className="font-bold">
+              {awayTeam.manager.split(" ").slice(1).join(" ").toUpperCase()}
+            </span>
+          </span>
+        </div>
       </motion.div>
 
       {/* Lineups List */}
@@ -261,50 +273,58 @@ export const MatchLineups = ({
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.3, delay: 0.3 }}
       >
-        <h3 className="font-semibold mb-3 text-sm">Lineups</h3>
-        <Card className="p-4 border-none">
-          <div className="grid grid-cols-2 gap-x-4">
-            {/* Home Team */}
-            <div className="space-y-2">
-              {homeTeam.lineup.map((player, index) => (
+        <h3 className="font-semibold mb-4 text-center text-sm">Lineups</h3>
+        <div className="grid grid-cols-2 gap-x-4 px-2">
+          {/* Home Team */}
+          <div className="space-y-2">
+            {homeTeam.lineup.map((player, index) => {
+              const nameParts = player.name.split(" ");
+              const firstName = nameParts[0];
+              const lastName = nameParts.slice(1).join(" ").toUpperCase();
+              return (
                 <motion.div
                   key={player.id}
-                  className="flex items-center gap-2"
+                  className="flex items-center gap-1"
                   initial={{ opacity: 0, x: -20 }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ duration: 0.3, delay: index * 0.02 }}
                 >
-                  <span className="text-xs text-muted-foreground w-5">
-                    {player.number}
-                  </span>
-                  <span className="text-xs font-medium truncate">
-                    {player.name}
+                  <span className="text-xs">
+                    <span className="text-muted-foreground">
+                      {player.number}. {firstName}
+                    </span>{" "}
+                    <span className="font-bold">{lastName}</span>
                   </span>
                 </motion.div>
-              ))}
-            </div>
+              );
+            })}
+          </div>
 
-            {/* Away Team */}
-            <div className="space-y-2">
-              {awayTeam.lineup.map((player, index) => (
+          {/* Away Team */}
+          <div className="space-y-2">
+            {awayTeam.lineup.map((player, index) => {
+              const nameParts = player.name.split(" ");
+              const firstName = nameParts[0];
+              const lastName = nameParts.slice(1).join(" ").toUpperCase();
+              return (
                 <motion.div
                   key={player.id}
-                  className="flex items-center gap-2 justify-end"
+                  className="flex items-center justify-end"
                   initial={{ opacity: 0, x: 20 }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ duration: 0.3, delay: index * 0.02 }}
                 >
-                  <span className="text-xs font-medium truncate text-right">
-                    {player.name}
-                  </span>
-                  <span className="text-xs text-muted-foreground w-5 text-right">
-                    {player.number}
+                  <span className="text-xs text-right">
+                    <span className="text-muted-foreground">
+                      {player.number}. {firstName}
+                    </span>{" "}
+                    <span className="font-bold">{lastName}</span>
                   </span>
                 </motion.div>
-              ))}
-            </div>
+              );
+            })}
           </div>
-        </Card>
+        </div>
       </motion.div>
 
       {/* Substitutes */}
@@ -313,48 +333,58 @@ export const MatchLineups = ({
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.3, delay: 0.4 }}
       >
-        <h3 className="font-semibold mb-3 text-sm">Substitutes</h3>
-        <Card className="p-4 border-none">
-          <div className="grid grid-cols-2 gap-x-4">
-            {/* Home Team Subs */}
-            <div className="space-y-2">
-              {homeTeam.substitutes.map((player, index) => (
+        <h3 className="font-semibold mb-4 text-center text-sm">Substitutes</h3>
+        <div className="grid grid-cols-2 gap-x-4 px-2">
+          {/* Home Team Subs */}
+          <div className="space-y-2">
+            {homeTeam.substitutes.map((player, index) => {
+              const nameParts = player.name.split(" ");
+              const firstName = nameParts[0];
+              const lastName = nameParts.slice(1).join(" ").toUpperCase();
+              return (
                 <motion.div
                   key={player.id}
-                  className="flex items-center gap-2"
+                  className="flex items-center"
                   initial={{ opacity: 0, x: -20 }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ duration: 0.3, delay: index * 0.02 }}
                 >
-                  <span className="text-xs text-muted-foreground w-5">
-                    {player.number}
+                  <span className="text-xs">
+                    <span className="text-muted-foreground">
+                      {player.number}. {firstName}
+                    </span>{" "}
+                    <span className="font-bold">{lastName}</span>
                   </span>
-                  <span className="text-xs truncate">{player.name}</span>
                 </motion.div>
-              ))}
-            </div>
+              );
+            })}
+          </div>
 
-            {/* Away Team Subs */}
-            <div className="space-y-2">
-              {awayTeam.substitutes.map((player, index) => (
+          {/* Away Team Subs */}
+          <div className="space-y-2">
+            {awayTeam.substitutes.map((player, index) => {
+              const nameParts = player.name.split(" ");
+              const firstName = nameParts[0];
+              const lastName = nameParts.slice(1).join(" ").toUpperCase();
+              return (
                 <motion.div
                   key={player.id}
-                  className="flex items-center gap-2 justify-end"
+                  className="flex items-center justify-end"
                   initial={{ opacity: 0, x: 20 }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ duration: 0.3, delay: index * 0.02 }}
                 >
-                  <span className="text-xs truncate text-right">
-                    {player.name}
-                  </span>
-                  <span className="text-xs text-muted-foreground w-5 text-right">
-                    {player.number}
+                  <span className="text-xs text-right">
+                    <span className="text-muted-foreground">
+                      {player.number}. {firstName}
+                    </span>{" "}
+                    <span className="font-bold">{lastName}</span>
                   </span>
                 </motion.div>
-              ))}
-            </div>
+              );
+            })}
           </div>
-        </Card>
+        </div>
       </motion.div>
     </motion.div>
   );
