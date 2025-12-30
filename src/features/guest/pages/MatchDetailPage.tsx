@@ -9,6 +9,7 @@ import { MatchSummary } from "@/features/guest/components/MatchSummary";
 import { MatchH2H } from "@/features/guest/components/MatchH2H";
 import { MatchStatsTab } from "@/features/guest/components/MatchStatsTab";
 import { MatchStandingsTable } from "@/features/guest/components/MatchStandingsTable";
+import { Navigation } from "@/components/common/Navigation";
 import { getMatchById } from "@/data/matches";
 import { getMatchDetails } from "@/data/matchDetails";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -20,6 +21,7 @@ const MatchDetail = () => {
   const navigate = useNavigate();
   const { id } = useParams<{ id: string }>();
   const [loading, setLoading] = useState(true);
+  const [activeTab, setActiveTab] = useState("home");
 
   useEffect(() => {
     // Simulate loading
@@ -36,7 +38,7 @@ const MatchDetail = () => {
   if (loading) {
     return (
       <motion.div
-        className="min-h-screen bg-background pb-20"
+        className="min-h-screen bg-background pb-24"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.3 }}
@@ -172,7 +174,7 @@ const MatchDetail = () => {
 
   return (
     <motion.div
-      className="min-h-screen bg-background pb-20"
+      className="min-h-screen bg-background pb-24"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.3 }}
@@ -302,6 +304,9 @@ const MatchDetail = () => {
           </Tabs>
         </motion.div>
       </div>
+
+      {/* Navigation */}
+      <Navigation activeTab={activeTab} onTabChange={setActiveTab} />
     </motion.div>
   );
 };
