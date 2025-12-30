@@ -48,9 +48,9 @@ export const MatchSummary = ({ events }: MatchSummaryProps) => {
             </div>
 
             {event.team === "home" ? (
-              // Home Team Event (Right Side) - Align text right to bring closer to timeline
+              // Home Team Event (Right Side) - Text aligned right to be close to timeline
               <div className="flex items-center justify-start pl-8">
-                <div className="space-y-1 max-w-[45%] text-left">
+                <div className="space-y-1 max-w-[45%] text-right">
                   <div className="text-sm font-bold text-green-400">
                     {event.time}'
                   </div>
@@ -63,9 +63,9 @@ export const MatchSummary = ({ events }: MatchSummaryProps) => {
                 </div>
               </div>
             ) : (
-              // Away Team Event (Left Side) - Align text right to bring closer to timeline
+              // Away Team Event (Left Side) - Text aligned left to be close to timeline
               <div className="flex items-center justify-end pr-8">
-                <div className="space-y-1 max-w-[45%] text-right">
+                <div className="space-y-1 max-w-[45%] text-left">
                   <div className="text-sm font-bold text-green-400">
                     {event.time}'
                   </div>
