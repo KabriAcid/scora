@@ -12,7 +12,7 @@ export interface PlayerStat {
 export const topScorers: PlayerStat[] = [
   {
     id: "1",
-    name: "Erling Haaland",
+    name: "Habu Griezman",
     teamId: clubs[11].id,
     teamName: clubs[11].name,
     teamBadge: clubs[11].badgeUrl,
@@ -20,7 +20,7 @@ export const topScorers: PlayerStat[] = [
   },
   {
     id: "2",
-    name: "Igor Thiago",
+    name: "Abubakar Yellow",
     teamId: clubs[3].id,
     teamName: clubs[3].name,
     teamBadge: clubs[3].badgeUrl,
@@ -28,7 +28,7 @@ export const topScorers: PlayerStat[] = [
   },
   {
     id: "3",
-    name: "Hugo Ekitike",
+    name: "Anas Dan 02",
     teamId: clubs[12].id,
     teamName: clubs[12].name,
     teamBadge: clubs[12].badgeUrl,
@@ -36,7 +36,7 @@ export const topScorers: PlayerStat[] = [
   },
   {
     id: "4",
-    name: "Jean-Philippe Mateta",
+    name: "Shafiu Illa",
     teamId: clubs[6].id,
     teamName: clubs[6].name,
     teamBadge: clubs[6].badgeUrl,
@@ -44,7 +44,7 @@ export const topScorers: PlayerStat[] = [
   },
   {
     id: "5",
-    name: "Danny Welbeck",
+    name: "Adamu Kanu",
     teamId: clubs[4].id,
     teamName: clubs[4].name,
     teamBadge: clubs[4].badgeUrl,
@@ -52,7 +52,7 @@ export const topScorers: PlayerStat[] = [
   },
   {
     id: "6",
-    name: "Mohamed Salah",
+    name: "Anas Mayu",
     teamId: clubs[12].id,
     teamName: clubs[12].name,
     teamBadge: clubs[12].badgeUrl,
@@ -60,7 +60,7 @@ export const topScorers: PlayerStat[] = [
   },
   {
     id: "7",
-    name: "Chris Wood",
+    name: "Anas Dauda",
     teamId: clubs[14].id,
     teamName: clubs[14].name,
     teamBadge: clubs[14].badgeUrl,
@@ -68,7 +68,7 @@ export const topScorers: PlayerStat[] = [
   },
   {
     id: "8",
-    name: "Bryan Mbeumo",
+    name: "Mustapha Mysterio",
     teamId: clubs[3].id,
     teamName: clubs[3].name,
     teamBadge: clubs[3].badgeUrl,
@@ -76,7 +76,7 @@ export const topScorers: PlayerStat[] = [
   },
   {
     id: "9",
-    name: "Cole Palmer",
+    name: "Nunu Striker",
     teamId: clubs[5].id,
     teamName: clubs[5].name,
     teamBadge: clubs[5].badgeUrl,
@@ -84,7 +84,7 @@ export const topScorers: PlayerStat[] = [
   },
   {
     id: "10",
-    name: "Nicolas Jackson",
+    name: "Oris Power",
     teamId: clubs[5].id,
     teamName: clubs[5].name,
     teamBadge: clubs[5].badgeUrl,
@@ -95,7 +95,7 @@ export const topScorers: PlayerStat[] = [
 export const topAssists: PlayerStat[] = [
   {
     id: "1",
-    name: "Bruno Fernandes",
+    name: "Fadi Saleh",
     teamId: clubs[13].id,
     teamName: clubs[13].name,
     teamBadge: clubs[13].badgeUrl,
@@ -103,7 +103,7 @@ export const topAssists: PlayerStat[] = [
   },
   {
     id: "2",
-    name: "Mohamed Salah",
+    name: "Rabi Musa",
     teamId: clubs[12].id,
     teamName: clubs[12].name,
     teamBadge: clubs[12].badgeUrl,
@@ -111,7 +111,7 @@ export const topAssists: PlayerStat[] = [
   },
   {
     id: "3",
-    name: "Cole Palmer",
+    name: "Uban Club",
     teamId: clubs[5].id,
     teamName: clubs[5].name,
     teamBadge: clubs[5].badgeUrl,
@@ -119,7 +119,7 @@ export const topAssists: PlayerStat[] = [
   },
   {
     id: "4",
-    name: "Bukayo Saka",
+    name: "Muhammad Diarra",
     teamId: clubs[0].id,
     teamName: clubs[0].name,
     teamBadge: clubs[0].badgeUrl,
@@ -127,7 +127,7 @@ export const topAssists: PlayerStat[] = [
   },
   {
     id: "5",
-    name: "Kevin De Bruyne",
+    name: "Otoke Defender",
     teamId: clubs[11].id,
     teamName: clubs[11].name,
     teamBadge: clubs[11].badgeUrl,
@@ -135,7 +135,7 @@ export const topAssists: PlayerStat[] = [
   },
   {
     id: "6",
-    name: "Anthony Gordon",
+    name: "Senior Kante",
     teamId: clubs[14].id,
     teamName: clubs[14].name,
     teamBadge: clubs[14].badgeUrl,
@@ -143,7 +143,7 @@ export const topAssists: PlayerStat[] = [
   },
   {
     id: "7",
-    name: "Dwight McNeil",
+    name: "Sharabilu Attack",
     teamId: clubs[7].id,
     teamName: clubs[7].name,
     teamBadge: clubs[7].badgeUrl,
@@ -151,7 +151,7 @@ export const topAssists: PlayerStat[] = [
   },
   {
     id: "8",
-    name: "Alexander Isak",
+    name: "Yahya Ibrahim",
     teamId: clubs[14].id,
     teamName: clubs[14].name,
     teamBadge: clubs[14].badgeUrl,
@@ -159,7 +159,7 @@ export const topAssists: PlayerStat[] = [
   },
   {
     id: "9",
-    name: "Morgan Rogers",
+    name: "Ado Mallam",
     teamId: clubs[1].id,
     teamName: clubs[1].name,
     teamBadge: clubs[1].badgeUrl,
@@ -167,7 +167,7 @@ export const topAssists: PlayerStat[] = [
   },
   {
     id: "10",
-    name: "Heung-Min Son",
+    name: "Isa Kwara",
     teamId: clubs[15].id,
     teamName: clubs[15].name,
     teamBadge: clubs[15].badgeUrl,
@@ -178,7 +178,7 @@ export const topAssists: PlayerStat[] = [
 export const redCards: PlayerStat[] = [
   {
     id: "1",
-    name: "William Saliba",
+    name: "Saidu Gida",
     teamId: clubs[0].id,
     teamName: clubs[0].name,
     teamBadge: clubs[0].badgeUrl,
@@ -186,7 +186,7 @@ export const redCards: PlayerStat[] = [
   },
   {
     id: "2",
-    name: "Declan Rice",
+    name: "Aminu Dodo",
     teamId: clubs[0].id,
     teamName: clubs[0].name,
     teamBadge: clubs[0].badgeUrl,
@@ -194,7 +194,7 @@ export const redCards: PlayerStat[] = [
   },
   {
     id: "3",
-    name: "Daichi Kamada",
+    name: "Zainab Ahmed",
     teamId: clubs[6].id,
     teamName: clubs[6].name,
     teamBadge: clubs[6].badgeUrl,
@@ -202,7 +202,7 @@ export const redCards: PlayerStat[] = [
   },
   {
     id: "4",
-    name: "Bruno Fernandes",
+    name: "Tanko Usman",
     teamId: clubs[13].id,
     teamName: clubs[13].name,
     teamBadge: clubs[13].badgeUrl,
@@ -210,7 +210,7 @@ export const redCards: PlayerStat[] = [
   },
   {
     id: "5",
-    name: "Lisandro Martinez",
+    name: "Lawal Mohammed",
     teamId: clubs[13].id,
     teamName: clubs[13].name,
     teamBadge: clubs[13].badgeUrl,
@@ -221,7 +221,7 @@ export const redCards: PlayerStat[] = [
 export const yellowCards: PlayerStat[] = [
   {
     id: "1",
-    name: "Yves Bissouma",
+    name: "Musa Kabir",
     teamId: clubs[15].id,
     teamName: clubs[15].name,
     teamBadge: clubs[15].badgeUrl,
@@ -229,7 +229,7 @@ export const yellowCards: PlayerStat[] = [
   },
   {
     id: "2",
-    name: "Joao Palhinha",
+    name: "Adamu Maliki",
     teamId: clubs[9].id,
     teamName: clubs[9].name,
     teamBadge: clubs[9].badgeUrl,
@@ -237,7 +237,7 @@ export const yellowCards: PlayerStat[] = [
   },
   {
     id: "3",
-    name: "Lewis Cook",
+    name: "Sani Ibrahim",
     teamId: clubs[2].id,
     teamName: clubs[2].name,
     teamBadge: clubs[2].badgeUrl,
@@ -245,7 +245,7 @@ export const yellowCards: PlayerStat[] = [
   },
   {
     id: "4",
-    name: "Moises Caicedo",
+    name: "Habu Benzima",
     teamId: clubs[5].id,
     teamName: clubs[5].name,
     teamBadge: clubs[5].badgeUrl,
@@ -253,7 +253,7 @@ export const yellowCards: PlayerStat[] = [
   },
   {
     id: "5",
-    name: "Bruno Guimaraes",
+    name: "Wasiu Bello",
     teamId: clubs[14].id,
     teamName: clubs[14].name,
     teamBadge: clubs[14].badgeUrl,
@@ -261,7 +261,7 @@ export const yellowCards: PlayerStat[] = [
   },
   {
     id: "6",
-    name: "Kai Havertz",
+    name: "Ahmad Hassan",
     teamId: clubs[0].id,
     teamName: clubs[0].name,
     teamBadge: clubs[0].badgeUrl,
@@ -269,7 +269,7 @@ export const yellowCards: PlayerStat[] = [
   },
   {
     id: "7",
-    name: "Amadou Onana",
+    name: "Chinedu Obi",
     teamId: clubs[1].id,
     teamName: clubs[1].name,
     teamBadge: clubs[1].badgeUrl,
@@ -277,7 +277,7 @@ export const yellowCards: PlayerStat[] = [
   },
   {
     id: "8",
-    name: "Ederson",
+    name: "Emeka Nwosu",
     teamId: clubs[1].id,
     teamName: clubs[1].name,
     teamBadge: clubs[1].badgeUrl,
@@ -285,7 +285,7 @@ export const yellowCards: PlayerStat[] = [
   },
   {
     id: "9",
-    name: "Ruben Dias",
+    name: "Kunle Okafor",
     teamId: clubs[11].id,
     teamName: clubs[11].name,
     teamBadge: clubs[11].badgeUrl,
@@ -293,7 +293,7 @@ export const yellowCards: PlayerStat[] = [
   },
   {
     id: "10",
-    name: "Pedro Porro",
+    name: "Tunde Adebayo",
     teamId: clubs[15].id,
     teamName: clubs[15].name,
     teamBadge: clubs[15].badgeUrl,
@@ -304,7 +304,7 @@ export const yellowCards: PlayerStat[] = [
 export const cleanSheets: PlayerStat[] = [
   {
     id: "1",
-    name: "Jordan Pickford",
+    name: "Obi Martins",
     teamId: clubs[7].id,
     teamName: clubs[7].name,
     teamBadge: clubs[7].badgeUrl,
@@ -312,7 +312,7 @@ export const cleanSheets: PlayerStat[] = [
   },
   {
     id: "2",
-    name: "Robert Sanchez",
+    name: "Chidi Okoro",
     teamId: clubs[5].id,
     teamName: clubs[5].name,
     teamBadge: clubs[5].badgeUrl,
@@ -320,7 +320,7 @@ export const cleanSheets: PlayerStat[] = [
   },
   {
     id: "3",
-    name: "David Raya",
+    name: "Ibrahim Katisiya",
     teamId: clubs[0].id,
     teamName: clubs[0].name,
     teamBadge: clubs[0].badgeUrl,
@@ -328,7 +328,7 @@ export const cleanSheets: PlayerStat[] = [
   },
   {
     id: "4",
-    name: "Nick Pope",
+    name: "Nunu Keeper",
     teamId: clubs[14].id,
     teamName: clubs[14].name,
     teamBadge: clubs[14].badgeUrl,
@@ -336,7 +336,7 @@ export const cleanSheets: PlayerStat[] = [
   },
   {
     id: "5",
-    name: "Ederson",
+    name: "Sanusi Azare",
     teamId: clubs[11].id,
     teamName: clubs[11].name,
     teamBadge: clubs[11].badgeUrl,
@@ -344,7 +344,7 @@ export const cleanSheets: PlayerStat[] = [
   },
   {
     id: "6",
-    name: "Alisson Becker",
+    name: "Yahya Gara",
     teamId: clubs[12].id,
     teamName: clubs[12].name,
     teamBadge: clubs[12].badgeUrl,
@@ -352,7 +352,7 @@ export const cleanSheets: PlayerStat[] = [
   },
   {
     id: "7",
-    name: "Emiliano Martinez",
+    name: "Ado Mukhtar",
     teamId: clubs[1].id,
     teamName: clubs[1].name,
     teamBadge: clubs[1].badgeUrl,
@@ -360,7 +360,7 @@ export const cleanSheets: PlayerStat[] = [
   },
   {
     id: "8",
-    name: "Guglielmo Vicario",
+    name: "Isa Guardian",
     teamId: clubs[15].id,
     teamName: clubs[15].name,
     teamBadge: clubs[15].badgeUrl,
@@ -368,7 +368,7 @@ export const cleanSheets: PlayerStat[] = [
   },
   {
     id: "9",
-    name: "Bart Verbruggen",
+    name: "Rabi Protector",
     teamId: clubs[4].id,
     teamName: clubs[4].name,
     teamBadge: clubs[4].badgeUrl,
@@ -376,7 +376,7 @@ export const cleanSheets: PlayerStat[] = [
   },
   {
     id: "10",
-    name: "Andre Onana",
+    name: "Fadi Guardian",
     teamId: clubs[13].id,
     teamName: clubs[13].name,
     teamBadge: clubs[13].badgeUrl,
