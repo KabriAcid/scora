@@ -48,31 +48,31 @@ export const MatchSummary = ({ events }: MatchSummaryProps) => {
             </div>
 
             {event.team === "home" ? (
-              // Home Team Event (Left Side)
-              <div className="flex items-center justify-end pr-8">
-                <div className="text-right space-y-1 max-w-[45%]">
-                  <div className="text-sm font-bold text-left text-green-400">
-                    {event.time}
+              // Home Team Event (Right Side) - Align text right to bring closer to timeline
+              <div className="flex items-center justify-start pl-8">
+                <div className="space-y-1 max-w-[45%] text-left">
+                  <div className="text-sm font-bold text-green-400">
+                    {event.time}'
                   </div>
-                  <div className="font-semibold text-left text-sm truncate">
+                  <div className="font-semibold text-sm truncate">
                     {event.player}
                   </div>
-                  <span className="text-xs block text-left text-muted-foreground">
+                  <span className="text-xs block text-muted-foreground">
                     {getEventTitle(event.type)}
                   </span>
                 </div>
               </div>
             ) : (
-              // Away Team Event (Right Side)
-              <div className="flex items-center pl-8">
-                <div className="text-left space-y-1 max-w-[45%]">
-                  <div className="text-sm font-bold text-right text-green-400">
-                    {event.time}
+              // Away Team Event (Left Side) - Align text right to bring closer to timeline
+              <div className="flex items-center justify-end pr-8">
+                <div className="space-y-1 max-w-[45%] text-right">
+                  <div className="text-sm font-bold text-green-400">
+                    {event.time}'
                   </div>
-                  <div className="font-semibold text-right text-sm truncate">
+                  <div className="font-semibold text-sm truncate">
                     {event.player}
                   </div>
-                  <span className="text-xs block text-right text-muted-foreground">
+                  <span className="text-xs block text-muted-foreground">
                     {getEventTitle(event.type)}
                   </span>
                 </div>
