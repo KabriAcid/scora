@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Bell, Search, Menu } from "lucide-react";
+import { Bell, Search, Menu, User } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { MatchCard } from "@/components/match/MatchCard";
 import { MatchListItem } from "@/components/match/MatchListItem";
@@ -49,9 +49,18 @@ const Index = () => {
       >
         <div className="flex items-center justify-between p-4">
           <Logo />
-          <div className="flex items-center">
+          <div className="flex items-center gap-2">
             <Button variant="ghost" size="icon" className="rounded-xl">
               <Search className="w-5 h-5" />
+            </Button>
+            <Button
+              variant="ghost"
+              size="icon"
+              className="rounded-xl"
+              onClick={() => navigate("/agent")}
+              title="Agent Login"
+            >
+              <User className="w-5 h-5" />
             </Button>
           </div>
         </div>

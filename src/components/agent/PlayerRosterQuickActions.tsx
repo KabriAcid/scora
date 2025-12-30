@@ -25,7 +25,6 @@ const eventTypes = [
     { type: "goal", icon: "/images/event-goal.svg", label: "Goal" },
     { type: "yellow_card", icon: "/images/event-yellow-card.svg", label: "Yellow" },
     { type: "red_card", icon: "/images/event-red-card.svg", label: "Red" },
-    { type: "substitution", icon: "/images/event-substitution.svg", label: "Sub" },
 ];
 
 const containerVariants = {
