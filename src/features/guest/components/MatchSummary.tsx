@@ -54,7 +54,11 @@ export const MatchSummary = ({ events }: MatchSummaryProps) => {
                   <div className="text-sm font-bold text-green-400">
                     {event.time}'
                   </div>
-                  <div className="font-semibold text-sm">{event.player}</div>
+                  <div className="font-semibold text-sm">
+                    {event.type === "substitution"
+                      ? `${event.player} → ${event.description?.replace("↔ ", "")}`
+                      : event.player}
+                  </div>
                   <span className="text-xs block text-muted-foreground">
                     {getEventTitle(event.type)}
                   </span>
@@ -67,7 +71,11 @@ export const MatchSummary = ({ events }: MatchSummaryProps) => {
                   <div className="text-sm font-bold text-green-400">
                     {event.time}'
                   </div>
-                  <div className="font-semibold text-sm">{event.player}</div>
+                  <div className="font-semibold text-sm">
+                    {event.type === "substitution"
+                      ? `${event.player} → ${event.description?.replace("↔ ", "")}`
+                      : event.player}
+                  </div>
                   <span className="text-xs block text-muted-foreground">
                     {getEventTitle(event.type)}
                   </span>

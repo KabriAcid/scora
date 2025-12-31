@@ -18,7 +18,6 @@ interface StatTab {
 }
 
 const tabs: StatTab[] = [
-  { id: "all", label: "All" },
   { id: "scorers", label: "Top Scorers", icon: Trophy },
   { id: "assists", label: "Assists", icon: Award },
   { id: "red", label: "Red Cards", icon: AlertCircle },
@@ -100,7 +99,7 @@ const StatItem = ({
 };
 
 const StatsPage = () => {
-  const [activeTab, setActiveTab] = useState<StatCategory | "all">("all");
+  const [activeTab, setActiveTab] = useState<StatCategory | "all">("scorers");
   const [stats, setStats] = useState<PlayerStat[]>([]);
   const [loading, setLoading] = useState(true);
   const [navTab, setNavTab] = useState("stats");
@@ -108,11 +107,7 @@ const StatsPage = () => {
   useEffect(() => {
     setLoading(true);
     setTimeout(() => {
-      if (activeTab === "all") {
-        setStats(getStatsByCategory("scorers"));
-      } else {
-        setStats(getStatsByCategory(activeTab as StatCategory));
-      }
+      setStats(getStatsByCategory(activeTab as StatCategory));
       setLoading(false);
     }, 500);
   }, [activeTab]);
@@ -212,34 +207,6 @@ const StatsPage = () => {
             </motion.div>
           )}
         </AnimatePresence>
-
-        {/* Quick Stats Card */}
-        {!loading && stats.length > 0 && (
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.3 }}
-            className="mt-6"
-          >
-            <Card className="p-4 bg-card/50 border-border/50">
-              <h3 className="text-sm font-semibold mb-3">
-                {getCategoryTitle()} - Top 3
-              </h3>
-              <div className="grid grid-cols-3 gap-4">
-                {stats.slice(0, 3).map((player, i) => (
-                  <div key={player.id} className="text-center">
-                    <div className="text-2xl font-bold text-primary">
-                      {player.value}
-                    </div>
-                    <div className="text-[10px] text-muted-foreground truncate">
-                      {player.name}
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </Card>
-          </motion.div>
-        )}
       </main>
 
       <Navigation activeTab={navTab} onTabChange={setNavTab} />

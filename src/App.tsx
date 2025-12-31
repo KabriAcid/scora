@@ -21,7 +21,7 @@ const App = () => (
   <QueryClientProvider client={queryClient}>
     <TooltipProvider>
       <Toaster />
-      <Sonner />
+      <Sonner position="top-center" />
       <BrowserRouter>
         <Routes>
           {/* Guest Routes (Public Access) */}
@@ -33,6 +33,7 @@ const App = () => (
           <Route path="/terms" element={<TermsPage />} />
 
           {/* Agent Routes */}
+          <Route path="/agent" element={<AgentLoginPage />} />
           <Route path="/agent/login" element={<AgentLoginPage />} />
           <Route path="/agent/dashboard" element={<AgentDashboard />} />
           <Route path="/agent/match/:id" element={<LiveMatchPage />} />
