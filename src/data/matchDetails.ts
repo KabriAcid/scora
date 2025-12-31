@@ -13,14 +13,14 @@ export interface MatchEvent {
   time: string;
   team: "home" | "away";
   type:
-  | "goal"
-  | "yellow"
-  | "red"
-  | "substitution"
-  | "penalty"
-  | "offside"
-  | "corner"
-  | "foul";
+    | "goal"
+    | "yellow"
+    | "red"
+    | "substitution"
+    | "penalty"
+    | "offside"
+    | "corner"
+    | "foul";
   player: string;
   assist?: string;
   description?: string;
@@ -77,7 +77,7 @@ export const matchDetailsData: Record<string, MatchDetail> = {
       formation: "4-2-3-1",
       manager: "Musa Kabir",
       lineup: [
-        { id: "1", name: "Habu Benzima", number: 1, position: "GK" },
+        { id: "1", name: "Abu Benzima", number: 1, position: "GK" },
         { id: "2", name: "Abubakar Yellow", number: 24, position: "RB" },
         { id: "3", name: "Anas Dan 02", number: 6, position: "CB" },
         { id: "4", name: "Shafiu Illa", number: 26, position: "CB" },
@@ -110,7 +110,7 @@ export const matchDetailsData: Record<string, MatchDetail> = {
         { id: "25", name: "Adamu Maliki", number: 23, position: "LB" },
         { id: "26", name: "Saidu Gida", number: 18, position: "CDM" },
         { id: "27", name: "Musa Kabir", number: 14, position: "CM" },
-        { id: "28", name: "Zainab Ahmed", number: 21, position: "RW" },
+        { id: "28", name: "Yusuf A", number: 21, position: "RW" },
         { id: "29", name: "Fadi Saleh", number: 8, position: "CAM" },
         { id: "30", name: "Rabi Musa", number: 25, position: "LW" },
         { id: "31", name: "Aminu Dodo", number: 10, position: "ST" },
@@ -404,7 +404,7 @@ export const matchDetailsData: Record<string, MatchDetail> = {
       formation: "4-2-3-1",
       manager: "Ibrahim Sani",
       lineup: [
-        { id: "1", name: "Zainab Ahmed", number: 1, position: "GK" },
+        { id: "1", name: "Yusuf A", number: 1, position: "GK" },
         { id: "2", name: "Rabi Musa", number: 2, position: "RB" },
         { id: "3", name: "Fadi Saleh", number: 5, position: "CB" },
         { id: "4", name: "Lawal Mohammed", number: 6, position: "CB" },
@@ -412,7 +412,7 @@ export const matchDetailsData: Record<string, MatchDetail> = {
         { id: "6", name: "Saidu Gida", number: 18, position: "CDM" },
         { id: "7", name: "Musa Kabir", number: 14, position: "CDM" },
         { id: "8", name: "Muhammad Diarra", number: 16, position: "CAM" },
-        { id: "9", name: "Habu Benzima", number: 1, position: "LW" },
+        { id: "9", name: "Abu Benzima", number: 1, position: "LW" },
         { id: "10", name: "Sani Benzima", number: 29, position: "RW" },
         { id: "11", name: "Ahmad Hassan", number: 10, position: "ST" },
       ],

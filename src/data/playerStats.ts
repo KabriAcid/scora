@@ -12,7 +12,7 @@ export interface PlayerStat {
 export const topScorers: PlayerStat[] = [
   {
     id: "1",
-    name: "Habu Griezman",
+    name: "Ayya Griezman",
     teamId: clubs[11].id,
     teamName: clubs[11].name,
     teamBadge: clubs[11].badgeUrl,
@@ -194,7 +194,7 @@ export const redCards: PlayerStat[] = [
   },
   {
     id: "3",
-    name: "Zainab Ahmed",
+    name: "Yusuf A",
     teamId: clubs[6].id,
     teamName: clubs[6].name,
     teamBadge: clubs[6].badgeUrl,
@@ -245,7 +245,7 @@ export const yellowCards: PlayerStat[] = [
   },
   {
     id: "4",
-    name: "Habu Benzima",
+    name: "Abu Benzima",
     teamId: clubs[5].id,
     teamName: clubs[5].name,
     teamBadge: clubs[5].badgeUrl,

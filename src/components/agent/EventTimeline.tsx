@@ -28,7 +28,7 @@ export const EventTimeline = ({
   }
 
   return (
-    <Card className="p-6 bg-card/50">
+    <Card className="p-6 bg-card/50 border-none shadow-xl">
       <h2 className="text-sm font-semibold text-muted-foreground uppercase mb-4">Match Timeline</h2>
       <motion.div
         className="relative py-4 flex flex-col-reverse"
