@@ -4,3 +4,4 @@ In the live match header, omit the stadium and the league title.
 - Also be smart to make the fields for players names a select or <datalist> with search functionality.
 - Also refactor the inputs for each event type so that e.g corner kicks don't need a player field instead we increment corner count and also other events - #file:MatchDetailPage.tsx 
 - Match stats container needs to look have all type of stats 
+- Removal of an event after being placed.
