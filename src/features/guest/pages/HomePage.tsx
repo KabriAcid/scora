@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Bell, Search, Menu } from "lucide-react";
+import { Search } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { MatchCard } from "@/components/match/MatchCard";
 import { MatchListItem } from "@/components/match/MatchListItem";
