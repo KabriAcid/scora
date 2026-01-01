@@ -65,8 +65,9 @@ const CalendarMatchItem = ({
   >
     {/* Home Team */}
     <div className="flex items-center gap-3 flex-1 justify-end">
-      <span className="font-semibold text-sm text-right truncate max-w-[80px]">
-        {match.homeTeam.shortName}
+      <span className="font-semibold text-sm text-right truncate max-w-[80px] md:max-w-none">
+        <span className="md:hidden">{match.homeTeam.shortName}</span>
+        <span className="hidden md:inline">{match.homeTeam.name}</span>
       </span>
       <motion.img
         whileHover={{ scale: 1.1 }}
@@ -129,8 +130,9 @@ const CalendarMatchItem = ({
         alt={match.awayTeam.shortName}
         className="w-8 h-8 object-contain"
       />
-      <span className="font-semibold text-sm truncate max-w-[80px]">
-        {match.awayTeam.shortName}
+      <span className="font-semibold text-sm truncate max-w-[80px] md:max-w-none">
+        <span className="md:hidden">{match.awayTeam.shortName}</span>
+        <span className="hidden md:inline">{match.awayTeam.name}</span>
       </span>
     </div>
   </motion.div>
@@ -308,7 +310,7 @@ const CalendarPage = () => {
                   </div>
 
                   {/* Matches Card */}
-                  <Card className="bg-card/50 border-border/50 overflow-hidden">
+                  <Card className="bg-card/50 border-none overflow-hidden">
                     {group.matches.map((match, matchIndex) => (
                       <CalendarMatchItem
                         key={match.id}
