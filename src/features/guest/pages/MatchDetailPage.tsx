@@ -3,7 +3,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { motion } from "framer-motion";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { MatchDetailHeader } from "@/features/guest/components/MatchDetailHeader";
-import { MatchCard } from "@/components/match/MatchCard";
+import { MatchCard } from "@/features/guest/components/match/MatchCard";
 import { MatchLineups } from "@/features/guest/components/MatchLineups";
 import { MatchSummary } from "@/features/guest/components/MatchSummary";
 import { MatchH2H } from "@/features/guest/components/MatchH2H";

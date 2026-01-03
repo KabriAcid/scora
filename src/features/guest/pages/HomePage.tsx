@@ -1,10 +1,10 @@
 import { useState, useEffect } from "react";
 import { Search, User } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { MatchCard } from "@/components/match/MatchCard";
-import { MatchListItem } from "@/components/match/MatchListItem";
+import { MatchCard } from "@/features/guest/components/match/MatchCard";
+import { MatchListItem } from "@/features/guest/components/match/MatchListItem";
 import { Navigation } from "@/components/common/Navigation";
-import { DateSelector } from "@/components/calendar/DateSelector";
+import { DateSelector } from "@/features/guest/components/calendar/DateSelector";
 import { useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { Logo } from "@/components/common/Logo";

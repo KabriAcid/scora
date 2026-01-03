@@ -143,7 +143,7 @@ const CalendarPage = () => {
   const [loading, setLoading] = useState(true);
   const [matchGroups, setMatchGroups] = useState<MatchGroup[]>([]);
   const [currentDateRange, setCurrentDateRange] = useState(
-    "Sat 2 Nov - Mon 4 Nov"
+    "Sat 2 Jan - Mon 4 Jan"
   );
   const [activeTab, setActiveTab] = useState("calendar");
 
@@ -152,9 +152,9 @@ const CalendarPage = () => {
     setTimeout(() => {
       const data = week < 10 ? pastCalendarMatchesData : calendarMatchesData;
       if (week < 10) {
-        setCurrentDateRange("Sat 26 Oct - Mon 28 Oct");
+        setCurrentDateRange("Sat 26 Feb - Mon 28 Feb");
       } else {
-        setCurrentDateRange("Sat 2 Nov - Mon 4 Nov");
+        setCurrentDateRange("Sat 2 Jan - Mon 4 Jan");
       }
 
       const groupedMatches = data.reduce((acc, match) => {
