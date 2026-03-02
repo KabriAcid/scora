@@ -97,6 +97,39 @@ export const todayMatches: Match[] = [
         week: "Week 10",
         time: "20:00",
     },
+    {
+        id: "8",
+        homeTeam: getClubById("baure-flyers")!,
+        awayTeam: getClubById("golden-arrow")!,
+        homeScore: 2,
+        awayScore: 0,
+        status: "finished",
+        stadium: "Baure Arena",
+        week: "Week 10",
+        time: "FT",
+    },
+    {
+        id: "9",
+        homeTeam: getClubById("faskari-united")!,
+        awayTeam: getClubById("nursing-home")!,
+        homeScore: 1,
+        awayScore: 0,
+        status: "finished",
+        stadium: "Faskari Stadium",
+        week: "Week 10",
+        time: "FT",
+    },
+    {
+        id: "10",
+        homeTeam: getClubById("gawo-united")!,
+        awayTeam: getClubById("katsina-city")!,
+        homeScore: 2,
+        awayScore: 2,
+        status: "finished",
+        stadium: "Gawo Park",
+        week: "Week 10",
+        time: "FT",
+    },
 ];
 
 // Get featured match (usually the most important live match)
@@ -111,7 +144,11 @@ export const getLiveMatches = (): Match[] => {
 
 // Get today's matches
 export const getTodayMatches = (): Match[] => {
-    return todayMatches;
+    // Sort: finished first, then upcoming, then others
+    return [...todayMatches].sort((a, b) => {
+        const statusOrder = { finished: 0, upcoming: 1, live: 2 };
+        return statusOrder[a.status] - statusOrder[b.status];
+    });
 };
 
 // Get match by ID
