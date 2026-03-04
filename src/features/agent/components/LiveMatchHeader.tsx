@@ -1,4 +1,4 @@
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { Card } from "@/components/ui/card";
 
 interface AssignedMatch {
@@ -41,25 +41,33 @@ const LiveMatchHeader = ({
 
         {/* Scoreline */}
         <div className="flex items-center gap-2 md:gap-3 flex-shrink-0">
-          <motion.span
-            key={homeScore}
-            initial={{ scale: 1.3, opacity: 0.6 }}
-            animate={{ scale: 1, opacity: 1 }}
-            className="text-3xl md:text-5xl font-bold tabular-nums"
-          >
-            {homeScore}
-          </motion.span>
+          <AnimatePresence mode="wait">
+            <motion.span
+              key={homeScore}
+              initial={{ scale: 1.3, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.7, opacity: 0 }}
+              transition={{ duration: 0.15 }}
+              className="text-3xl md:text-5xl font-bold tabular-nums"
+            >
+              {homeScore}
+            </motion.span>
+          </AnimatePresence>
           <span className="text-xl md:text-3xl font-light text-muted-foreground">
             -
           </span>
-          <motion.span
-            key={awayScore}
-            initial={{ scale: 1.3, opacity: 0.6 }}
-            animate={{ scale: 1, opacity: 1 }}
-            className="text-3xl md:text-5xl font-bold tabular-nums"
-          >
-            {awayScore}
-          </motion.span>
+          <AnimatePresence mode="wait">
+            <motion.span
+              key={awayScore}
+              initial={{ scale: 1.3, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.7, opacity: 0 }}
+              transition={{ duration: 0.15 }}
+              className="text-3xl md:text-5xl font-bold tabular-nums"
+            >
+              {awayScore}
+            </motion.span>
+          </AnimatePresence>
         </div>
 
         {/* Away logo */}

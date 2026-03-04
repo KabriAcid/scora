@@ -99,6 +99,25 @@ const LiveMatchPage = () => {
     [match],
   );
 
+  // Remove event handler — reverses score if it was a goal
+  // TODO: call DELETE /api/events/:id when backend is ready
+  const handleRemoveEvent = useCallback(
+    (eventId: string) => {
+      setEvents((prev) => {
+        const removed = prev.find((e) => e.id === eventId);
+        if (removed?.type === "goal") {
+          if (removed.team === match?.homeTeam) {
+            setHomeScore((s) => Math.max(0, s - 1));
+          } else if (removed.team === match?.awayTeam) {
+            setAwayScore((s) => Math.max(0, s - 1));
+          }
+        }
+        return prev.filter((e) => e.id !== eventId);
+      });
+    },
+    [match],
+  );
+
   if (!match) {
     return (
       <AgentLayout>
@@ -269,6 +288,7 @@ const LiveMatchPage = () => {
                   events={events}
                   homeTeam={match.homeTeam}
                   awayTeam={match.awayTeam}
+                  onRemoveEvent={handleRemoveEvent}
                 />
               </motion.div>
             </div>
