@@ -4,6 +4,7 @@ import { Plus, Minus, Activity } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import type { MatchPhase } from "./MatchControlPanel";
+import type { MatchEvent } from "@/shared/types/agent";
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -65,8 +66,10 @@ const StatRow = ({
   onAdjust,
   isActive,
 }: StatRowProps) => {
-  const total = homeVal + awayVal || 1;
-  const homePct = Math.round((homeVal / total) * 100);
+  const hv = homeVal ?? 0;
+  const av = awayVal ?? 0;
+  const total = hv + av || 1;
+  const homePct = Math.round((hv / total) * 100);
   const awayPct = 100 - homePct;
 
   return (
@@ -76,14 +79,14 @@ const StatRow = ({
         {/* Home: value | – | + */}
         <div className="flex items-center gap-1 flex-1 justify-end">
           <span className="text-sm font-bold w-5 text-right tabular-nums text-foreground">
-            {homeVal}
+            {hv}
           </span>
           <div className="flex gap-0.5">
             <Button
               size="icon"
               variant="ghost"
               onClick={() => onAdjust("home", -1)}
-              disabled={!isActive || homeVal === 0}
+              disabled={!isActive || hv === 0}
               className="h-5 w-5 rounded-sm text-muted-foreground hover:text-destructive disabled:opacity-30"
             >
               <Minus className="w-2.5 h-2.5" />
@@ -121,14 +124,14 @@ const StatRow = ({
               size="icon"
               variant="ghost"
               onClick={() => onAdjust("away", -1)}
-              disabled={!isActive || awayVal === 0}
+              disabled={!isActive || av === 0}
               className="h-5 w-5 rounded-sm text-muted-foreground hover:text-destructive disabled:opacity-30"
             >
               <Minus className="w-2.5 h-2.5" />
             </Button>
           </div>
           <span className="text-sm font-bold w-5 tabular-nums text-foreground">
-            {awayVal}
+            {av}
           </span>
         </div>
       </div>
@@ -150,20 +153,111 @@ const StatRow = ({
   );
 };
 
+// ─── Card Stat Row (read-only, driven by events) ─────────────────────────────
+
+interface CardStatRowProps {
+  label: string;
+  homeVal: number;
+  awayVal: number;
+  homeColor: string; // tailwind bg class for the bar
+  awayColor: string;
+  pipColor: string; // tailwind bg class for the mini card pips
+}
+
+const CardStatRow = ({
+  label,
+  homeVal,
+  awayVal,
+  homeColor,
+  awayColor,
+  pipColor,
+}: CardStatRowProps) => {
+  const total = homeVal + awayVal || 1;
+  const homePct = Math.round((homeVal / total) * 100);
+  const awayPct = 100 - homePct;
+
+  return (
+    <div className="space-y-1.5">
+      <div className="flex items-center gap-1">
+        {/* Home count + pips */}
+        <div className="flex items-center gap-1 flex-1 justify-end">
+          <span className="text-sm font-bold w-5 text-right tabular-nums text-foreground">
+            {homeVal}
+          </span>
+          <div className="flex gap-0.5">
+            {Array.from({ length: homeVal }).map((_, i) => (
+              <span
+                key={i}
+                className={`inline-block w-2 h-3 rounded-[2px] ${pipColor}`}
+              />
+            ))}
+          </div>
+        </div>
+        {/* Label */}
+        <span className="w-28 flex-shrink-0 text-center text-[11px] text-muted-foreground font-medium leading-tight">
+          {label}
+        </span>
+        {/* Away count + pips */}
+        <div className="flex items-center gap-1 flex-1 justify-start">
+          <div className="flex gap-0.5">
+            {Array.from({ length: awayVal }).map((_, i) => (
+              <span
+                key={i}
+                className={`inline-block w-2 h-3 rounded-[2px] ${pipColor}`}
+              />
+            ))}
+          </div>
+          <span className="text-sm font-bold w-5 tabular-nums text-foreground">
+            {awayVal}
+          </span>
+        </div>
+      </div>
+      {/* Read-only bar */}
+      <div className="relative h-1.5 rounded-full overflow-hidden bg-muted">
+        <motion.div
+          className={`absolute inset-y-0 left-0 rounded-full ${homeColor}`}
+          animate={{ width: `${homePct}%` }}
+          transition={{ type: "spring", stiffness: 220, damping: 28 }}
+        />
+        <motion.div
+          className={`absolute inset-y-0 right-0 rounded-full ${awayColor}`}
+          animate={{ width: `${awayPct}%` }}
+          transition={{ type: "spring", stiffness: 220, damping: 28 }}
+        />
+      </div>
+    </div>
+  );
+};
+
 // ─── Main Component ───────────────────────────────────────────────────────────
 
 interface LiveMatchStatsProps {
   homeTeam: string;
   awayTeam: string;
   matchPhase: MatchPhase;
+  events: MatchEvent[];
 }
 
 export const LiveMatchStats = ({
   homeTeam,
   awayTeam,
   matchPhase,
+  events,
 }: LiveMatchStatsProps) => {
   const isActive = matchPhase === "first_half" || matchPhase === "second_half";
+
+  // Derive card counts from events
+  const cardTotals = events.reduce(
+    (acc, e) => {
+      const side =
+        e.team === homeTeam ? "home" : e.team === awayTeam ? "away" : null;
+      if (!side) return acc;
+      if (e.type === "yellow_card") acc[side].yellow += 1;
+      if (e.type === "red_card") acc[side].red += 1;
+      return acc;
+    },
+    { home: { yellow: 0, red: 0 }, away: { yellow: 0, red: 0 } },
+  );
 
   const [stats, setStats] = useState<LiveStatsState>({
     home: defaultTeamStats(),
@@ -247,7 +341,7 @@ export const LiveMatchStats = ({
         </p>
       </div>
 
-      {/* Stat rows */}
+      {/* Adjustable stat rows */}
       <div className="space-y-3.5">
         {STAT_CONFIG.map(({ key, label }) => (
           <StatRow
@@ -259,6 +353,26 @@ export const LiveMatchStats = ({
             isActive={isActive}
           />
         ))}
+      </div>
+
+      {/* Read-only card rows */}
+      <div className="space-y-3.5 mt-3.5 pt-3.5 border-t border-border/40">
+        <CardStatRow
+          label="Yellow Cards"
+          homeVal={cardTotals.home.yellow}
+          awayVal={cardTotals.away.yellow}
+          homeColor="bg-yellow-400"
+          awayColor="bg-yellow-400"
+          pipColor="bg-yellow-400"
+        />
+        <CardStatRow
+          label="Red Cards"
+          homeVal={cardTotals.home.red}
+          awayVal={cardTotals.away.red}
+          homeColor="bg-red-500"
+          awayColor="bg-red-500"
+          pipColor="bg-red-500"
+        />
       </div>
 
       {!isActive && (

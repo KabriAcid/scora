@@ -359,6 +359,7 @@ const LiveMatchPage = () => {
                 homeTeam={match.homeTeam}
                 awayTeam={match.awayTeam}
                 matchPhase={matchPhase}
+                events={events}
               />
             </motion.div>
 
