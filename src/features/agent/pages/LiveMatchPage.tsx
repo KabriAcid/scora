@@ -8,7 +8,9 @@ import { Badge } from "@/components/ui/badge";
 import { toast } from "sonner";
 import AgentLayout from "@/components/layout/AgentLayout";
 import LiveMatchHeader from "@/features/agent/components/LiveMatchHeader";
-import MatchControlPanel from "@/features/agent/components/MatchControlPanel";
+import MatchControlPanel, {
+  type MatchPhase,
+} from "@/features/agent/components/MatchControlPanel";
 import { EventTimeline } from "@/features/agent/components/EventTimeline";
 import MatchStats from "@/features/agent/components/MatchStats";
 import QuickActions from "@/features/agent/components/QuickActions";
@@ -21,14 +23,14 @@ const LiveMatchPage = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(true);
-  const [isMatchActive, setIsMatchActive] = useState(false);
+  const [matchPhase, setMatchPhase] = useState<MatchPhase>("idle");
   const [currentTime, setCurrentTime] = useState(0);
   const [events, setEvents] = useState<MatchEvent[]>([]);
   const [activeTeam, setActiveTeam] = useState<string | null>(null);
 
   const match = useMemo(
     () => mockAssignedMatches.find((m) => m.id === id),
-    [id]
+    [id],
   );
   const [homeScore, setHomeScore] = useState(match?.homeScore || 0);
   const [awayScore, setAwayScore] = useState(match?.awayScore || 0);
@@ -39,10 +41,10 @@ const LiveMatchPage = () => {
     return () => clearTimeout(timer);
   }, [id]);
 
-  // Set match as active if it's already live
+  // If match is already live, start in first half
   useEffect(() => {
     if (match && match.status === "live") {
-      setIsMatchActive(true);
+      setMatchPhase("first_half");
     }
   }, [match]);
 
@@ -53,16 +55,18 @@ const LiveMatchPage = () => {
     }
   }, [match, activeTeam]);
 
-  // Timer effect
+  // Timer runs during active halves only
+  const isTimerRunning =
+    matchPhase === "first_half" || matchPhase === "second_half";
   useEffect(() => {
     let interval: NodeJS.Timeout;
-    if (isMatchActive && !isLoading) {
+    if (isTimerRunning && !isLoading) {
       interval = setInterval(() => {
         setCurrentTime((prev) => prev + 1);
       }, 1000);
     }
     return () => clearInterval(interval);
-  }, [isMatchActive, isLoading]);
+  }, [isTimerRunning, isLoading]);
 
   // Memoized formatTime to prevent unnecessary recalculations
   const formatTime = useCallback((seconds: number) => {
@@ -75,7 +79,7 @@ const LiveMatchPage = () => {
 
   const getCurrentMinute = useCallback(
     () => Math.floor(currentTime / 60) + 1,
-    [currentTime]
+    [currentTime],
   );
 
   // Optimized event logging handler
@@ -92,7 +96,7 @@ const LiveMatchPage = () => {
         }
       }
     },
-    [match]
+    [match],
   );
 
   if (!match) {
@@ -165,8 +169,26 @@ const LiveMatchPage = () => {
               Back
             </Button>
             <div className="flex items-center gap-3 md:gap-4">
-              <Badge variant={isMatchActive ? "default" : "secondary"}>
-                {isMatchActive ? "LIVE" : "PAUSED"}
+              <Badge
+                variant={
+                  matchPhase === "first_half" || matchPhase === "second_half"
+                    ? "default"
+                    : matchPhase === "full_time"
+                      ? "destructive"
+                      : "secondary"
+                }
+              >
+                {
+                  {
+                    idle: "NOT STARTED",
+                    first_half: "1ST HALF",
+                    paused_1st: "PAUSED",
+                    half_time: "HALF TIME",
+                    second_half: "2ND HALF",
+                    paused_2nd: "PAUSED",
+                    full_time: "FULL TIME",
+                  }[matchPhase]
+                }
               </Badge>
               <div className="text-2xl md:text-3xl font-mono font-bold text-primary">
                 {formatTime(currentTime)}
@@ -177,12 +199,21 @@ const LiveMatchPage = () => {
           {/* Control Panel */}
           <motion.div variants={itemVariants}>
             <MatchControlPanel
-              isMatchActive={isMatchActive}
-              matchStatus={match.status}
-              formattedTime={formatTime(currentTime)}
-              onStart={() => setIsMatchActive(true)}
-              onPause={() => setIsMatchActive(false)}
-              onEnd={() => setIsMatchActive(false)}
+              matchPhase={matchPhase}
+              onKickOff={() => setMatchPhase("first_half")}
+              onPause={() =>
+                setMatchPhase((p) =>
+                  p === "first_half" ? "paused_1st" : "paused_2nd",
+                )
+              }
+              onResume={() =>
+                setMatchPhase((p) =>
+                  p === "paused_1st" ? "first_half" : "second_half",
+                )
+              }
+              onHalfTime={() => setMatchPhase("half_time")}
+              onSecondHalf={() => setMatchPhase("second_half")}
+              onFullTime={() => setMatchPhase("full_time")}
             />
           </motion.div>
 
@@ -199,7 +230,10 @@ const LiveMatchPage = () => {
             {/* Event Logging Panel */}
             <div className="lg:col-span-2 space-y-6 md:space-y-8">
               {/* Player Roster with Quick Actions */}
-              {isMatchActive && activeTeam ? (
+              {matchPhase !== "idle" &&
+              matchPhase !== "half_time" &&
+              matchPhase !== "full_time" &&
+              activeTeam ? (
                 <motion.div variants={itemVariants}>
                   <PlayerRosterQuickActions
                     matchId={id}
@@ -217,9 +251,13 @@ const LiveMatchPage = () => {
                 <motion.div variants={itemVariants}>
                   <Card className="p-6 text-center">
                     <p className="text-sm text-muted-foreground">
-                      {!isMatchActive
-                        ? "Start the match to begin logging events"
-                        : "Select a team to log events"}
+                      {matchPhase === "idle"
+                        ? "Kick off to begin logging events"
+                        : matchPhase === "half_time"
+                          ? "Half time — waiting for 2nd half"
+                          : matchPhase === "full_time"
+                            ? "Match has ended"
+                            : "Select a team to log events"}
                     </p>
                   </Card>
                 </motion.div>

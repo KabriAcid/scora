@@ -1,89 +1,143 @@
 import { motion } from "framer-motion";
 import { Card } from "@/components/ui/card";
-import { Play, Pause, Square } from "lucide-react";
+import { Play, Pause, Clock, Flag, CheckCircle2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
+export type MatchPhase =
+  | "idle"
+  | "first_half"
+  | "paused_1st"
+  | "half_time"
+  | "second_half"
+  | "paused_2nd"
+  | "full_time";
+
 interface MatchControlPanelProps {
-    isMatchActive: boolean;
-    matchStatus: "scheduled" | "live" | "completed";
-    formattedTime: string;
-    onStart: () => void;
-    onPause: () => void;
-    onEnd: () => void;
+  matchPhase: MatchPhase;
+  onKickOff: () => void;
+  onPause: () => void;
+  onResume: () => void;
+  onHalfTime: () => void;
+  onSecondHalf: () => void;
+  onFullTime: () => void;
 }
 
 const MatchControlPanel = ({
-    isMatchActive,
-    matchStatus,
-    formattedTime,
-    onStart,
-    onPause,
-    onEnd,
+  matchPhase,
+  onKickOff,
+  onPause,
+  onResume,
+  onHalfTime,
+  onSecondHalf,
+  onFullTime,
 }: MatchControlPanelProps) => {
-    return (
-        <Card className="p-4 md:p-6 shadow-lg border border-border">
-            <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 md:gap-6">
-                {/* Left Section - Title & Status */}
-                <div className="flex items-center gap-3 md:gap-4">
-                    <h2 className="text-lg md:text-xl font-bold text-foreground">
-                        Match Controls
-                    </h2>
-                    {isMatchActive && (
-                        <motion.div
-                            className="w-3 h-3 rounded-full bg-green-500"
-                            animate={{ opacity: [1, 0.5, 1] }}
-                            transition={{ duration: 1.5, repeat: Infinity }}
-                            title="Live"
-                        />
-                    )}
-                </div>
+  const isFirstHalfActive =
+    matchPhase === "first_half" || matchPhase === "paused_1st";
+  const isSecondHalfActive =
+    matchPhase === "second_half" || matchPhase === "paused_2nd";
+  const isPaused = matchPhase === "paused_1st" || matchPhase === "paused_2nd";
+  const isRunning = matchPhase === "first_half" || matchPhase === "second_half";
 
-                {/* Right Section - Timer & Buttons */}
-                <div className="flex flex-col sm:flex-row sm:items-center gap-3 md:gap-4">
-                    {/* Match Time Display */}
-                    <div className="flex items-center justify-center bg-primary/10 rounded-lg px-4 py-2 md:py-3">
-                        <div className="text-2xl md:text-3xl font-mono font-bold text-primary">
-                            {formattedTime}
-                        </div>
-                    </div>
+  return (
+    <Card className="px-4 py-3 border border-border shadow-sm">
+      <div className="flex items-center justify-center gap-2 md:gap-3 flex-wrap">
+        {/* Kick Off — idle only */}
+        {matchPhase === "idle" && (
+          <motion.div whileTap={{ scale: 0.96 }}>
+            <Button
+              onClick={onKickOff}
+              size="sm"
+              className="gap-1.5 text-xs md:text-sm"
+            >
+              <Play className="w-3.5 h-3.5 md:w-4 md:h-4 fill-current" />
+              Kick Off
+            </Button>
+          </motion.div>
+        )}
 
-                    {/* Control Buttons */}
-                    <div className="flex gap-2 md:gap-3 flex-wrap justify-center sm:justify-end">
-                        {!isMatchActive && matchStatus !== "live" && (
-                            <Button
-                                onClick={onStart}
-                                className="gap-2 text-xs md:text-sm px-3 md:px-4 py-2 md:py-2.5"
-                                size="sm"
-                            >
-                                <Play className="w-4 h-4" />
-                                <span className="hidden sm:inline">Start</span>
-                            </Button>
-                        )}
-                        {isMatchActive && (
-                            <Button
-                                onClick={onPause}
-                                variant="outline"
-                                className="gap-2 text-xs md:text-sm px-3 md:px-4 py-2 md:py-2.5"
-                                size="sm"
-                            >
-                                <Pause className="w-4 h-4" />
-                                <span className="hidden sm:inline">Pause</span>
-                            </Button>
-                        )}
-                        <Button
-                            onClick={onEnd}
-                            variant="destructive"
-                            className="gap-2 text-xs md:text-sm px-3 md:px-4 py-2 md:py-2.5"
-                            size="sm"
-                        >
-                            <Square className="w-4 h-4" />
-                            <span className="hidden sm:inline">End</span>
-                        </Button>
-                    </div>
-                </div>
-            </div>
-        </Card>
-    );
+        {/* Pause — while a half is running */}
+        {isRunning && (
+          <motion.div whileTap={{ scale: 0.96 }}>
+            <Button
+              onClick={onPause}
+              size="sm"
+              variant="outline"
+              className="gap-1.5 text-xs md:text-sm"
+            >
+              <Pause className="w-3.5 h-3.5 md:w-4 md:h-4" />
+              Pause
+            </Button>
+          </motion.div>
+        )}
+
+        {/* Resume — while paused */}
+        {isPaused && (
+          <motion.div whileTap={{ scale: 0.96 }}>
+            <Button
+              onClick={onResume}
+              size="sm"
+              className="gap-1.5 text-xs md:text-sm"
+            >
+              <Play className="w-3.5 h-3.5 md:w-4 md:h-4 fill-current" />
+              Resume
+            </Button>
+          </motion.div>
+        )}
+
+        {/* Half Time — during 1st half (running or paused) */}
+        {isFirstHalfActive && (
+          <motion.div whileTap={{ scale: 0.96 }}>
+            <Button
+              onClick={onHalfTime}
+              size="sm"
+              variant="outline"
+              className="gap-1.5 text-xs md:text-sm border-amber-400 text-amber-600 hover:bg-amber-50 hover:text-amber-700"
+            >
+              <Clock className="w-3.5 h-3.5 md:w-4 md:h-4" />
+              Half Time
+            </Button>
+          </motion.div>
+        )}
+
+        {/* 2nd Half — during half time break */}
+        {matchPhase === "half_time" && (
+          <motion.div whileTap={{ scale: 0.96 }}>
+            <Button
+              onClick={onSecondHalf}
+              size="sm"
+              className="gap-1.5 text-xs md:text-sm"
+            >
+              <Play className="w-3.5 h-3.5 md:w-4 md:h-4 fill-current" />
+              2nd Half
+            </Button>
+          </motion.div>
+        )}
+
+        {/* Full Time — during 2nd half (running or paused) */}
+        {isSecondHalfActive && (
+          <motion.div whileTap={{ scale: 0.96 }}>
+            <Button
+              onClick={onFullTime}
+              size="sm"
+              variant="destructive"
+              className="gap-1.5 text-xs md:text-sm"
+            >
+              <Flag className="w-3.5 h-3.5 md:w-4 md:h-4" />
+              Full Time
+            </Button>
+          </motion.div>
+        )}
+
+        {/* Match Ended — final state */}
+        {matchPhase === "full_time" && (
+          <div className="flex items-center gap-2 px-3 py-1.5 rounded-md bg-muted text-muted-foreground text-xs md:text-sm font-medium">
+            <CheckCircle2 className="w-3.5 h-3.5 md:w-4 md:h-4" />
+            Match Ended
+          </div>
+        )}
+      </div>
+    </Card>
+  );
 };
 
 export default MatchControlPanel;

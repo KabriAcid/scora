@@ -319,7 +319,7 @@ export const matchDetailsData: Record<string, MatchDetail> = {
         { id: "8", name: "Aminu Kano", number: 14, position: "CAM" },
         { id: "9", name: "Musa Ahmed", number: 20, position: "LW" },
         { id: "10", name: "Ibrahim Yaro", number: 11, position: "RW" },
-        { id: "11", name: "Sani Zarah", number: 10, position: "ST" },
+        { id: "11", name: "Sani Kara", number: 10, position: "ST" },
       ],
       substitutes: [
         { id: "12", name: "Ibrahim Gaya", number: 22, position: "GK" },
