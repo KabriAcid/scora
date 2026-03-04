@@ -216,11 +216,13 @@ const LiveMatchPage = () => {
                       ? "setting up the match"
                       : matchPhase === "full_time"
                         ? "reviewing the completed match"
-                        : "logging a live match"}.
+                        : "logging a live match"}
+                    .
                     {matchPhase !== "idle" && matchPhase !== "full_time" && (
                       <>
-                        {" "}Any unsaved progress may be lost. Make sure all
-                        events have been logged before exiting.
+                        {" "}
+                        Any unsaved progress may be lost. Make sure all events
+                        have been logged before exiting.
                       </>
                     )}
                   </AlertDialogDescription>
