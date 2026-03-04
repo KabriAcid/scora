@@ -325,23 +325,35 @@ export const PlayerRosterQuickActions = ({
                       </div>
                     </div>
                     <div className="flex gap-2 flex-wrap">
-                      {eventTypes.map((event) => (
-                        <Button
-                          key={event.type}
-                          size="sm"
-                          variant="outline"
-                          onClick={() => handleQuickAction(player, event.type)}
-                          className="text-xs h-8 px-2 gap-1 hover:bg-primary hover:text-primary-foreground"
-                          title={event.label}
-                        >
-                          <img
-                            src={event.icon}
-                            alt={event.label}
-                            className="w-3 h-3"
-                          />
-                          {event.label}
-                        </Button>
-                      ))}
+                      {eventTypes.map((event) => {
+                        // Once a pip indicator is showing for that card type, the pip
+                        // already acts as the icon — don't duplicate it inside the button.
+                        const hideBtnIcon =
+                          (event.type === "yellow_card" && yellowCount > 0) ||
+                          (event.type === "red_card" && redCount > 0);
+
+                        return (
+                          <Button
+                            key={event.type}
+                            size="sm"
+                            variant="outline"
+                            onClick={() =>
+                              handleQuickAction(player, event.type)
+                            }
+                            className="text-xs h-8 px-2 gap-1 hover:bg-primary hover:text-primary-foreground"
+                            title={event.label}
+                          >
+                            {!hideBtnIcon && (
+                              <img
+                                src={event.icon}
+                                alt={event.label}
+                                className="w-3 h-3"
+                              />
+                            )}
+                            {event.label}
+                          </Button>
+                        );
+                      })}
                     </div>
                   </motion.div>
                 );
