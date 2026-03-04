@@ -63,11 +63,15 @@ interface PlayerRosterQuickActionsProps {
 }
 
 const eventTypes = [
-  { type: "goal",        icon: "/images/event-goal.svg",        label: "Goal"    },
-  { type: "yellow_card", icon: "/images/event-yellow-card.svg", label: "Yellow"  },
-  { type: "red_card",    icon: "/images/event-red-card.svg",    label: "Red"     },
-  { type: "penalty",     icon: "/images/event-penalty.svg",     label: "Penalty" },
-  { type: "corner",      icon: "/images/event-corner.svg",      label: "Corner"  },
+  { type: "goal", icon: "/images/event-goal.svg", label: "Goal" },
+  {
+    type: "yellow_card",
+    icon: "/images/event-yellow-card.svg",
+    label: "Yellow",
+  },
+  { type: "red_card", icon: "/images/event-red-card.svg", label: "Red" },
+  { type: "penalty", icon: "/images/event-penalty.svg", label: "Penalty" },
+  { type: "corner", icon: "/images/event-corner.svg", label: "Corner" },
 ];
 
 const containerVariants = {
@@ -102,18 +106,23 @@ export const PlayerRosterQuickActions = ({
   }>({ out: new Set(), in: new Set() });
 
   // Build per-player card counts from the logged events for the active team
-  const cardCounts = events.reduce<Record<string, { yellow: number; red: number }>>(
-    (acc, e) => {
-      if (e.team !== activeTeam) return acc;
-      if (e.type === "yellow_card") {
-        acc[e.player] = { ...acc[e.player] ?? { yellow: 0, red: 0 }, yellow: (acc[e.player]?.yellow ?? 0) + 1 };
-      } else if (e.type === "red_card") {
-        acc[e.player] = { ...acc[e.player] ?? { yellow: 0, red: 0 }, red: (acc[e.player]?.red ?? 0) + 1 };
-      }
-      return acc;
-    },
-    {},
-  );
+  const cardCounts = events.reduce<
+    Record<string, { yellow: number; red: number }>
+  >((acc, e) => {
+    if (e.team !== activeTeam) return acc;
+    if (e.type === "yellow_card") {
+      acc[e.player] = {
+        ...(acc[e.player] ?? { yellow: 0, red: 0 }),
+        yellow: (acc[e.player]?.yellow ?? 0) + 1,
+      };
+    } else if (e.type === "red_card") {
+      acc[e.player] = {
+        ...(acc[e.player] ?? { yellow: 0, red: 0 }),
+        red: (acc[e.player]?.red ?? 0) + 1,
+      };
+    }
+    return acc;
+  }, {});
   // Extract numeric ID from matchId (e.g., "match-1" -> "1")
   const numericMatchId = matchId?.replace("match-", "") || "";
   const matchDetail = matchDetailsData[numericMatchId];
@@ -271,66 +280,70 @@ export const PlayerRosterQuickActions = ({
               {sortedLineup.map((player) => {
                 const cards = cardCounts[player.name];
                 const yellowCount = cards?.yellow ?? 0;
-                const redCount   = cards?.red   ?? 0;
+                const redCount = cards?.red ?? 0;
                 const isDismissed = redCount > 0 || yellowCount >= 2;
 
                 return (
-                <motion.div
-                  key={player.id}
-                  variants={playerVariants}
-                  className={`p-3 rounded-lg transition-colors ${
-                    isDismissed
-                      ? "bg-destructive/10 border border-destructive/20"
-                      : "bg-secondary/40 hover:bg-secondary/60"
-                  }`}
-                >
-                  <div className="flex items-center justify-between mb-2">
-                    <div className="flex-1 flex items-center gap-2">
-                      <p className="text-sm font-semibold text-foreground">
-                        #{player.number} {player.name}
-                        {player.position && (
-                          <span className="text-xs text-muted-foreground ml-1">
-                            ({player.position})
-                          </span>
+                  <motion.div
+                    key={player.id}
+                    variants={playerVariants}
+                    className={`p-3 rounded-lg transition-colors ${
+                      isDismissed
+                        ? "bg-destructive/10 border border-destructive/20"
+                        : "bg-secondary/40 hover:bg-secondary/60"
+                    }`}
+                  >
+                    <div className="flex items-center justify-between mb-2">
+                      <div className="flex-1 flex items-center gap-2">
+                        <p className="text-sm font-semibold text-foreground">
+                          #{player.number} {player.name}
+                          {player.position && (
+                            <span className="text-xs text-muted-foreground ml-1">
+                              ({player.position})
+                            </span>
+                          )}
+                        </p>
+                        {/* Card pip indicators */}
+                        {(yellowCount > 0 || redCount > 0) && (
+                          <div className="flex items-center gap-0.5 ml-1">
+                            {Array.from({ length: yellowCount }).map((_, i) => (
+                              <span
+                                key={`y-${i}`}
+                                className="inline-block w-2.5 h-3.5 rounded-[2px] bg-yellow-400 shadow-sm"
+                                title="Yellow card"
+                              />
+                            ))}
+                            {Array.from({ length: redCount }).map((_, i) => (
+                              <span
+                                key={`r-${i}`}
+                                className="inline-block w-2.5 h-3.5 rounded-[2px] bg-red-500 shadow-sm"
+                                title="Red card"
+                              />
+                            ))}
+                          </div>
                         )}
-                      </p>
-                      {/* Card pip indicators */}
-                      {(yellowCount > 0 || redCount > 0) && (
-                        <div className="flex items-center gap-0.5 ml-1">
-                          {Array.from({ length: yellowCount }).map((_, i) => (
-                            <span
-                              key={`y-${i}`}
-                              className="inline-block w-2.5 h-3.5 rounded-[2px] bg-yellow-400 shadow-sm"
-                              title="Yellow card"
-                            />
-                          ))}
-                          {Array.from({ length: redCount }).map((_, i) => (
-                            <span
-                              key={`r-${i}`}
-                              className="inline-block w-2.5 h-3.5 rounded-[2px] bg-red-500 shadow-sm"
-                              title="Red card"
-                            />
-                          ))}
-                        </div>
-                      )}
+                      </div>
                     </div>
-                  </div>
-                  <div className="flex gap-2 flex-wrap">
-                    {eventTypes.map((event) => (
-                      <Button
-                        key={event.type}
-                        size="sm"
-                        variant="outline"
-                        onClick={() => handleQuickAction(player, event.type)}
-                        className="text-xs h-8 px-2 gap-1 hover:bg-primary hover:text-primary-foreground"
-                        title={event.label}
-                      >
-                        <img src={event.icon} alt={event.label} className="w-3 h-3" />
-                        {event.label}
-                      </Button>
-                    ))}
-                  </div>
-                </motion.div>
+                    <div className="flex gap-2 flex-wrap">
+                      {eventTypes.map((event) => (
+                        <Button
+                          key={event.type}
+                          size="sm"
+                          variant="outline"
+                          onClick={() => handleQuickAction(player, event.type)}
+                          className="text-xs h-8 px-2 gap-1 hover:bg-primary hover:text-primary-foreground"
+                          title={event.label}
+                        >
+                          <img
+                            src={event.icon}
+                            alt={event.label}
+                            className="w-3 h-3"
+                          />
+                          {event.label}
+                        </Button>
+                      ))}
+                    </div>
+                  </motion.div>
                 );
               })}
             </motion.div>

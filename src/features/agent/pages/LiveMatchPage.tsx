@@ -23,7 +23,6 @@ import MatchControlPanel, {
 } from "@/features/agent/components/MatchControlPanel";
 import { EventTimeline } from "@/features/agent/components/EventTimeline";
 import { LiveMatchStats } from "@/features/agent/components/LiveMatchStats";
-import QuickActions from "@/features/agent/components/QuickActions";
 import { PlayerRosterQuickActions } from "@/features/agent/components/PlayerRosterQuickActions";
 import { LiveMatchPageSkeleton } from "@/features/agent/components/LiveMatchSkeleton";
 import { mockAssignedMatches } from "@/data/agentMockData";
@@ -298,7 +297,7 @@ const LiveMatchPage = () => {
 
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 md:gap-8">
             {/* Event Logging Panel */}
-            <div className="lg:col-span-2 space-y-6 md:space-y-8">
+            <div className="order-2 lg:order-1 lg:col-span-2 space-y-6 md:space-y-8">
               {/* Player Roster with Quick Actions */}
               {matchPhase !== "idle" &&
               matchPhase !== "half_time" &&
@@ -370,18 +369,11 @@ const LiveMatchPage = () => {
             </div>
 
             {/* Stats & Info Panel */}
-            <div className="space-y-6 md:space-y-8">
+            <div className="order-1 lg:order-2 space-y-6 md:space-y-8">
               <LiveMatchStats
                 homeTeam={match.homeTeam}
                 awayTeam={match.awayTeam}
                 matchPhase={matchPhase}
-              />
-
-              <QuickActions
-                onStatistics={() =>
-                  toast.info("Statistics feature coming soon")
-                }
-                onSettings={() => toast.info("Settings feature coming soon")}
               />
             </div>
           </div>

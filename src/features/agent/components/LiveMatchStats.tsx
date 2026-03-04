@@ -40,12 +40,12 @@ const defaultTeamStats = (): TeamStats => ({
 });
 
 const STAT_CONFIG: { key: StatKey; label: string }[] = [
-  { key: "shots",         label: "Shots"           },
-  { key: "shotsOnTarget", label: "Shots on Target"  },
-  { key: "corners",       label: "Corners"          },
-  { key: "fouls",         label: "Fouls"            },
-  { key: "offsides",      label: "Offsides"         },
-  { key: "passes",        label: "Passes"           },
+  { key: "shots", label: "Shots" },
+  { key: "shotsOnTarget", label: "Shots on Target" },
+  { key: "corners", label: "Corners" },
+  { key: "fouls", label: "Fouls" },
+  { key: "offsides", label: "Offsides" },
+  { key: "passes", label: "Passes" },
 ];
 
 // ─── Stat Row ─────────────────────────────────────────────────────────────────
