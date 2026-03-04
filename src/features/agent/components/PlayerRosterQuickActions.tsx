@@ -1,13 +1,40 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
+import { Repeat2 } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import {
+    Sheet,
+    SheetContent,
+    SheetHeader,
+    SheetTitle,
+    SheetDescription,
+} from "@/components/ui/sheet";
 import { toast } from "sonner";
-import { EVENT_TYPES } from "@/shared/utils/eventIcons";
 import { matchDetailsData } from "@/data/matchDetails";
 import { SubstitutionSelector } from "./SubstitutionSelector";
 import type { Player } from "@/data/matchDetails";
 import type { MatchEvent } from "@/shared/types/agent";
+
+// ─── Position Sort Priority ───────────────────────────────────────────────────
+// Lower number = appears first. Attackers first, GK last.
+const POSITION_PRIORITY: Record<string, number> = {
+  // Strikers / Forwards
+  ST: 1, CF: 1, FW: 1,
+  // Attacking / Wide
+  LW: 2, RW: 2, SS: 2, CAM: 2,
+  // Central Midfield
+  CM: 3, MF: 3, AM: 3,
+  // Defensive Midfield
+  CDM: 4, DM: 4,
+  // Fullbacks / Defenders
+  RB: 5, LB: 5, CB: 5, RWB: 5, LWB: 5, DF: 5,
+  // Goalkeeper
+  GK: 6,
+};
+
+const getPositionPriority = (pos?: string): number =>
+  pos ? (POSITION_PRIORITY[pos.toUpperCase()] ?? 3) : 3;
 
 interface PlayerRosterQuickActionsProps {
     matchId: string;
@@ -55,7 +82,7 @@ export const PlayerRosterQuickActions = ({
     onEventLogged,
     onSelectTeam,
 }: PlayerRosterQuickActionsProps) => {
-    const [showSubstitutionSelector, setShowSubstitutionSelector] = useState(false);
+    const [showSubSheet, setShowSubSheet] = useState(false);
     const [substitutedPlayers, setSubstitutedPlayers] = useState<{
         out: Set<string>;
         in: Set<string>;
@@ -89,6 +116,11 @@ export const PlayerRosterQuickActions = ({
             </Card>
         );
     }
+
+    // Sort lineup: attackers first, GK last
+    const sortedLineup = [...teamLineup.lineup].sort(
+        (a, b) => getPositionPriority(a.position) - getPositionPriority(b.position),
+    );
 
     const handleQuickAction = (player: Player, eventType: string) => {
         const newEvent: MatchEvent = {
@@ -187,20 +219,20 @@ export const PlayerRosterQuickActions = ({
                 </div>
             </div>
 
-            <div className="max-h-[600px] overflow-y-auto pr-2 space-y-2">
+            {/* Scrollable player list */}
+            <div className="overflow-y-auto max-h-[500px] pr-1">
                 <motion.div
                     variants={containerVariants}
                     initial="hidden"
                     animate="visible"
                     className="space-y-2"
                 >
-                    {/* Starting Lineup Only - On Pitch Players */}
                     <div>
                         <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-2">
                             On Pitch
                         </p>
                         <motion.div className="space-y-2">
-                            {teamLineup.lineup.map((player) => (
+                            {sortedLineup.map((player) => (
                                 <motion.div
                                     key={player.id}
                                     variants={playerVariants}
@@ -224,17 +256,11 @@ export const PlayerRosterQuickActions = ({
                                                 key={event.type}
                                                 size="sm"
                                                 variant="outline"
-                                                onClick={() =>
-                                                    handleQuickAction(player, event.type)
-                                                }
+                                                onClick={() => handleQuickAction(player, event.type)}
                                                 className="text-xs h-8 px-2 gap-1 hover:bg-primary hover:text-primary-foreground"
                                                 title={event.label}
                                             >
-                                                <img
-                                                    src={event.icon}
-                                                    alt={event.label}
-                                                    className="w-3 h-3"
-                                                />
+                                                <img src={event.icon} alt={event.label} className="w-3 h-3" />
                                                 {event.label}
                                             </Button>
                                         ))}
@@ -243,34 +269,53 @@ export const PlayerRosterQuickActions = ({
                             ))}
                         </motion.div>
                     </div>
-
-                    {/* Substitution Trigger Button */}
-                    <div className="pt-2 border-t border-border">
-                        <Button
-                            size="sm"
-                            variant="outline"
-                            onClick={() => setShowSubstitutionSelector(!showSubstitutionSelector)}
-                            className="w-full text-xs h-8"
-                        >
-                            {showSubstitutionSelector ? "Hide Subs" : "Manage Subs"}
-                        </Button>
-                    </div>
-
-                    {/* Substitution Selector Component */}
-                    {showSubstitutionSelector && (
-                        <div className="pt-2">
-                            <SubstitutionSelector
-                                team={activeTeam}
-                                onPitch={teamLineup.lineup.filter(p => !substitutedPlayers.out.has(p.id))}
-                                offPitch={teamLineup.substitutes.filter(p => !substitutedPlayers.in.has(p.id))}
-                                currentMinute={currentMinute}
-                                onSubstitutionRecorded={handleSubstitutionRecorded}
-                                onClose={() => setShowSubstitutionSelector(false)}
-                            />
-                        </div>
-                    )}
                 </motion.div>
             </div>
+
+            {/* Sticky footer — always visible, outside scroll */}
+            <div className="pt-3 mt-2 border-t border-border/60">
+                <Button
+                    variant="outline"
+                    className="w-full gap-2 text-xs font-semibold"
+                    onClick={() => setShowSubSheet(true)}
+                >
+                    <Repeat2 className="w-4 h-4" />
+                    Make Substitution
+                    {substitutedPlayers.out.size > 0 && (
+                        <span className="ml-auto bg-primary/15 text-primary text-[10px] font-bold px-1.5 py-0.5 rounded-full">
+                            {substitutedPlayers.out.size}
+                        </span>
+                    )}
+                </Button>
+            </div>
+
+            {/* Substitution Sheet */}
+            <Sheet open={showSubSheet} onOpenChange={setShowSubSheet}>
+                <SheetContent
+                    side="right"
+                    className="w-full sm:max-w-md flex flex-col gap-0 p-0"
+                >
+                    <SheetHeader className="px-5 pt-5 pb-3 border-b border-border">
+                        <SheetTitle className="flex items-center gap-2">
+                            <Repeat2 className="w-4 h-4 text-primary" />
+                            Make Substitution
+                        </SheetTitle>
+                        <SheetDescription className="text-xs">
+                            {activeTeam} · Minute {currentMinute}
+                        </SheetDescription>
+                    </SheetHeader>
+                    <div className="flex-1 overflow-y-auto px-5 pt-4 pb-5">
+                        <SubstitutionSelector
+                            team={activeTeam}
+                            onPitch={sortedLineup.filter(p => !substitutedPlayers.out.has(p.id))}
+                            offPitch={teamLineup.substitutes.filter(p => !substitutedPlayers.in.has(p.id))}
+                            currentMinute={currentMinute}
+                            onSubstitutionRecorded={handleSubstitutionRecorded}
+                            onClose={() => setShowSubSheet(false)}
+                        />
+                    </div>
+                </SheetContent>
+            </Sheet>
         </Card>
     );
 };

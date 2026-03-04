@@ -1,10 +1,20 @@
 import { useState, useEffect, useMemo, useCallback } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
-import { ArrowLeft, Trophy } from "lucide-react";
+import { LogOut, Trophy } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import {
+  AlertDialog,
+  AlertDialogContent,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogCancel,
+  AlertDialogAction,
+} from "@/components/ui/alert-dialog";
 import { toast } from "sonner";
 import AgentLayout from "@/components/layout/AgentLayout";
 import LiveMatchHeader from "@/features/agent/components/LiveMatchHeader";
@@ -22,6 +32,7 @@ import type { MatchEvent, AssignedMatch } from "@/shared/types/agent";
 const LiveMatchPage = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
+  const [showExitDialog, setShowExitDialog] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [matchPhase, setMatchPhase] = useState<MatchPhase>("idle");
   const [currentTime, setCurrentTime] = useState(0);
@@ -183,14 +194,48 @@ const LiveMatchPage = () => {
             variants={itemVariants}
             className="flex items-center justify-between"
           >
+            {/* Exit button — triggers confirmation dialog */}
             <Button
               variant="ghost"
-              onClick={() => navigate("/agent/dashboard")}
-              className="gap-2"
+              size="icon"
+              onClick={() => setShowExitDialog(true)}
+              className="text-muted-foreground hover:text-destructive"
+              title="Exit match"
             >
-              <ArrowLeft className="w-4 h-4" />
-              Back
+              <LogOut className="w-5 h-5" />
             </Button>
+
+            {/* Exit confirmation dialog */}
+            <AlertDialog open={showExitDialog} onOpenChange={setShowExitDialog}>
+              <AlertDialogContent>
+                <AlertDialogHeader>
+                  <AlertDialogTitle>Exit live match?</AlertDialogTitle>
+                  <AlertDialogDescription>
+                    You are currently{" "}
+                    {matchPhase === "idle"
+                      ? "setting up the match"
+                      : matchPhase === "full_time"
+                        ? "reviewing the completed match"
+                        : "logging a live match"}.
+                    {matchPhase !== "idle" && matchPhase !== "full_time" && (
+                      <>
+                        {" "}Any unsaved progress may be lost. Make sure all
+                        events have been logged before exiting.
+                      </>
+                    )}
+                  </AlertDialogDescription>
+                </AlertDialogHeader>
+                <AlertDialogFooter>
+                  <AlertDialogCancel>Stay</AlertDialogCancel>
+                  <AlertDialogAction
+                    onClick={() => navigate("/agent/dashboard")}
+                    className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+                  >
+                    Exit
+                  </AlertDialogAction>
+                </AlertDialogFooter>
+              </AlertDialogContent>
+            </AlertDialog>
             <div className="flex items-center gap-3 md:gap-4">
               <Badge
                 variant={
