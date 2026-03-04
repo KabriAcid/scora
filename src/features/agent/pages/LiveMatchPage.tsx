@@ -295,13 +295,16 @@ const LiveMatchPage = () => {
             />
           </motion.div>
 
-          <div className="space-y-6 md:space-y-8">
-            {/* 1 — Player Roster with Quick Actions */}
+          <div className="grid grid-cols-1 lg:grid-cols-[1fr_340px] gap-6 md:gap-8">
+            {/* 1 — Player Roster with Quick Actions (lg: col 1 row 1) */}
             {matchPhase !== "idle" &&
             matchPhase !== "half_time" &&
             matchPhase !== "full_time" &&
             activeTeam ? (
-              <motion.div variants={itemVariants}>
+              <motion.div
+                variants={itemVariants}
+                className="lg:col-start-1 lg:row-start-1"
+              >
                 <PlayerRosterQuickActions
                   matchId={id}
                   activeTeam={activeTeam}
@@ -316,7 +319,10 @@ const LiveMatchPage = () => {
                 />
               </motion.div>
             ) : matchPhase === "full_time" ? (
-              <motion.div variants={itemVariants}>
+              <motion.div
+                variants={itemVariants}
+                className="lg:col-start-1 lg:row-start-1"
+              >
                 <Card className="p-5 border border-primary/20 bg-primary/5">
                   <div className="flex items-center gap-3">
                     <div className="flex-shrink-0 flex items-center justify-center w-10 h-10 rounded-full bg-primary/10 text-primary">
@@ -340,7 +346,10 @@ const LiveMatchPage = () => {
                 </Card>
               </motion.div>
             ) : (
-              <motion.div variants={itemVariants}>
+              <motion.div
+                variants={itemVariants}
+                className="lg:col-start-1 lg:row-start-1"
+              >
                 <Card className="p-6 text-center">
                   <p className="text-sm text-muted-foreground">
                     {matchPhase === "idle"
@@ -353,8 +362,11 @@ const LiveMatchPage = () => {
               </motion.div>
             )}
 
-            {/* 2 — Match Stats */}
-            <motion.div variants={itemVariants}>
+            {/* 2 — Match Stats (lg: col 2, rows 1–2, sticky) */}
+            <motion.div
+              variants={itemVariants}
+              className="lg:col-start-2 lg:row-start-1 lg:row-span-2 lg:self-start lg:sticky lg:top-4"
+            >
               <LiveMatchStats
                 homeTeam={match.homeTeam}
                 awayTeam={match.awayTeam}
@@ -363,8 +375,11 @@ const LiveMatchPage = () => {
               />
             </motion.div>
 
-            {/* 3 — Event Timeline */}
-            <motion.div variants={itemVariants}>
+            {/* 3 — Event Timeline (lg: col 1, row 2) */}
+            <motion.div
+              variants={itemVariants}
+              className="lg:col-start-1 lg:row-start-2"
+            >
               <EventTimeline
                 events={events}
                 homeTeam={match.homeTeam}

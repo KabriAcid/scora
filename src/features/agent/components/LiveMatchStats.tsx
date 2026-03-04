@@ -40,13 +40,13 @@ const defaultTeamStats = (): TeamStats => ({
   passes: 0,
 });
 
-const STAT_CONFIG: { key: StatKey; label: string }[] = [
+const STAT_CONFIG: { key: StatKey; label: string; step?: number }[] = [
   { key: "shots", label: "Shots" },
   { key: "shotsOnTarget", label: "Shots on Target" },
   { key: "corners", label: "Corners" },
   { key: "fouls", label: "Fouls" },
   { key: "offsides", label: "Offsides" },
-  { key: "passes", label: "Passes" },
+  { key: "passes", label: "Passes", step: 5 },
 ];
 
 // ─── Stat Row ─────────────────────────────────────────────────────────────────
@@ -55,8 +55,9 @@ interface StatRowProps {
   label: string;
   homeVal: number;
   awayVal: number;
-  onAdjust: (team: "home" | "away", delta: 1 | -1) => void;
+  onAdjust: (team: "home" | "away", delta: number) => void;
   isActive: boolean;
+  step?: number;
 }
 
 const StatRow = ({
@@ -65,6 +66,7 @@ const StatRow = ({
   awayVal,
   onAdjust,
   isActive,
+  step = 1,
 }: StatRowProps) => {
   const hv = homeVal ?? 0;
   const av = awayVal ?? 0;
@@ -85,7 +87,7 @@ const StatRow = ({
             <Button
               size="icon"
               variant="ghost"
-              onClick={() => onAdjust("home", -1)}
+              onClick={() => onAdjust("home", -step)}
               disabled={!isActive || hv === 0}
               className="h-5 w-5 rounded-sm text-muted-foreground hover:text-destructive disabled:opacity-30"
             >
@@ -94,7 +96,7 @@ const StatRow = ({
             <Button
               size="icon"
               variant="ghost"
-              onClick={() => onAdjust("home", 1)}
+              onClick={() => onAdjust("home", step)}
               disabled={!isActive}
               className="h-5 w-5 rounded-sm text-muted-foreground hover:text-primary disabled:opacity-30"
             >
@@ -114,7 +116,7 @@ const StatRow = ({
             <Button
               size="icon"
               variant="ghost"
-              onClick={() => onAdjust("away", 1)}
+              onClick={() => onAdjust("away", step)}
               disabled={!isActive}
               className="h-5 w-5 rounded-sm text-muted-foreground hover:text-accent disabled:opacity-30"
             >
@@ -123,7 +125,7 @@ const StatRow = ({
             <Button
               size="icon"
               variant="ghost"
-              onClick={() => onAdjust("away", -1)}
+              onClick={() => onAdjust("away", -step)}
               disabled={!isActive || av === 0}
               className="h-5 w-5 rounded-sm text-muted-foreground hover:text-destructive disabled:opacity-30"
             >
@@ -267,7 +269,7 @@ export const LiveMatchStats = ({
 
   // adjust — updates stat count and recomputes possession inline from pass totals
   const adjust = useCallback(
-    (team: "home" | "away", stat: StatKey, delta: 1 | -1) => {
+    (team: "home" | "away", stat: StatKey, delta: number) => {
       setStats((prev) => {
         const updatedTeam = {
           ...prev[team],
@@ -343,7 +345,7 @@ export const LiveMatchStats = ({
 
       {/* Adjustable stat rows */}
       <div className="space-y-3.5">
-        {STAT_CONFIG.map(({ key, label }) => (
+        {STAT_CONFIG.map(({ key, label, step }) => (
           <StatRow
             key={key}
             label={label}
@@ -351,6 +353,7 @@ export const LiveMatchStats = ({
             awayVal={stats.away[key]}
             onAdjust={(team, delta) => adjust(team, key, delta)}
             isActive={isActive}
+            step={step}
           />
         ))}
       </div>
