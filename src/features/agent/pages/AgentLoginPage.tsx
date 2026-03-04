@@ -349,15 +349,14 @@ const AgentLoginPage = () => {
                         {/* Footer */}
                         <motion.div
                             variants={itemVariants}
-                            className="mt-8 pt-6 border-t border-border/30 text-center text-xs text-muted-foreground"
+                            className="mt-8 pt-6 border-t border-border/30 text-center text-sm text-muted-foreground"
                         >
                             <p>
-                                By signing in, you agree to our{" "}
                                 <a
-                                    onClick={() => navigate("/terms")}
+                                    onClick={() => navigate("/")}
                                     className="text-accent hover:text-accent/80 transition-colors cursor-pointer font-medium"
                                 >
-                                    Terms of Service
+                                    Back to Homepage
                                 </a>
                             </p>
                         </motion.div>

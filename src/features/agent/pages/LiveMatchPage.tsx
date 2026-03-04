@@ -174,15 +174,6 @@ const LiveMatchPage = () => {
             </div>
           </motion.div>
 
-          {/* Match Header */}
-          <motion.div variants={itemVariants}>
-            <LiveMatchHeader
-              match={match}
-              homeScore={homeScore}
-              awayScore={awayScore}
-            />
-          </motion.div>
-
           {/* Control Panel */}
           <motion.div variants={itemVariants}>
             <MatchControlPanel
@@ -192,6 +183,15 @@ const LiveMatchPage = () => {
               onStart={() => setIsMatchActive(true)}
               onPause={() => setIsMatchActive(false)}
               onEnd={() => setIsMatchActive(false)}
+            />
+          </motion.div>
+
+          {/* Match Header */}
+          <motion.div variants={itemVariants}>
+            <LiveMatchHeader
+              match={match}
+              homeScore={homeScore}
+              awayScore={awayScore}
             />
           </motion.div>
 
