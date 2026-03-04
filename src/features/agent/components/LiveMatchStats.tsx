@@ -12,6 +12,7 @@ export type StatKey =
   | "shotsOnTarget"
   | "corners"
   | "fouls"
+  | "offsides"
   | "passes";
 
 export interface TeamStats {
@@ -19,6 +20,7 @@ export interface TeamStats {
   shotsOnTarget: number;
   corners: number;
   fouls: number;
+  offsides: number;
   passes: number;
 }
 
@@ -33,15 +35,17 @@ const defaultTeamStats = (): TeamStats => ({
   shotsOnTarget: 0,
   corners: 0,
   fouls: 0,
+  offsides: 0,
   passes: 0,
 });
 
 const STAT_CONFIG: { key: StatKey; label: string }[] = [
-  { key: "shots", label: "Shots" },
-  { key: "shotsOnTarget", label: "Shots on Target" },
-  { key: "corners", label: "Corners" },
-  { key: "fouls", label: "Fouls" },
-  { key: "passes", label: "Passes" },
+  { key: "shots",         label: "Shots"           },
+  { key: "shotsOnTarget", label: "Shots on Target"  },
+  { key: "corners",       label: "Corners"          },
+  { key: "fouls",         label: "Fouls"            },
+  { key: "offsides",      label: "Offsides"         },
+  { key: "passes",        label: "Passes"           },
 ];
 
 // ─── Stat Row ─────────────────────────────────────────────────────────────────

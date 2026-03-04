@@ -313,6 +313,7 @@ const LiveMatchPage = () => {
                     homeTeamLogo={match.homeTeamLogo}
                     awayTeamLogo={match.awayTeamLogo}
                     currentMinute={getCurrentMinute()}
+                    events={events}
                     onEventLogged={handleLogEvent}
                     onSelectTeam={setActiveTeam}
                   />
