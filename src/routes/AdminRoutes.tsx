@@ -1,4 +1,4 @@
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, Navigate } from "react-router-dom";
 import AdminDashboard from "@/features/admin/pages/AdminDashboard";
 import LeaguesPage from "@/features/admin/pages/LeaguesPage";
 import TeamsPage from "@/features/admin/pages/TeamsPage";
@@ -8,14 +8,17 @@ import FixturesPage from "@/features/admin/pages/FixturesPage";
 import AgentsPage from "@/features/admin/pages/AgentsPage";
 import SettingsPage from "@/features/admin/pages/SettingsPage";
 import NotFound from "@/NotFound";
-import { ROUTES } from "@/shared/config/routes";
 import { ProtectedRoute } from "./ProtectedRoute";
 
+// Paths are relative to the /admin/* parent mount in App.tsx
 export const AdminRoutes = () => {
   return (
     <Routes>
+      {/* Redirect /admin → /admin/dashboard */}
+      <Route index element={<Navigate to="dashboard" replace />} />
+
       <Route
-        path={ROUTES.ADMIN.DASHBOARD}
+        path="dashboard"
         element={
           <ProtectedRoute requiredRole="admin">
             <AdminDashboard />
@@ -23,7 +26,7 @@ export const AdminRoutes = () => {
         }
       />
       <Route
-        path={ROUTES.ADMIN.LEAGUES}
+        path="leagues"
         element={
           <ProtectedRoute requiredRole="admin">
             <LeaguesPage />
@@ -31,7 +34,7 @@ export const AdminRoutes = () => {
         }
       />
       <Route
-        path={ROUTES.ADMIN.TEAMS}
+        path="teams"
         element={
           <ProtectedRoute requiredRole="admin">
             <TeamsPage />
@@ -39,7 +42,7 @@ export const AdminRoutes = () => {
         }
       />
       <Route
-        path={ROUTES.ADMIN.PLAYERS}
+        path="players"
         element={
           <ProtectedRoute requiredRole="admin">
             <PlayersPage />
@@ -47,7 +50,7 @@ export const AdminRoutes = () => {
         }
       />
       <Route
-        path={ROUTES.ADMIN.STADIUMS}
+        path="stadiums"
         element={
           <ProtectedRoute requiredRole="admin">
             <StadiumsPage />
@@ -55,7 +58,7 @@ export const AdminRoutes = () => {
         }
       />
       <Route
-        path={ROUTES.ADMIN.FIXTURES}
+        path="fixtures"
         element={
           <ProtectedRoute requiredRole="admin">
             <FixturesPage />
@@ -63,7 +66,7 @@ export const AdminRoutes = () => {
         }
       />
       <Route
-        path={ROUTES.ADMIN.AGENTS}
+        path="agents"
         element={
           <ProtectedRoute requiredRole="admin">
             <AgentsPage />
@@ -71,7 +74,7 @@ export const AdminRoutes = () => {
         }
       />
       <Route
-        path={ROUTES.ADMIN.SETTINGS}
+        path="settings"
         element={
           <ProtectedRoute requiredRole="admin">
             <SettingsPage />

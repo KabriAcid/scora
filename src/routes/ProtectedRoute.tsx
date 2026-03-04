@@ -13,7 +13,7 @@ export const ProtectedRoute = ({
   // TODO: Implement actual authentication check
   // For now, we'll assume the user is authenticated and has the required role
   const isAuthenticated = true; // Replace with actual auth check
-  const userRole = "user"; // Replace with actual user role from auth context
+  const userRole = "admin"; // TODO: replace with actual user role from auth context
 
   if (!isAuthenticated) {
     return <Navigate to="/login" replace />;
