@@ -196,7 +196,7 @@ export const matchDetailsData: Record<string, MatchDetail> = {
         time: "67",
         team: "home",
         type: "substitution",
-        player: "Sharabilu Attack",
+        player: "Sharabilu Ataka",
         description: "↔ Yahya Ibrahim",
       },
       {
@@ -337,7 +337,7 @@ export const matchDetailsData: Record<string, MatchDetail> = {
         { id: "21", name: "Karim Alhassan", number: 1, position: "GK" },
         { id: "22", name: "Jamal Magaji", number: 2, position: "LB" },
         { id: "23", name: "Malik Danladi", number: 5, position: "CB" },
-        { id: "24", name: "Fatima Katsina", number: 6, position: "CB" },
+        { id: "24", name: "Ja'afar Abukur", number: 6, position: "CB" },
         { id: "25", name: "Jibril Saidu", number: 18, position: "RB" },
         { id: "26", name: "Aqeed Hassan", number: 8, position: "LM" },
         { id: "27", name: "Tayo Ogunjobi", number: 4, position: "CM" },

@@ -95,7 +95,7 @@ const Index = () => {
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
               >
-                <Card className="py-3 bg-primary/80 border-0 rounded-2xl">
+                <Card className="py-3 bg-card/50 border-border/50 rounded-2xl">
                   <div className="px-4">
                     {/* Stadium and Week Skeleton */}
                     <div className="text-center mb-3">
