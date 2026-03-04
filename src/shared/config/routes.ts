@@ -25,6 +25,7 @@ export const ROUTES = {
 
   // Administrator routes
   ADMIN: {
+    LOGIN: "/admin/login",
     DASHBOARD: "/admin/dashboard",
     LEAGUES: "/admin/leagues",
     TEAMS: "/admin/teams",

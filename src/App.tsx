@@ -13,6 +13,7 @@ import AgentLoginPage from "@/features/agent/pages/AgentLoginPage";
 import AgentDashboard from "@/features/agent/pages/AgentDashboard";
 import LiveMatchPage from "@/features/agent/pages/LiveMatchPage";
 // import AssignedMatchesPage from "@/features/agent/pages/AssignedMatchesPage";
+import AdminLoginPage from "@/features/admin/pages/AdminLoginPage";
 import { AdminRoutes } from "@/routes/AdminRoutes";
 import NotFound from "@/NotFound";
 
@@ -41,6 +42,7 @@ const App = () => (
           {/* <Route path="/agent/matches" element={<AssignedMatchesPage />} /> */}
 
           {/* Admin Routes */}
+          <Route path="/admin/login" element={<AdminLoginPage />} />
           <Route path="/admin/*" element={<AdminRoutes />} />
 
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
