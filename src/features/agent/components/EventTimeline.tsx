@@ -10,6 +10,7 @@ interface EventTimelineProps {
   homeTeam: string;
   awayTeam: string;
   onRemoveEvent?: (eventId: string) => void;
+  readOnly?: boolean;
 }
 
 export const EventTimeline = ({
@@ -17,6 +18,7 @@ export const EventTimeline = ({
   homeTeam,
   awayTeam,
   onRemoveEvent,
+  readOnly = false,
 }: EventTimelineProps) => {
   const [activeId, setActiveId] = useState<string | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
@@ -48,7 +50,7 @@ export const EventTimeline = ({
         </h2>
         <div className="text-center py-12 text-muted-foreground">
           <Activity className="w-12 h-12 mx-auto mb-3 opacity-50" />
-          <p>No match events yet</p>
+          <p>No match events recorded</p>
         </div>
       </Card>
     );
@@ -56,9 +58,16 @@ export const EventTimeline = ({
 
   return (
     <Card className="p-6 bg-card/50 border-none shadow-xl">
-      <h2 className="text-sm font-semibold text-muted-foreground uppercase mb-4">
-        Match Timeline
-      </h2>
+      <div className="flex items-center justify-between mb-4">
+        <h2 className="text-sm font-semibold text-muted-foreground uppercase">
+          Match Timeline
+        </h2>
+        {readOnly && (
+          <span className="text-[10px] font-medium text-muted-foreground/60 bg-muted px-2 py-0.5 rounded-full">
+            Review mode
+          </span>
+        )}
+      </div>
       <motion.div
         ref={containerRef}
         className="relative py-4 flex flex-col-reverse"
@@ -88,16 +97,24 @@ export const EventTimeline = ({
                   transition={{ duration: 0.3, delay: index * 0.03 }}
                   className="relative"
                 >
-                  {/* Event Icon on Center Line — clickable */}
+                  {/* Event Icon on Center Line */}
                   <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-20">
                     <button
-                      onClick={() => setActiveId(isActive ? null : event.id)}
+                      onClick={() =>
+                        !readOnly && setActiveId(isActive ? null : event.id)
+                      }
                       className={`flex items-center justify-center w-10 h-10 rounded-full bg-background border-2 shadow-lg transition-colors ${
-                        isActive
-                          ? "border-destructive ring-2 ring-destructive/30"
-                          : "border-border hover:border-primary/60"
+                        readOnly
+                          ? "border-border cursor-default"
+                          : isActive
+                            ? "border-destructive ring-2 ring-destructive/30"
+                            : "border-border hover:border-primary/60 cursor-pointer"
                       }`}
-                      title="Click to remove event"
+                      title={
+                        readOnly
+                          ? getEventTitle(event.type)
+                          : "Click to remove event"
+                      }
                     >
                       <img
                         src={getEventIconPath(event.type)}
@@ -106,9 +123,9 @@ export const EventTimeline = ({
                       />
                     </button>
 
-                    {/* Remove tooltip — pops above the icon */}
+                    {/* Remove tooltip — only when not in readOnly mode */}
                     <AnimatePresence>
-                      {isActive && (
+                      {!readOnly && isActive && (
                         <motion.div
                           initial={{ opacity: 0, y: 6, scale: 0.9 }}
                           animate={{ opacity: 1, y: 0, scale: 1 }}

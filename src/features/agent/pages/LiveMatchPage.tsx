@@ -12,7 +12,7 @@ import MatchControlPanel, {
   type MatchPhase,
 } from "@/features/agent/components/MatchControlPanel";
 import { EventTimeline } from "@/features/agent/components/EventTimeline";
-import MatchStats from "@/features/agent/components/MatchStats";
+import { LiveMatchStats } from "@/features/agent/components/LiveMatchStats";
 import QuickActions from "@/features/agent/components/QuickActions";
 import { PlayerRosterQuickActions } from "@/features/agent/components/PlayerRosterQuickActions";
 import { LiveMatchPageSkeleton } from "@/features/agent/components/LiveMatchSkeleton";
@@ -295,11 +295,10 @@ const LiveMatchPage = () => {
 
             {/* Stats & Info Panel */}
             <div className="space-y-6 md:space-y-8">
-              <MatchStats
-                homeScore={homeScore}
-                awayScore={awayScore}
-                eventsCount={events.length}
-                matchTime={formatTime(currentTime)}
+              <LiveMatchStats
+                homeTeam={match.homeTeam}
+                awayTeam={match.awayTeam}
+                matchPhase={matchPhase}
               />
 
               <QuickActions
