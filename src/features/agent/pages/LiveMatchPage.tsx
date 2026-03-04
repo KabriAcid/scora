@@ -295,87 +295,84 @@ const LiveMatchPage = () => {
             />
           </motion.div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 md:gap-8">
-            {/* Event Logging Panel */}
-            <div className="order-2 lg:order-1 lg:col-span-2 space-y-6 md:space-y-8">
-              {/* Player Roster with Quick Actions */}
-              {matchPhase !== "idle" &&
-              matchPhase !== "half_time" &&
-              matchPhase !== "full_time" &&
-              activeTeam ? (
-                <motion.div variants={itemVariants}>
-                  <PlayerRosterQuickActions
-                    matchId={id}
-                    activeTeam={activeTeam}
-                    homeTeam={match.homeTeam}
-                    awayTeam={match.awayTeam}
-                    homeTeamLogo={match.homeTeamLogo}
-                    awayTeamLogo={match.awayTeamLogo}
-                    currentMinute={getCurrentMinute()}
-                    events={events}
-                    onEventLogged={handleLogEvent}
-                    onSelectTeam={setActiveTeam}
-                  />
-                </motion.div>
-              ) : matchPhase === "full_time" ? (
-                <motion.div variants={itemVariants}>
-                  <Card className="p-5 border border-primary/20 bg-primary/5">
-                    <div className="flex items-center gap-3">
-                      <div className="flex-shrink-0 flex items-center justify-center w-10 h-10 rounded-full bg-primary/10 text-primary">
-                        <Trophy className="w-5 h-5" />
-                      </div>
-                      <div>
-                        <p className="text-sm font-semibold text-foreground">
-                          Match Complete
-                        </p>
-                        <p className="text-xs text-muted-foreground mt-0.5">
-                          Final score&nbsp;·&nbsp;
-                          <span className="font-medium text-foreground">
-                            {match.homeTeam} {homeScore} – {awayScore}{" "}
-                            {match.awayTeam}
-                          </span>
-                          &nbsp;·&nbsp;{events.length} event
-                          {events.length !== 1 ? "s" : ""} logged
-                        </p>
-                      </div>
-                    </div>
-                  </Card>
-                </motion.div>
-              ) : (
-                <motion.div variants={itemVariants}>
-                  <Card className="p-6 text-center">
-                    <p className="text-sm text-muted-foreground">
-                      {matchPhase === "idle"
-                        ? "Kick off to begin logging events"
-                        : matchPhase === "half_time"
-                          ? "Half time — waiting for 2nd half"
-                          : "Select a team to log events"}
-                    </p>
-                  </Card>
-                </motion.div>
-              )}
-
-              {/* Event Timeline with Team Tabs */}
+          <div className="space-y-6 md:space-y-8">
+            {/* 1 — Player Roster with Quick Actions */}
+            {matchPhase !== "idle" &&
+            matchPhase !== "half_time" &&
+            matchPhase !== "full_time" &&
+            activeTeam ? (
               <motion.div variants={itemVariants}>
-                <EventTimeline
-                  events={events}
+                <PlayerRosterQuickActions
+                  matchId={id}
+                  activeTeam={activeTeam}
                   homeTeam={match.homeTeam}
                   awayTeam={match.awayTeam}
-                  onRemoveEvent={handleRemoveEvent}
-                  readOnly={matchPhase === "full_time"}
-                  matchPhase={matchPhase}
+                  homeTeamLogo={match.homeTeamLogo}
+                  awayTeamLogo={match.awayTeamLogo}
+                  currentMinute={getCurrentMinute()}
+                  events={events}
+                  onEventLogged={handleLogEvent}
+                  onSelectTeam={setActiveTeam}
                 />
               </motion.div>
-            </div>
+            ) : matchPhase === "full_time" ? (
+              <motion.div variants={itemVariants}>
+                <Card className="p-5 border border-primary/20 bg-primary/5">
+                  <div className="flex items-center gap-3">
+                    <div className="flex-shrink-0 flex items-center justify-center w-10 h-10 rounded-full bg-primary/10 text-primary">
+                      <Trophy className="w-5 h-5" />
+                    </div>
+                    <div>
+                      <p className="text-sm font-semibold text-foreground">
+                        Match Complete
+                      </p>
+                      <p className="text-xs text-muted-foreground mt-0.5">
+                        Final score&nbsp;·&nbsp;
+                        <span className="font-medium text-foreground">
+                          {match.homeTeam} {homeScore} – {awayScore}{" "}
+                          {match.awayTeam}
+                        </span>
+                        &nbsp;·&nbsp;{events.length} event
+                        {events.length !== 1 ? "s" : ""} logged
+                      </p>
+                    </div>
+                  </div>
+                </Card>
+              </motion.div>
+            ) : (
+              <motion.div variants={itemVariants}>
+                <Card className="p-6 text-center">
+                  <p className="text-sm text-muted-foreground">
+                    {matchPhase === "idle"
+                      ? "Kick off to begin logging events"
+                      : matchPhase === "half_time"
+                        ? "Half time — waiting for 2nd half"
+                        : "Select a team to log events"}
+                  </p>
+                </Card>
+              </motion.div>
+            )}
 
-            {/* Stats & Info Panel */}
-            <div className="order-1 lg:order-2 space-y-6 md:space-y-8">
+            {/* 2 — Match Stats */}
+            <motion.div variants={itemVariants}>
               <LiveMatchStats
                 homeTeam={match.homeTeam}
                 awayTeam={match.awayTeam}
                 matchPhase={matchPhase}
               />
-            </div>
+            </motion.div>
+
+            {/* 3 — Event Timeline */}
+            <motion.div variants={itemVariants}>
+              <EventTimeline
+                events={events}
+                homeTeam={match.homeTeam}
+                awayTeam={match.awayTeam}
+                onRemoveEvent={handleRemoveEvent}
+                readOnly={matchPhase === "full_time"}
+                matchPhase={matchPhase}
+              />
+            </motion.div>
           </div>
         </motion.div>
       </div>
