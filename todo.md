@@ -1,7 +1,6 @@
-In the live match header, omit the stadium and the league title. 
-- Reduce the paddings and let's have a 3 in a row even button in the SM screens
-- Add icons in the match stats cards #file:MatchStats.tsx 
-- Also be smart to make the fields for players names a select or <datalist> with search functionality.
-- Also refactor the inputs for each event type so that e.g corner kicks don't need a player field instead we increment corner count and also other events - #file:MatchDetailPage.tsx 
-- Match stats container needs to look have all type of stats 
-- Removal of an event after being placed.
+<!-- New -->
+- Adding of the assist by ...
+- We sort the players base on roles so that attackers appear first not goalkeepers. Or more professionaly we add some priority for easier sorting e.g 1 for attackers, etc.
+
+- Passes count dosen't increment but the functionality working properly.
+- Also, the bars/count for the posession not working properly.

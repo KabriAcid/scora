@@ -1,7 +1,7 @@
 import { useState, useEffect, useMemo, useCallback } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, Trophy } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -85,7 +85,11 @@ const LiveMatchPage = () => {
   // Optimized event logging handler
   const handleLogEvent = useCallback(
     (event: MatchEvent) => {
-      setEvents((prev) => [event, ...prev]);
+      const half: "first" | "second" =
+        matchPhase === "second_half" || matchPhase === "paused_2nd"
+          ? "second"
+          : "first";
+      setEvents((prev) => [{ ...event, half }, ...prev]);
 
       // Update scores if goal
       if (event.type === "goal") {
@@ -96,7 +100,7 @@ const LiveMatchPage = () => {
         }
       }
     },
-    [match],
+    [match, matchPhase],
   );
 
   // Remove event handler — reverses score if it was a goal
@@ -266,6 +270,30 @@ const LiveMatchPage = () => {
                     onSelectTeam={setActiveTeam}
                   />
                 </motion.div>
+              ) : matchPhase === "full_time" ? (
+                <motion.div variants={itemVariants}>
+                  <Card className="p-5 border border-primary/20 bg-primary/5">
+                    <div className="flex items-center gap-3">
+                      <div className="flex-shrink-0 flex items-center justify-center w-10 h-10 rounded-full bg-primary/10 text-primary">
+                        <Trophy className="w-5 h-5" />
+                      </div>
+                      <div>
+                        <p className="text-sm font-semibold text-foreground">
+                          Match Complete
+                        </p>
+                        <p className="text-xs text-muted-foreground mt-0.5">
+                          Final score&nbsp;·&nbsp;
+                          <span className="font-medium text-foreground">
+                            {match.homeTeam} {homeScore} – {awayScore}{" "}
+                            {match.awayTeam}
+                          </span>
+                          &nbsp;·&nbsp;{events.length} event
+                          {events.length !== 1 ? "s" : ""} logged
+                        </p>
+                      </div>
+                    </div>
+                  </Card>
+                </motion.div>
               ) : (
                 <motion.div variants={itemVariants}>
                   <Card className="p-6 text-center">
@@ -274,9 +302,7 @@ const LiveMatchPage = () => {
                         ? "Kick off to begin logging events"
                         : matchPhase === "half_time"
                           ? "Half time — waiting for 2nd half"
-                          : matchPhase === "full_time"
-                            ? "Match has ended"
-                            : "Select a team to log events"}
+                          : "Select a team to log events"}
                     </p>
                   </Card>
                 </motion.div>
@@ -289,6 +315,8 @@ const LiveMatchPage = () => {
                   homeTeam={match.homeTeam}
                   awayTeam={match.awayTeam}
                   onRemoveEvent={handleRemoveEvent}
+                  readOnly={matchPhase === "full_time"}
+                  matchPhase={matchPhase}
                 />
               </motion.div>
             </div>

@@ -1,9 +1,10 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Activity, Trash2 } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { getEventIconPath, getEventTitle } from "@/shared/utils/eventIcons";
 import type { MatchEvent } from "@/shared/types/agent";
+import type { MatchPhase } from "@/features/agent/components/MatchControlPanel";
 
 interface EventTimelineProps {
   events: MatchEvent[];
@@ -11,7 +12,11 @@ interface EventTimelineProps {
   awayTeam: string;
   onRemoveEvent?: (eventId: string) => void;
   readOnly?: boolean;
+  matchPhase?: MatchPhase;
 }
+
+type SeparatorItem = { isSeparator: true; id: string };
+type TimelineItem = MatchEvent | SeparatorItem;
 
 export const EventTimeline = ({
   events,
@@ -19,6 +24,7 @@ export const EventTimeline = ({
   awayTeam,
   onRemoveEvent,
   readOnly = false,
+  matchPhase,
 }: EventTimelineProps) => {
   const [activeId, setActiveId] = useState<string | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
@@ -41,6 +47,32 @@ export const EventTimeline = ({
     setActiveId(null);
     onRemoveEvent?.(eventId);
   };
+
+  // Build a timeline items list, injecting a half-time separator where the halves meet.
+  // Events array is newest-first; the container is flex-col-reverse so oldest renders at top.
+  // The separator is inserted at the boundary between second-half and first-half events
+  // (array position), so it appears between them in the visual chronological layout.
+  const timelineItems = useMemo((): TimelineItem[] => {
+    const showSeparator =
+      matchPhase === "half_time" ||
+      matchPhase === "second_half" ||
+      matchPhase === "paused_2nd" ||
+      matchPhase === "full_time";
+
+    if (!showSeparator || events.length === 0) return events;
+
+    const separator: SeparatorItem = { isSeparator: true, id: "half-separator" };
+    const firstHalfIndex = events.findIndex((e) => (e.half ?? "first") === "first");
+
+    if (firstHalfIndex === -1) {
+      // All events are from second half — put separator at the end (appears at visual top)
+      return [...events, separator];
+    }
+    // Insert separator between the second-half block and the first-half block
+    const result: TimelineItem[] = [...events];
+    result.splice(firstHalfIndex, 0, separator);
+    return result;
+  }, [events, matchPhase]);
 
   if (!events || events.length === 0) {
     return (
@@ -80,7 +112,29 @@ export const EventTimeline = ({
 
         <div className="space-y-8">
           <AnimatePresence initial={false}>
-            {events.map((event, index) => {
+            {timelineItems.map((item, index) => {
+              // --- Half-time separator ---
+              if ("isSeparator" in item) {
+                return (
+                  <motion.div
+                    key="half-separator"
+                    initial={{ opacity: 0, scaleX: 0.6 }}
+                    animate={{ opacity: 1, scaleX: 1 }}
+                    exit={{ opacity: 0 }}
+                    transition={{ duration: 0.35, ease: "easeOut" }}
+                    className="relative flex items-center gap-3 py-1 z-10"
+                  >
+                    <div className="flex-1 h-px bg-primary/25" />
+                    <span className="flex-shrink-0 text-[10px] font-bold uppercase tracking-widest text-muted-foreground bg-card border border-border px-3 py-1 rounded-full">
+                      Half Time
+                    </span>
+                    <div className="flex-1 h-px bg-primary/25" />
+                  </motion.div>
+                );
+              }
+
+              // --- Regular event row ---
+              const event = item as MatchEvent;
               const isHomeTeamEvent = event.team === homeTeam;
               const isActive = activeId === event.id;
 

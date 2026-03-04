@@ -20,6 +20,7 @@ export interface MatchEvent {
     player: string;
     team: string;
     minute: number;
+    half?: "first" | "second";
     description?: string;
     timestamp: Date;
 }
