@@ -61,8 +61,13 @@ export const EventTimeline = ({
 
     if (!showSeparator || events.length === 0) return events;
 
-    const separator: SeparatorItem = { isSeparator: true, id: "half-separator" };
-    const firstHalfIndex = events.findIndex((e) => (e.half ?? "first") === "first");
+    const separator: SeparatorItem = {
+      isSeparator: true,
+      id: "half-separator",
+    };
+    const firstHalfIndex = events.findIndex(
+      (e) => (e.half ?? "first") === "first",
+    );
 
     if (firstHalfIndex === -1) {
       // All events are from second half — put separator at the end (appears at visual top)

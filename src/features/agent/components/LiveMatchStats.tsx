@@ -1,5 +1,5 @@
-import { useState, useEffect, useRef, useCallback } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { useState, useCallback } from "react";
+import { motion } from "framer-motion";
 import { Plus, Minus, Activity } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -71,18 +71,9 @@ const StatRow = ({
       <div className="flex items-center gap-1">
         {/* Home: value | – | + */}
         <div className="flex items-center gap-1 flex-1 justify-end">
-          <AnimatePresence mode="wait">
-            <motion.span
-              key={homeVal}
-              initial={{ scale: 1.25, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              exit={{ scale: 0.8, opacity: 0 }}
-              transition={{ duration: 0.12 }}
-              className="text-sm font-bold w-5 text-right tabular-nums text-foreground"
-            >
-              {homeVal}
-            </motion.span>
-          </AnimatePresence>
+          <span className="text-sm font-bold w-5 text-right tabular-nums text-foreground">
+            {homeVal}
+          </span>
           <div className="flex gap-0.5">
             <Button
               size="icon"
@@ -132,30 +123,21 @@ const StatRow = ({
               <Minus className="w-2.5 h-2.5" />
             </Button>
           </div>
-          <AnimatePresence mode="wait">
-            <motion.span
-              key={awayVal}
-              initial={{ scale: 1.25, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              exit={{ scale: 0.8, opacity: 0 }}
-              transition={{ duration: 0.12 }}
-              className="text-sm font-bold w-5 tabular-nums text-foreground"
-            >
-              {awayVal}
-            </motion.span>
-          </AnimatePresence>
+          <span className="text-sm font-bold w-5 tabular-nums text-foreground">
+            {awayVal}
+          </span>
         </div>
       </div>
 
-      {/* Comparison bar */}
-      <div className="flex h-1.5 rounded-full overflow-hidden bg-muted">
+      {/* Comparison bar — absolute bars grow inward from each side */}
+      <div className="relative h-1.5 rounded-full overflow-hidden bg-muted">
         <motion.div
-          className="bg-primary h-full"
+          className="absolute inset-y-0 left-0 bg-primary rounded-full"
           animate={{ width: `${homePct}%` }}
           transition={{ type: "spring", stiffness: 220, damping: 28 }}
         />
         <motion.div
-          className="bg-accent h-full"
+          className="absolute inset-y-0 right-0 bg-accent rounded-full"
           animate={{ width: `${awayPct}%` }}
           transition={{ type: "spring", stiffness: 220, damping: 28 }}
         />
@@ -185,50 +167,30 @@ export const LiveMatchStats = ({
     possession: { home: 50, away: 50 },
   });
 
-  // Rolling pass timeline for possession calculation
-  const passTimelineRef = useRef<{ team: "home" | "away"; time: number }[]>([]);
-
-  // Recalculate possession every 10 seconds based on pass activity
-  useEffect(() => {
-    if (!isActive) return;
-    const WINDOW_MS = 10 * 1000;
-
-    const interval = setInterval(() => {
-      const windowStart = Date.now() - WINDOW_MS;
-      // Trim stale entries
-      passTimelineRef.current = passTimelineRef.current.filter(
-        (p) => p.time >= windowStart,
-      );
-      const recent = passTimelineRef.current;
-      if (recent.length === 0) return; // no pass activity → keep current
-
-      const homeCount = recent.filter((p) => p.team === "home").length;
-      const homePoss = Math.min(
-        95,
-        Math.max(5, Math.round((homeCount / recent.length) * 100)),
-      );
-      setStats((prev) => ({
-        ...prev,
-        possession: { home: homePoss, away: 100 - homePoss },
-      }));
-    }, WINDOW_MS);
-
-    return () => clearInterval(interval);
-  }, [isActive]);
-
+  // adjust — updates stat count and recomputes possession inline from pass totals
   const adjust = useCallback(
     (team: "home" | "away", stat: StatKey, delta: 1 | -1) => {
-      // Track passes for possession
-      if (stat === "passes" && delta === 1) {
-        passTimelineRef.current.push({ team, time: Date.now() });
-      }
-      setStats((prev) => ({
-        ...prev,
-        [team]: {
+      setStats((prev) => {
+        const updatedTeam = {
           ...prev[team],
           [stat]: Math.max(0, prev[team][stat] + delta),
-        },
-      }));
+        };
+        const next = { ...prev, [team]: updatedTeam };
+
+        // Recompute possession from cumulative pass counts on every change
+        const totalPasses = next.home.passes + next.away.passes;
+        const homePoss =
+          totalPasses === 0
+            ? 50
+            : Math.min(
+                95,
+                Math.max(5, Math.round((next.home.passes / totalPasses) * 100)),
+              );
+        return {
+          ...next,
+          possession: { home: homePoss, away: 100 - homePoss },
+        };
+      });
     },
     [],
   );
@@ -264,20 +226,20 @@ export const LiveMatchStats = ({
             {stats.possession.away}%
           </span>
         </div>
-        <div className="flex h-2 rounded-full overflow-hidden bg-muted">
+        <div className="relative h-2 rounded-full overflow-hidden bg-muted">
           <motion.div
-            className="bg-primary h-full"
+            className="absolute inset-y-0 left-0 bg-primary rounded-full"
             animate={{ width: `${stats.possession.home}%` }}
-            transition={{ type: "spring", stiffness: 100, damping: 20 }}
+            transition={{ type: "spring", stiffness: 120, damping: 20 }}
           />
           <motion.div
-            className="bg-accent h-full"
+            className="absolute inset-y-0 right-0 bg-accent rounded-full"
             animate={{ width: `${stats.possession.away}%` }}
-            transition={{ type: "spring", stiffness: 100, damping: 20 }}
+            transition={{ type: "spring", stiffness: 120, damping: 20 }}
           />
         </div>
         <p className="text-[10px] text-muted-foreground/60 text-center mt-1">
-          Auto-updated every 10 sec · based on pass activity
+          Based on pass count · updates in real time
         </p>
       </div>
 
