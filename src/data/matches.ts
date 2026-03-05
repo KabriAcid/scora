@@ -1,5 +1,12 @@
 import { clubs, PremierLeagueClub, getClubById } from "./clubs";
 
+export interface Competition {
+    id: string;
+    name: string;
+    region: string;
+    icon: string;
+}
+
 export interface Match {
     id: string;
     homeTeam: PremierLeagueClub;
@@ -7,12 +14,36 @@ export interface Match {
     homeScore: number;
     awayScore: number;
     status: "live" | "finished" | "upcoming";
+    priority?: number; // Lower number = higher priority (0=live, 1=upcoming, 2=finished)
+    competition: Competition;
     stadium?: string;
     week?: string;
     matchTime?: string;
     date?: string;
     time?: string;
 }
+
+// Competition definitions
+export const competitions: Competition[] = [
+    {
+        id: "premier-league",
+        name: "Premier League",
+        region: "Katsina",
+        icon: "⚽"
+    },
+    {
+        id: "katsina-cup",
+        name: "Katsina State Cup",
+        region: "Katsina",
+        icon: "🏆"
+    },
+    {
+        id: "northern-championship",
+        name: "Northern Championship",
+        region: "Qualification 2026",
+        icon: "🏅"
+    }
+];
 
 // Live matches
 export const liveMatches: Match[] = [
@@ -23,6 +54,7 @@ export const liveMatches: Match[] = [
         homeScore: 1,
         awayScore: 1,
         status: "live",
+        competition: competitions[0],
         stadium: "Karkanda Stadium",
         week: "Week 10",
         matchTime: "90+4",
@@ -34,6 +66,7 @@ export const liveMatches: Match[] = [
         homeScore: 0,
         awayScore: 3,
         status: "live",
+        competition: competitions[0],
         stadium: "Faskari Stadium",
         week: "Week 10",
         matchTime: "78",
@@ -45,6 +78,7 @@ export const liveMatches: Match[] = [
         homeScore: 2,
         awayScore: 1,
         status: "live",
+        competition: competitions[0],
         stadium: "Gawo Park",
         week: "Week 10",
         matchTime: "65",
@@ -56,6 +90,7 @@ export const liveMatches: Match[] = [
         homeScore: 1,
         awayScore: 0,
         status: "live",
+        competition: competitions[0],
         stadium: "Baure Arena",
         week: "Week 10",
         matchTime: "52",
@@ -71,6 +106,7 @@ export const todayMatches: Match[] = [
         homeScore: 2,
         awayScore: 1,
         status: "finished",
+        competition: competitions[0],
         stadium: "Katsina United Ground",
         week: "Week 10",
         time: "FT",
@@ -82,6 +118,7 @@ export const todayMatches: Match[] = [
         homeScore: 0,
         awayScore: 0,
         status: "upcoming",
+        competition: competitions[1],
         stadium: "Dutsin-Ma Field",
         week: "Week 10",
         time: "17:30",
@@ -93,9 +130,10 @@ export const todayMatches: Match[] = [
         homeScore: 0,
         awayScore: 0,
         status: "upcoming",
+        competition: competitions[1],
         stadium: "Arrow Park",
         week: "Week 10",
-        time: "20:00",
+        time: "21:12",
     },
     {
         id: "8",
@@ -104,6 +142,7 @@ export const todayMatches: Match[] = [
         homeScore: 2,
         awayScore: 0,
         status: "finished",
+        competition: competitions[0],
         stadium: "Baure Arena",
         week: "Week 10",
         time: "FT",
@@ -115,6 +154,7 @@ export const todayMatches: Match[] = [
         homeScore: 1,
         awayScore: 0,
         status: "finished",
+        competition: competitions[0],
         stadium: "Faskari Stadium",
         week: "Week 10",
         time: "FT",
@@ -126,6 +166,7 @@ export const todayMatches: Match[] = [
         homeScore: 2,
         awayScore: 2,
         status: "finished",
+        competition: competitions[2],
         stadium: "Gawo Park",
         week: "Week 10",
         time: "FT",
@@ -142,16 +183,38 @@ export const getLiveMatches = (): Match[] => {
     return liveMatches;
 };
 
+// Get priority for match status (lower = higher priority)
+export const getStatusPriority = (status: Match["status"]): number => {
+    const priorities = { live: 0, upcoming: 1, finished: 2 };
+    return priorities[status];
+};
+
 // Get today's matches
 export const getTodayMatches = (): Match[] => {
-    // Sort: finished first, then upcoming, then others
+    // Sort: live first (priority 0), then upcoming (1), then finished (2)
     return [...todayMatches].sort((a, b) => {
-        const statusOrder = { finished: 0, upcoming: 1, live: 2 };
-        return statusOrder[a.status] - statusOrder[b.status];
+        return getStatusPriority(a.status) - getStatusPriority(b.status);
     });
 };
 
 // Get match by ID
 export const getMatchById = (id: string): Match | undefined => {
     return [...liveMatches, ...todayMatches].find(match => match.id === id);
+};
+
+// Group matches by competition
+export const getMatchesByCompetition = (): Map<Competition, Match[]> => {
+    const allMatches = [...getTodayMatches(), ...getLiveMatches()];
+    const grouped = new Map<Competition, Match[]>();
+
+    allMatches.forEach(match => {
+        const existing = grouped.get(match.competition);
+        if (existing) {
+            existing.push(match);
+        } else {
+            grouped.set(match.competition, [match]);
+        }
+    });
+
+    return grouped;
 };

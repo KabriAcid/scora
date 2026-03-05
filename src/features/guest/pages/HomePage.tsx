@@ -1,14 +1,14 @@
 import { useState, useEffect } from "react";
 import { Search, User } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { MatchCard } from "@/features/guest/components/match/MatchCard";
-import { MatchListItem } from "@/features/guest/components/match/MatchListItem";
+import { CompactMatchItem } from "@/features/guest/components/match/CompactMatchItem";
+import { CompetitionHeader } from "@/features/guest/components/match/CompetitionHeader";
 import { Navigation } from "@/components/common/Navigation";
 import { DateSelector } from "@/features/guest/components/calendar/DateSelector";
 import { useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { Logo } from "@/components/common/Logo";
-import { getFeaturedMatch, getTodayMatches } from "@/data/matches";
+import { getMatchesByCompetition } from "@/data/matches";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Card } from "@/components/ui/card";
 
@@ -17,6 +17,9 @@ const Index = () => {
   const [activeTab, setActiveTab] = useState("home");
   const [selectedDate, setSelectedDate] = useState<Date>(new Date());
   const [loading, setLoading] = useState(true);
+  const [expandedCompetitions, setExpandedCompetitions] = useState<Set<string>>(
+    new Set()
+  );
 
   useEffect(() => {
     // Simulate loading matches
@@ -26,14 +29,32 @@ const Index = () => {
     return () => clearTimeout(timer);
   }, [selectedDate]);
 
+  useEffect(() => {
+    // Expand all competitions on initial load
+    const matchesByComp = getMatchesByCompetition();
+    const allCompIds = Array.from(matchesByComp.keys()).map((comp) => comp.id);
+    setExpandedCompetitions(new Set(allCompIds));
+  }, []);
+
   const handleDateChange = (date: Date) => {
     setLoading(true);
     setSelectedDate(date);
   };
 
-  // Get matches from API data
-  const featuredMatch = getFeaturedMatch();
-  const todayMatchesList = getTodayMatches();
+  const toggleCompetition = (competitionId: string) => {
+    setExpandedCompetitions((prev) => {
+      const newSet = new Set(prev);
+      if (newSet.has(competitionId)) {
+        newSet.delete(competitionId);
+      } else {
+        newSet.add(competitionId);
+      }
+      return newSet;
+    });
+  };
+
+  // Get matches grouped by competition
+  const matchesByCompetition = getMatchesByCompetition();
 
   const handleMatchClick = (matchId: string) => {
     navigate(`/match/${matchId}`);
@@ -78,157 +99,125 @@ const Index = () => {
       <motion.main
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        className="p-4 space-y-6"
+        className="p-4 space-y-4"
       >
-        {/* Featured Match */}
-        <section>
-          <div className="flex items-center justify-between mb-4">
-            <h2 className="text-sm text-gray-800 font-semibold">
-              Live Matches
-            </h2>
-          </div>
-          <AnimatePresence mode="wait">
-            {loading ? (
-              <motion.div
-                key="skeleton"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-              >
-                <Card className="py-3 bg-card/50 border-border/50 rounded-2xl">
-                  <div className="px-4">
-                    {/* Stadium and Week Skeleton */}
-                    <div className="text-center mb-3">
-                      <Skeleton className="h-5 w-32 mx-auto mb-1 rounded" />
-                      <Skeleton className="h-3 w-20 mx-auto rounded" />
-                    </div>
-
-                    {/* Match Content */}
-                    <div className="flex items-center justify-between gap-4">
-                      {/* Home Team Skeleton */}
-                      <div className="flex flex-col items-center flex-1 gap-1.5">
-                        <Skeleton className="w-16 h-16 rounded-full" />
-                        <Skeleton className="h-4 w-20 rounded" />
-                        <Skeleton className="h-3 w-12 rounded" />
-                      </div>
-
-                      {/* Score and Badge Skeleton */}
-                      <div className="flex flex-col items-center gap-2">
-                        <div className="flex items-center gap-1">
-                          <Skeleton className="h-10 w-8 rounded" />
-                          <Skeleton className="h-8 w-2 rounded" />
-                          <Skeleton className="h-10 w-8 rounded" />
-                        </div>
-                        <Skeleton className="h-6 w-16 rounded-full" />
-                      </div>
-
-                      {/* Away Team Skeleton */}
-                      <div className="flex flex-col items-center flex-1 gap-1.5">
-                        <Skeleton className="w-16 h-16 rounded-full" />
-                        <Skeleton className="h-4 w-20 rounded" />
-                        <Skeleton className="h-3 w-12 rounded" />
+        {loading ? (
+          // Loading Skeletons
+          <>
+            {[1, 2].map((_, compIndex) => (
+              <div key={`comp-skeleton-${compIndex}`} className="space-y-3">
+                {/* Competition Header Skeleton */}
+                <Card className="p-4 bg-card/50 border-border/50">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-3">
+                      <Skeleton className="w-8 h-8 rounded-lg" />
+                      <div>
+                        <Skeleton className="h-4 w-32 mb-1" />
+                        <Skeleton className="h-3 w-20" />
                       </div>
                     </div>
+                    <Skeleton className="w-5 h-5" />
                   </div>
                 </Card>
-              </motion.div>
-            ) : (
-              <MatchCard
-                homeTeam={featuredMatch.homeTeam.responsiveName}
-                awayTeam={featuredMatch.awayTeam.responsiveName}
-                homeScore={featuredMatch.homeScore}
-                awayScore={featuredMatch.awayScore}
-                status={featuredMatch.status}
-                stadium={featuredMatch.stadium}
-                week={featuredMatch.week}
-                matchTime={featuredMatch.matchTime}
-                homeLogo={featuredMatch.homeTeam.badgeUrl}
-                awayLogo={featuredMatch.awayTeam.badgeUrl}
-                variant="dark"
-                onClick={() => handleMatchClick(featuredMatch.id)}
-              />
-            )}
-          </AnimatePresence>
-        </section>
 
-        {/* Today's Matches */}
-        <section>
-          <div className="flex items-center justify-between mb-4">
-            <h2 className="text-sm text-gray-800 font-semibold">
-              Today's Matches
-            </h2>
-            <Button
-              variant="ghost"
-              size="sm"
-              className="text-primary"
-              onClick={() => navigate("/calendar")}
-            >
-              View All →
-            </Button>
-          </div>
-          <div className="space-y-3">
-            <AnimatePresence mode="wait">
-              {loading ? (
-                <>
-                  {[1, 2, 3].map((_, index) => (
-                    <motion.div
-                      key={`skeleton-${index}`}
-                      initial={{ opacity: 0, y: 10 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ delay: index * 0.05 }}
-                    >
-                      <Card className="p-4 bg-card/50 border-border/50">
-                        <div className="flex items-center justify-between">
-                          {/* Home Team */}
-                          <div className="flex items-center gap-3 flex-1">
-                            <Skeleton className="w-8 h-8 rounded-full" />
-                            <Skeleton className="h-4 w-20" />
+                {/* Match Skeletons */}
+                {[1, 2].map((_, matchIndex) => (
+                  <motion.div
+                    key={`match-skeleton-${compIndex}-${matchIndex}`}
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: matchIndex * 0.05 }}
+                  >
+                    <Card className="p-4 bg-card/50 border-border/50">
+                      <div className="flex items-center gap-3">
+                        {/* Time Skeleton */}
+                        <Skeleton className="w-12 h-8" />
+
+                        {/* Teams Skeleton */}
+                        <div className="flex-1 space-y-2">
+                          <div className="flex items-center gap-2">
+                            <Skeleton className="w-6 h-6 rounded-full" />
+                            <Skeleton className="h-4 w-24" />
                           </div>
-
-                          {/* Score */}
-                          <div className="flex items-center gap-2 mx-4">
-                            <Skeleton className="h-6 w-6" />
-                            <Skeleton className="h-4 w-2" />
-                            <Skeleton className="h-6 w-6" />
-                          </div>
-
-                          {/* Away Team */}
-                          <div className="flex items-center gap-3 flex-1 justify-end">
-                            <Skeleton className="h-4 w-20" />
-                            <Skeleton className="w-8 h-8 rounded-full" />
+                          <div className="flex items-center gap-2">
+                            <Skeleton className="w-6 h-6 rounded-full" />
+                            <Skeleton className="h-4 w-24" />
                           </div>
                         </div>
-                      </Card>
-                    </motion.div>
-                  ))}
-                </>
-              ) : (
-                <>
-                  {todayMatchesList.map((match, index) => (
-                    <motion.div
-                      key={match.id}
-                      initial={{ opacity: 0, y: 10 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ delay: index * 0.05 }}
-                    >
-                      <MatchListItem
-                        homeTeam={match.homeTeam.responsiveName}
-                        awayTeam={match.awayTeam.responsiveName}
-                        homeScore={match.homeScore}
-                        awayScore={match.awayScore}
-                        status={match.status}
-                        homeLogo={match.homeTeam.badgeUrl}
-                        awayLogo={match.awayTeam.badgeUrl}
-                        time={match.time || match.matchTime}
-                        onClick={() => handleMatchClick(match.id)}
-                      />
-                    </motion.div>
-                  ))}
-                </>
-              )}
-            </AnimatePresence>
-          </div>
-        </section>
+
+                        {/* Score Skeleton */}
+                        <div className="space-y-2">
+                          <Skeleton className="w-6 h-6" />
+                          <Skeleton className="w-6 h-6" />
+                        </div>
+
+                        {/* Arrow Skeleton */}
+                        <Skeleton className="w-5 h-5" />
+                      </div>
+                    </Card>
+                  </motion.div>
+                ))}
+              </div>
+            ))}
+          </>
+        ) : (
+          // Competitions and Matches
+          <>
+            {Array.from(matchesByCompetition.entries()).map(
+              ([competition, matches], compIndex) => (
+                <motion.section
+                  key={competition.id}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: compIndex * 0.1 }}
+                  className="space-y-3"
+                >
+                  {/* Competition Header */}
+                  <CompetitionHeader
+                    competition={competition}
+                    isExpanded={expandedCompetitions.has(competition.id)}
+                    onToggle={() => toggleCompetition(competition.id)}
+                  />
+
+                  {/* Matches List */}
+                  <AnimatePresence>
+                    {expandedCompetitions.has(competition.id) && (
+                      <motion.div
+                        initial={{ height: 0, opacity: 0 }}
+                        animate={{ height: "auto", opacity: 1 }}
+                        exit={{ height: 0, opacity: 0 }}
+                        transition={{ duration: 0.3 }}
+                        className="space-y-2 overflow-hidden"
+                      >
+                        {matches.map((match, matchIndex) => (
+                          <motion.div
+                            key={match.id}
+                            initial={{ opacity: 0, x: -10 }}
+                            animate={{ opacity: 1, x: 0 }}
+                            transition={{ delay: matchIndex * 0.05 }}
+                          >
+                            <CompactMatchItem
+                              homeTeam={match.homeTeam.responsiveName}
+                              awayTeam={match.awayTeam.responsiveName}
+                              homeLogo={match.homeTeam.badgeUrl}
+                              awayLogo={match.awayTeam.badgeUrl}
+                              homeScore={match.homeScore}
+                              awayScore={match.awayScore}
+                              status={match.status}
+                              time={match.time}
+                              matchTime={match.matchTime}
+                              onClick={() => handleMatchClick(match.id)}
+                            />
+                          </motion.div>
+                        ))}
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </motion.section>
+              )
+            )}
+          </>
+        )}
       </motion.main>
 
       {/* Navigation */}
