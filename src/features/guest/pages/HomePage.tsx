@@ -1,14 +1,15 @@
 import { useState, useEffect } from "react";
-import { Search, User } from "lucide-react";
+import { Search, User, ChevronLeft, ChevronRight, Radio } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { CompactMatchItem } from "@/features/guest/components/match/CompactMatchItem";
 import { CompetitionHeader } from "@/features/guest/components/match/CompetitionHeader";
+import { MatchCard } from "@/features/guest/components/match/MatchCard";
 import { Navigation } from "@/components/common/Navigation";
 import { DateSelector } from "@/features/guest/components/calendar/DateSelector";
 import { useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { Logo } from "@/components/common/Logo";
-import { getMatchesByCompetition } from "@/data/matches";
+import { getMatchesByCompetition, getLiveMatches } from "@/data/matches";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Card } from "@/components/ui/card";
 
@@ -20,6 +21,16 @@ const Index = () => {
   const [expandedCompetitions, setExpandedCompetitions] = useState<Set<string>>(
     new Set()
   );
+  const liveMatches = getLiveMatches();
+  const [liveIndex, setLiveIndex] = useState(0);
+
+  const goToPrev = () => setLiveIndex((i) => (i - 1 + liveMatches.length) % liveMatches.length);
+  const goToNext = () => setLiveIndex((i) => (i + 1) % liveMatches.length);
+
+  const handleDragEnd = (_e: MouseEvent | TouchEvent | PointerEvent, info: { offset: { x: number } }) => {
+    if (info.offset.x < -50) goToNext();
+    else if (info.offset.x > 50) goToPrev();
+  };
 
   useEffect(() => {
     // Simulate loading matches
@@ -94,6 +105,84 @@ const Index = () => {
           />
         </div>
       </motion.header>
+
+      {/* Live Match Slider */}
+      {liveMatches.length > 0 && (
+        <div className="px-4 pt-4 pb-1">
+          {/* Section label */}
+          <div className="flex items-center justify-between mb-3">
+            <div className="flex items-center gap-2">
+              <Radio className="w-4 h-4 text-green-500 animate-pulse" />
+              <span className="text-sm font-bold text-foreground">Live Now</span>
+              <span className="text-xs font-semibold bg-green-500/15 text-green-600 rounded-full px-2 py-0.5">
+                {liveMatches.length}
+              </span>
+            </div>
+            <div className="flex items-center gap-1">
+              <button
+                onClick={goToPrev}
+                className="w-7 h-7 rounded-full bg-muted hover:bg-muted/80 flex items-center justify-center transition-colors"
+              >
+                <ChevronLeft className="w-4 h-4 text-muted-foreground" />
+              </button>
+              <button
+                onClick={goToNext}
+                className="w-7 h-7 rounded-full bg-muted hover:bg-muted/80 flex items-center justify-center transition-colors"
+              >
+                <ChevronRight className="w-4 h-4 text-muted-foreground" />
+              </button>
+            </div>
+          </div>
+
+          {/* Card */}
+          <div className="overflow-hidden rounded-2xl">
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={liveIndex}
+                initial={{ opacity: 0, x: 40 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: -40 }}
+                transition={{ duration: 0.28, ease: "easeInOut" }}
+                drag="x"
+                dragConstraints={{ left: 0, right: 0 }}
+                dragElastic={0.2}
+                onDragEnd={handleDragEnd}
+              >
+                <MatchCard
+                  homeTeam={liveMatches[liveIndex].homeTeam.responsiveName}
+                  awayTeam={liveMatches[liveIndex].awayTeam.responsiveName}
+                  homeLogo={liveMatches[liveIndex].homeTeam.badgeUrl}
+                  awayLogo={liveMatches[liveIndex].awayTeam.badgeUrl}
+                  homeScore={liveMatches[liveIndex].homeScore}
+                  awayScore={liveMatches[liveIndex].awayScore}
+                  status="live"
+                  stadium={liveMatches[liveIndex].stadium}
+                  week={liveMatches[liveIndex].week}
+                  matchTime={liveMatches[liveIndex].matchTime}
+                  variant="dark"
+                  onClick={() => navigate(`/match/${liveMatches[liveIndex].id}`)}
+                />
+              </motion.div>
+            </AnimatePresence>
+          </div>
+
+          {/* Dot indicators */}
+          {liveMatches.length > 1 && (
+            <div className="flex justify-center gap-1.5 mt-3">
+              {liveMatches.map((_, i) => (
+                <button
+                  key={i}
+                  onClick={() => setLiveIndex(i)}
+                  className={`rounded-full transition-all duration-200 ${i === liveIndex
+                      ? "w-5 h-1.5 bg-primary"
+                      : "w-1.5 h-1.5 bg-muted-foreground/30"
+                    }`}
+                />
+              ))}
+            </div>
+          )}
+        </div>
+      )}
 
       {/* Main Content */}
       <motion.main

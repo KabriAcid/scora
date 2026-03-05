@@ -78,15 +78,17 @@ export const CompactMatchItem = ({
                 </div>
             </div>
 
-            {/* Scores Section */}
-            {status === "finished" && (
+            {/* Scores Section — shown for live and finished matches */}
+            {(status === "finished" || status === "live") && (
                 <div className="flex flex-col gap-2 min-w-[32px] items-end">
                     <span
                         className={cn(
                             "text-lg sm:text-xl font-bold",
-                            homeScore !== undefined && awayScore !== undefined && homeScore > awayScore
-                                ? "text-foreground"
-                                : "text-muted-foreground"
+                            status === "live"
+                                ? "text-green-500"
+                                : homeScore !== undefined && awayScore !== undefined && homeScore > awayScore
+                                    ? "text-foreground"
+                                    : "text-muted-foreground"
                         )}
                     >
                         {homeScore}
@@ -94,9 +96,11 @@ export const CompactMatchItem = ({
                     <span
                         className={cn(
                             "text-lg sm:text-xl font-bold",
-                            homeScore !== undefined && awayScore !== undefined && awayScore > homeScore
-                                ? "text-foreground"
-                                : "text-muted-foreground"
+                            status === "live"
+                                ? "text-green-500"
+                                : homeScore !== undefined && awayScore !== undefined && awayScore > homeScore
+                                    ? "text-foreground"
+                                    : "text-muted-foreground"
                         )}
                     >
                         {awayScore}
