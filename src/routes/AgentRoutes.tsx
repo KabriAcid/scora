@@ -1,9 +1,10 @@
 import { Routes, Route } from "react-router-dom";
-import AgentHomePage from "@/features/agent/pages/AgentHomePage";
+import AgentDashboard from "@/features/agent/pages/AgentDashboard";
 import LiveMatchPage from "@/features/agent/pages/LiveMatchPage";
 import AssignedMatchesPage from "@/features/agent/pages/AssignedMatchesPage";
 import EventLogPage from "@/features/agent/pages/EventLogPage";
-import NotFound from "@/pages/NotFound";
+import AgentCalendarPage from "@/features/agent/pages/AgentCalendarPage";
+import NotFound from "@/NotFound";
 import { ROUTES } from "@/shared/config/routes";
 import { ProtectedRoute } from "./ProtectedRoute";
 
@@ -14,7 +15,7 @@ export const AgentRoutes = () => {
         path={ROUTES.AGENT.DASHBOARD}
         element={
           <ProtectedRoute requiredRole="agent">
-            <AgentHomePage />
+            <AgentDashboard />
           </ProtectedRoute>
         }
       />
@@ -39,6 +40,14 @@ export const AgentRoutes = () => {
         element={
           <ProtectedRoute requiredRole="agent">
             <EventLogPage />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path={ROUTES.AGENT.CALENDAR}
+        element={
+          <ProtectedRoute requiredRole="agent">
+            <AgentCalendarPage />
           </ProtectedRoute>
         }
       />

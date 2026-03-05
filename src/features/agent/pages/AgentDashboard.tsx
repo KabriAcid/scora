@@ -18,6 +18,7 @@ import {
 } from "@/components/common/Skeleton";
 import { mockAgentProfile, mockAssignedMatches } from "@/data/agentMockData";
 import { useNavigate } from "react-router-dom";
+import { ROUTES } from "@/shared/config/routes";
 
 const AgentDashboard = () => {
   const [isLoading, setIsLoading] = useState(true);
@@ -92,9 +93,8 @@ const AgentDashboard = () => {
                     <p className="text-primary-foreground/80 text-sm md:text-base">
                       {currentMatch.status === "live"
                         ? `You're currently logging the match between ${currentMatch.homeTeam} and ${currentMatch.awayTeam}`
-                        : `Your next match is ${currentMatch.homeTeam} vs ${
-                            currentMatch.awayTeam
-                          } at ${formatTime(currentMatch.startTime)}`}
+                        : `Your next match is ${currentMatch.homeTeam} vs ${currentMatch.awayTeam
+                        } at ${formatTime(currentMatch.startTime)}`}
                     </p>
                   </motion.div>
 
@@ -163,38 +163,37 @@ const AgentDashboard = () => {
                           initial={{ opacity: 0, x: -20 }}
                           animate={{ opacity: 1, x: 0 }}
                           transition={{ delay: 0.5 + idx * 0.05 }}
-                          className="flex items-center justify-between gap-3 p-4 rounded-lg bg-secondary/50 hover:bg-secondary transition-colors"
+                          className="flex items-center justify-between gap-3 p-3 sm:p-4 rounded-lg bg-secondary/50 hover:bg-secondary transition-colors"
                         >
-                          <div className="flex-1">
-                            <p className="text-sm md:text-base font-semibold text-foreground">
+                          <div className="flex-1 min-w-0">
+                            <p className="text-xs sm:text-sm md:text-base font-semibold text-foreground truncate">
                               {match.homeTeam} vs {match.awayTeam}
                             </p>
-                            <p className="text-xs md:text-sm text-muted-foreground">
+                            <p className="text-[11px] sm:text-xs md:text-sm text-muted-foreground truncate mt-0.5">
                               {match.venue}
                             </p>
                           </div>
-                          <div className="flex items-center gap-3">
+                          <div className="flex items-center gap-2 sm:gap-3 flex-shrink-0">
                             {match.status === "completed" && (
                               <div className="text-right">
-                                <p className="text-sm md:text-base font-bold text-foreground">
-                                  {match.homeScore}-{match.awayScore}
+                                <p className="text-xs sm:text-sm md:text-base font-bold text-foreground tabular-nums">
+                                  {match.homeScore}–{match.awayScore}
                                 </p>
                               </div>
                             )}
                             <span
-                              className={`px-3 py-1 rounded-full text-xs md:text-sm font-semibold ${
-                                match.status === "live"
-                                  ? "bg-red-100 text-red-700"
+                              className={`px-2 sm:px-3 py-0.5 sm:py-1 rounded-full text-[10px] sm:text-xs font-semibold whitespace-nowrap ${match.status === "live"
+                                  ? "bg-green-500/15 text-green-600 dark:text-green-400"
                                   : match.status === "completed"
-                                  ? "bg-green-100 text-green-700"
-                                  : "bg-blue-100 text-blue-700"
-                              }`}
+                                    ? "bg-muted text-muted-foreground"
+                                    : "bg-primary/10 text-primary"
+                                }`}
                             >
                               {match.status === "live"
                                 ? "LIVE"
                                 : match.status === "completed"
-                                ? "DONE"
-                                : "SCHEDULED"}
+                                  ? "FT"
+                                  : "SCHEDULED"}
                             </span>
                           </div>
                         </motion.div>
@@ -228,6 +227,7 @@ const AgentDashboard = () => {
                   <motion.button
                     whileHover={{ scale: 1.02, x: 5 }}
                     whileTap={{ scale: 0.98 }}
+                    onClick={() => navigate(ROUTES.AGENT.CALENDAR)}
                     className="w-full px-4 py-3 md:py-3.5 bg-secondary text-foreground rounded-lg font-semibold text-sm md:text-base hover:bg-secondary/80 transition-colors flex items-center justify-between group"
                   >
                     <span>View Calendar</span>

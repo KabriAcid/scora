@@ -21,6 +21,7 @@ export const ROUTES = {
     LIVE_MATCH: "/agent/match/:id",
     ASSIGNED_MATCHES: "/agent/matches",
     EVENT_LOG: "/agent/event-log",
+    CALENDAR: "/agent/calendar",
   },
 
   // Administrator routes

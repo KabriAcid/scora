@@ -9,6 +9,7 @@ import {
   Settings,
   X,
   ChevronRight,
+  CalendarDays,
 } from "lucide-react";
 import NavItem from "./NavItem.tsx";
 import { Logo } from "@/components/common/Logo";
@@ -47,10 +48,10 @@ const navItems: NavItemType[] = [
     path: "/agent/stats",
   },
   {
-    id: "events",
-    label: "Event Log",
-    icon: <ClipboardList className="w-6 h-6" />,
-    path: "/agent/event-log",
+    id: "calendar",
+    label: "Calendar",
+    icon: <CalendarDays className="w-6 h-6" />,
+    path: "/agent/calendar",
   },
   {
     id: "settings",
@@ -165,9 +166,8 @@ const Sidebar = ({
               title={isCollapsed ? "Expand" : "Collapse"}
             >
               <ChevronRight
-                className={`w-5 h-5 transition-transform duration-300 ${
-                  isCollapsed ? "rotate-0" : "rotate-180"
-                }`}
+                className={`w-5 h-5 transition-transform duration-300 ${isCollapsed ? "rotate-0" : "rotate-180"
+                  }`}
               />
             </motion.button>
           </div>
