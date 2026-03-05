@@ -185,13 +185,13 @@ export const getLiveMatches = (): Match[] => {
 
 // Get priority for match status (lower = higher priority)
 export const getStatusPriority = (status: Match["status"]): number => {
-    const priorities = { live: 0, upcoming: 1, finished: 2 };
+    const priorities = { live: 0, finished: 1, upcoming: 2 };
     return priorities[status];
 };
 
 // Get today's matches
 export const getTodayMatches = (): Match[] => {
-    // Sort: live first (priority 0), then upcoming (1), then finished (2)
+    // Sort: live first (priority 0), then finished (1), then upcoming (2)
     return [...todayMatches].sort((a, b) => {
         return getStatusPriority(a.status) - getStatusPriority(b.status);
     });
@@ -214,6 +214,14 @@ export const getMatchesByCompetition = (): Map<Competition, Match[]> => {
         } else {
             grouped.set(match.competition, [match]);
         }
+    });
+
+    // Sort matches within each competition: live, finished, then upcoming
+    grouped.forEach((matches, competition) => {
+        matches.sort((a, b) => {
+            const statusOrder = { live: 0, finished: 1, upcoming: 2 };
+            return statusOrder[a.status] - statusOrder[b.status];
+        });
     });
 
     return grouped;
