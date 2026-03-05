@@ -12,6 +12,7 @@ import TermsPage from "@/features/guest/pages/TermsPage";
 import AgentLoginPage from "@/features/agent/pages/AgentLoginPage";
 import AgentDashboard from "@/features/agent/pages/AgentDashboard";
 import LiveMatchPage from "@/features/agent/pages/LiveMatchPage";
+import AgentCalendarPage from "@/features/agent/pages/AgentCalendarPage";
 // import AssignedMatchesPage from "@/features/agent/pages/AssignedMatchesPage";
 import AdminLoginPage from "@/features/admin/pages/AdminLoginPage";
 import { AdminRoutes } from "@/routes/AdminRoutes";
@@ -39,6 +40,7 @@ const App = () => (
           <Route path="/agent/login" element={<AgentLoginPage />} />
           <Route path="/agent/dashboard" element={<AgentDashboard />} />
           <Route path="/agent/match/:id" element={<LiveMatchPage />} />
+          <Route path="/agent/calendar" element={<AgentCalendarPage />} />
           {/* <Route path="/agent/matches" element={<AssignedMatchesPage />} /> */}
 
           {/* Admin Routes */}

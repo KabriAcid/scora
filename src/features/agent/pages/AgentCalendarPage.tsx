@@ -271,9 +271,9 @@ const AgentCalendarPage = () => {
                                                             <div className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse mt-1" />
                                                         </>
                                                     ) : (
-                                                        <div className="flex items-center gap-1 text-foreground">
+                                                        <div className="flex items-center gap-1">
                                                             <Clock className="w-3 h-3 text-muted-foreground flex-shrink-0" />
-                                                            <span className="text-xs sm:text-sm font-semibold">
+                                                            <span className="text-xs sm:text-sm font-medium text-muted-foreground">
                                                                 {match.time}
                                                             </span>
                                                         </div>
@@ -290,12 +290,7 @@ const AgentCalendarPage = () => {
                                                             className="w-5 h-5 sm:w-6 sm:h-6 object-contain flex-shrink-0"
                                                         />
                                                         <span className="text-xs sm:text-sm font-semibold text-foreground truncate">
-                                                            <span className="sm:hidden">
-                                                                {match.homeTeam.shortName}
-                                                            </span>
-                                                            <span className="hidden sm:inline">
-                                                                {match.homeTeam.responsiveName}
-                                                            </span>
+                                                            {match.homeTeam.responsiveName}
                                                         </span>
                                                     </div>
                                                     {/* Away Team */}
@@ -306,12 +301,7 @@ const AgentCalendarPage = () => {
                                                             className="w-5 h-5 sm:w-6 sm:h-6 object-contain flex-shrink-0"
                                                         />
                                                         <span className="text-xs sm:text-sm font-semibold text-foreground truncate">
-                                                            <span className="sm:hidden">
-                                                                {match.awayTeam.shortName}
-                                                            </span>
-                                                            <span className="hidden sm:inline">
-                                                                {match.awayTeam.responsiveName}
-                                                            </span>
+                                                            {match.awayTeam.responsiveName}
                                                         </span>
                                                     </div>
                                                 </div>

@@ -2,7 +2,6 @@ import { Routes, Route } from "react-router-dom";
 import AgentDashboard from "@/features/agent/pages/AgentDashboard";
 import LiveMatchPage from "@/features/agent/pages/LiveMatchPage";
 import AssignedMatchesPage from "@/features/agent/pages/AssignedMatchesPage";
-import EventLogPage from "@/features/agent/pages/EventLogPage";
 import AgentCalendarPage from "@/features/agent/pages/AgentCalendarPage";
 import NotFound from "@/NotFound";
 import { ROUTES } from "@/shared/config/routes";
@@ -32,14 +31,6 @@ export const AgentRoutes = () => {
         element={
           <ProtectedRoute requiredRole="agent">
             <AssignedMatchesPage />
-          </ProtectedRoute>
-        }
-      />
-      <Route
-        path={ROUTES.AGENT.EVENT_LOG}
-        element={
-          <ProtectedRoute requiredRole="agent">
-            <EventLogPage />
           </ProtectedRoute>
         }
       />
