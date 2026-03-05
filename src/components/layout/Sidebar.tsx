@@ -39,7 +39,7 @@ const navItems: NavItemType[] = [
     id: "assigned",
     label: "Assigned Matches",
     icon: <Target className="w-6 h-6" />,
-    path: "/agent/assigned-matches",
+    path: "/agent/matches",
   },
   {
     id: "stats",

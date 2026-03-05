@@ -30,8 +30,8 @@ const statusConfig = {
     },
     scheduled: {
         label: "UPCOMING",
-        className: "bg-primary/10 text-primary",
-        dot: "bg-primary",
+        className: "bg-accent/10 text-accent",
+        dot: "bg-accent",
     },
     finished: {
         label: "FT",
@@ -211,7 +211,7 @@ const AgentCalendarPage = () => {
                                 className={cn(
                                     "flex-shrink-0 px-3 sm:px-4 py-1.5 rounded-full text-xs sm:text-sm font-medium transition-colors",
                                     activeFilter === f.key
-                                        ? "bg-primary text-primary-foreground"
+                                        ? "bg-accent text-accent-foreground"
                                         : "bg-secondary text-muted-foreground hover:text-foreground"
                                 )}
                             >

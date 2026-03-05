@@ -167,7 +167,7 @@ const AgentDashboard = () => {
                               ? "bg-green-500/15 text-green-600 dark:text-green-400"
                               : match.status === "completed"
                                 ? "bg-muted text-muted-foreground"
-                                : "bg-primary/10 text-primary"
+                                : "bg-accent/10 text-accent"
                               }`}
                           >
                             {match.status === "live"

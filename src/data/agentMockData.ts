@@ -109,8 +109,8 @@ export const mockAssignedMatches: AssignedMatch[] = [
         homeTeamLogo: clubs[0].badgeUrl,
         awayTeamLogo: clubs[5].badgeUrl,
         status: "live",
-        startTime: new Date(),
-        venue: "Karkanda Stadium",
+        startTime: new Date(Date.now() - 1000 * 60 * 47), // 47 mins in
+        venue: "Karkanda Stadium, Katsina",
         league: "Katsina League",
         homeScore: 2,
         awayScore: 1,
@@ -138,6 +138,41 @@ export const mockAssignedMatches: AssignedMatch[] = [
         league: "Katsina League",
         homeScore: 1,
         awayScore: 1,
+    },
+    {
+        id: "match-4",
+        homeTeam: clubs[2].responsiveName,
+        awayTeam: clubs[8].responsiveName,
+        homeTeamLogo: clubs[2].badgeUrl,
+        awayTeamLogo: clubs[8].badgeUrl,
+        status: "scheduled",
+        startTime: new Date(Date.now() + 1000 * 60 * 60 * 26), // tomorrow
+        venue: "Katsina City Arena",
+        league: "Katsina Cup",
+    },
+    {
+        id: "match-5",
+        homeTeam: clubs[6].responsiveName,
+        awayTeam: clubs[3].responsiveName,
+        homeTeamLogo: clubs[6].badgeUrl,
+        awayTeamLogo: clubs[3].badgeUrl,
+        status: "completed",
+        startTime: new Date(Date.now() - 1000 * 60 * 60 * 27), // yesterday
+        venue: "Unity Ground, Daura",
+        league: "Katsina League",
+        homeScore: 3,
+        awayScore: 0,
+    },
+    {
+        id: "match-6",
+        homeTeam: clubs[14].responsiveName,
+        awayTeam: clubs[1].responsiveName,
+        homeTeamLogo: clubs[14].badgeUrl,
+        awayTeamLogo: clubs[1].badgeUrl,
+        status: "scheduled",
+        startTime: new Date(Date.now() + 1000 * 60 * 60 * 50), // ~2 days from now
+        venue: "Malumfashi Sports Centre",
+        league: "Northern Championship",
     },
 ];
 
