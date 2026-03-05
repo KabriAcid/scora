@@ -22,6 +22,7 @@ export const ROUTES = {
     ASSIGNED_MATCHES: "/agent/matches",
     EVENT_LOG: "/agent/event-log",
     CALENDAR: "/agent/calendar",
+    NOTIFICATIONS: "/agent/notifications",
     SETTINGS: "/agent/settings",
   },
 

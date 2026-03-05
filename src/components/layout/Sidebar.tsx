@@ -10,6 +10,7 @@ import {
   X,
   ChevronRight,
   CalendarDays,
+  Bell,
 } from "lucide-react";
 import NavItem from "./NavItem.tsx";
 import { Logo } from "@/components/common/Logo";
@@ -52,6 +53,12 @@ const navItems: NavItemType[] = [
     label: "Calendar",
     icon: <CalendarDays className="w-6 h-6" />,
     path: "/agent/calendar",
+  },
+  {
+    id: "notifications",
+    label: "Notifications",
+    icon: <Bell className="w-6 h-6" />,
+    path: "/agent/notifications",
   },
   {
     id: "settings",

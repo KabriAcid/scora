@@ -156,7 +156,10 @@ const Header = ({ onMenuClick, isSidebarOpen, isCollapsed }: HeaderProps) => {
                                 </div>
 
                                 <div className="p-3 border-t border-border text-center">
-                                    <button className="text-xs md:text-sm text-accent hover:text-accent/80 font-semibold transition-colors">
+                                    <button
+                                        onClick={() => { setShowNotifications(false); navigate("/agent/notifications"); }}
+                                        className="text-xs md:text-sm text-accent hover:text-accent/80 font-semibold transition-colors"
+                                    >
                                         View All Notifications
                                     </button>
                                 </div>
