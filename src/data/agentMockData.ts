@@ -49,17 +49,17 @@ export const mockNotifications: Notification[] = [
         id: "notif-1",
         type: "match_assigned",
         title: "New Match Assigned",
-        description: "You have been assigned to Arsenal vs Chelsea match",
+        description: "You have been assigned to Katsina Utd vs Eleven Shooting — Today, 15:00",
         timestamp: new Date(Date.now() - 1000 * 60 * 5), // 5 mins ago
         isRead: false,
-        matchId: "match-1",
+        matchId: "match-2",
     },
     {
         id: "notif-2",
         type: "goal",
-        title: "Goal Logged Successfully",
-        description: "Bukayo Saka scored for Arsenal (Minute 12)",
-        timestamp: new Date(Date.now() - 1000 * 60 * 15), // 15 mins ago
+        title: "Goal Logged",
+        description: "Ahmad Hassan scored for Katsina Utd (Minute 23) — Katsina Utd vs Sheffield Guga",
+        timestamp: new Date(Date.now() - 1000 * 60 * 18), // 18 mins ago
         isRead: false,
         matchId: "match-1",
     },
@@ -67,8 +67,8 @@ export const mockNotifications: Notification[] = [
         id: "notif-3",
         type: "card",
         title: "Yellow Card Logged",
-        description: "Mason Mount received yellow card (Minute 8)",
-        timestamp: new Date(Date.now() - 1000 * 60 * 25), // 25 mins ago
+        description: "Sani Ibrahim (Sheffield Guga) received a yellow card (Minute 31)",
+        timestamp: new Date(Date.now() - 1000 * 60 * 40), // 40 mins ago
         isRead: true,
         matchId: "match-1",
     },
@@ -76,19 +76,28 @@ export const mockNotifications: Notification[] = [
         id: "notif-4",
         type: "substitution",
         title: "Substitution Recorded",
-        description: "Mohamed Salah replaced Darwin Núñez (Minute 35)",
-        timestamp: new Date(Date.now() - 1000 * 60 * 45), // 45 mins ago
+        description: "Adamu Maliki replaced by Tanko Usman (Lazio KTS, Minute 62)",
+        timestamp: new Date(Date.now() - 1000 * 60 * 60 * 2), // 2 hrs ago
         isRead: true,
-        matchId: "match-1",
+        matchId: "match-3",
     },
     {
         id: "notif-5",
-        type: "corner",
-        title: "Corner Kick Logged",
-        description: "Corner awarded to Chelsea (Minute 42)",
-        timestamp: new Date(Date.now() - 1000 * 60 * 60), // 1 hour ago
+        type: "match_assigned",
+        title: "Upcoming Match Reminder",
+        description: "Katsina City vs Dan Buran is scheduled tomorrow at 14:00 — prepare your kit",
+        timestamp: new Date(Date.now() - 1000 * 60 * 60 * 5), // 5 hrs ago
         isRead: true,
-        matchId: "match-1",
+        matchId: "match-4",
+    },
+    {
+        id: "notif-6",
+        type: "foul",
+        title: "Foul Logged",
+        description: "Foul called on Lawal Mohammed (K-Soro, Minute 17) — free kick awarded",
+        timestamp: new Date(Date.now() - 1000 * 60 * 60 * 27), // yesterday
+        isRead: true,
+        matchId: "match-5",
     },
 ];
 

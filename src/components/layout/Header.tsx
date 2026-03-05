@@ -50,8 +50,14 @@ const Header = ({ onMenuClick, isSidebarOpen, isCollapsed }: HeaderProps) => {
         return `${days}d ago`;
     };
 
+    const initials = mockAgentProfile.name
+        .split(" ")
+        .map((n) => n[0])
+        .join("")
+        .toUpperCase();
+
     return (
-        <header className="bg-white border-b border-border sticky top-0 z-40 shadow-sm">
+        <header className="bg-background border-b border-border sticky top-0 z-40 shadow-sm">
             <div className="h-16 md:h-20 lg:h-20 px-4 md:px-6 lg:px-8 flex items-center justify-between">
                 {/* Left Section - Menu & Brand */}
                 <div className="flex items-center gap-3 md:gap-4 lg:gap-6">
@@ -104,7 +110,7 @@ const Header = ({ onMenuClick, isSidebarOpen, isCollapsed }: HeaderProps) => {
                                 animate={{ opacity: 1, y: 0 }}
                                 exit={{ opacity: 0, y: -10 }}
                                 transition={{ duration: 0.2 }}
-                                className="absolute right-0 mt-2 w-80 bg-white rounded-lg shadow-xl border border-border z-50"
+                                className="fixed left-3 right-3 top-[4.25rem] md:absolute md:left-auto md:right-0 md:top-auto md:mt-2 md:w-80 bg-background rounded-xl shadow-xl border border-border z-50"
                             >
                                 <div className="p-4 border-b border-border">
                                     <h3 className="text-sm md:text-base font-semibold text-foreground">
@@ -121,7 +127,7 @@ const Header = ({ onMenuClick, isSidebarOpen, isCollapsed }: HeaderProps) => {
                                         mockNotifications.map((notif) => (
                                             <motion.div
                                                 key={notif.id}
-                                                whileHover={{ backgroundColor: "hsl(240 20% 98%)" }}
+                                                whileHover={{ backgroundColor: "hsl(var(--secondary))" }}
                                                 className={`p-4 border-b border-border/50 cursor-pointer transition-colors ${!notif.isRead ? "bg-accent/5" : ""
                                                     }`}
                                             >
@@ -166,7 +172,7 @@ const Header = ({ onMenuClick, isSidebarOpen, isCollapsed }: HeaderProps) => {
                         >
                             <div className="w-8 h-8 md:w-9 md:h-9 rounded-full bg-primary flex items-center justify-center flex-shrink-0">
                                 <span className="text-primary-foreground font-bold text-xs md:text-sm">
-                                    SA
+                                    {initials}
                                 </span>
                             </div>
                             <ChevronDown className="w-4 h-4 md:w-5 md:h-5 text-muted-foreground hidden md:block" />
@@ -179,7 +185,7 @@ const Header = ({ onMenuClick, isSidebarOpen, isCollapsed }: HeaderProps) => {
                                 animate={{ opacity: 1, y: 0 }}
                                 exit={{ opacity: 0, y: -10 }}
                                 transition={{ duration: 0.2 }}
-                                className="absolute right-0 mt-2 w-56 bg-white rounded-lg shadow-xl border border-border z-50"
+                                className="absolute right-0 mt-2 w-64 sm:w-56 bg-background rounded-xl shadow-xl border border-border z-50"
                             >
                                 {/* User Info */}
                                 <div className="p-4 border-b border-border">
@@ -194,7 +200,8 @@ const Header = ({ onMenuClick, isSidebarOpen, isCollapsed }: HeaderProps) => {
                                 {/* Menu Items */}
                                 <div className="py-2">
                                     <motion.button
-                                        whileHover={{ backgroundColor: "hsl(240 20% 98%)" }}
+                                        whileHover={{ backgroundColor: "hsl(var(--secondary))" }}
+                                        onClick={() => { setShowProfile(false); navigate("/agent/settings"); }}
                                         className="w-full px-4 py-2.5 md:py-3 text-left flex items-center gap-3 text-sm text-foreground hover:bg-secondary transition-colors"
                                     >
                                         <User className="w-4 h-4 md:w-5 md:h-5" />
@@ -202,7 +209,8 @@ const Header = ({ onMenuClick, isSidebarOpen, isCollapsed }: HeaderProps) => {
                                     </motion.button>
 
                                     <motion.button
-                                        whileHover={{ backgroundColor: "hsl(240 20% 98%)" }}
+                                        whileHover={{ backgroundColor: "hsl(var(--secondary))" }}
+                                        onClick={() => { setShowProfile(false); navigate("/agent/settings"); }}
                                         className="w-full px-4 py-2.5 md:py-3 text-left flex items-center gap-3 text-sm text-foreground hover:bg-secondary transition-colors"
                                     >
                                         <Settings className="w-4 h-4 md:w-5 md:h-5" />
