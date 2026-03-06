@@ -26,12 +26,21 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { ROUTES } from "@/shared/config/routes";
+import { toast } from "sonner";
 
 // ─── Schema ───────────────────────────────────────────────────────────────────
 
 const schema = z.object({
-  email: z.string().email("Please enter a valid email address"),
-  password: z.string().min(6, "Password must be at least 6 characters"),
+  email: z
+    .string()
+    .trim()
+    .toLowerCase()
+    .email("Please enter a valid email address"),
+  password: z
+    .string()
+    .trim()
+    .min(1, "Password is required")
+    .min(6, "Password must be at least 6 characters"),
 });
 
 type FormValues = z.infer<typeof schema>;
@@ -96,6 +105,7 @@ const AdminLoginPage = () => {
 
   const form = useForm<FormValues>({
     resolver: zodResolver(schema),
+    mode: "onTouched",
     defaultValues: { email: "", password: "" },
   });
 
@@ -107,8 +117,8 @@ const AdminLoginPage = () => {
       await new Promise((r) => setTimeout(r, 1200));
       navigate(ROUTES.ADMIN.DASHBOARD);
     } catch {
-      form.setError("root", {
-        message: "Invalid credentials. Please try again.",
+      toast.error("Login failed", {
+        description: "Invalid credentials. Please try again.",
       });
     } finally {
       setIsLoading(false);
@@ -216,17 +226,6 @@ const AdminLoginPage = () => {
                     onSubmit={form.handleSubmit(onSubmit)}
                     className="space-y-5"
                   >
-                    {/* Root error */}
-                    {form.formState.errors.root && (
-                      <motion.div
-                        initial={{ opacity: 0, y: -6 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        className="p-3.5 bg-destructive/10 border border-destructive/30 rounded-lg text-destructive text-sm"
-                      >
-                        {form.formState.errors.root.message}
-                      </motion.div>
-                    )}
-
                     {/* Email */}
                     <FormField
                       control={form.control}

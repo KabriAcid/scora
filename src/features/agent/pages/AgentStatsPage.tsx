@@ -196,58 +196,58 @@ const AgentStatsPage = () => {
 
                     {/* ── Charts row ── */}
                     <motion.div variants={itemVariants}>
-                            <Card className="p-5 border-none shadow-md bg-card h-full">
-                                <div className="flex items-center justify-between mb-4">
-                                    <div>
-                                        <h2 className="text-sm font-semibold text-foreground">Monthly Activity</h2>
-                                        <p className="text-xs text-muted-foreground">Matches & events over time</p>
-                                    </div>
-                                    <div className="flex gap-3 text-[11px] text-muted-foreground">
-                                        <span className="flex items-center gap-1.5">
-                                            <span className="w-2.5 h-2.5 rounded-sm bg-primary inline-block" />
-                                            Events
-                                        </span>
-                                        <span className="flex items-center gap-1.5">
-                                            <span className="w-2.5 h-2.5 rounded-sm bg-accent inline-block" />
-                                            Matches
-                                        </span>
-                                    </div>
+                        <Card className="p-5 border-none shadow-md bg-card h-full">
+                            <div className="flex items-center justify-between mb-4">
+                                <div>
+                                    <h2 className="text-sm font-semibold text-foreground">Monthly Activity</h2>
+                                    <p className="text-xs text-muted-foreground">Matches & events over time</p>
                                 </div>
-                                <ResponsiveContainer width="100%" height={200}>
-                                    <BarChart data={mockMonthlyActivity} barGap={4}>
-                                        <CartesianGrid
-                                            strokeDasharray="3 3"
-                                            stroke="hsl(var(--border))"
-                                            vertical={false}
-                                        />
-                                        <XAxis
-                                            dataKey="month"
-                                            tick={{ fontSize: 11, fill: "hsl(var(--muted-foreground))" }}
-                                            axisLine={false}
-                                            tickLine={false}
-                                        />
-                                        <YAxis
-                                            tick={{ fontSize: 11, fill: "hsl(var(--muted-foreground))" }}
-                                            axisLine={false}
-                                            tickLine={false}
-                                            width={28}
-                                        />
-                                        <Tooltip content={<CustomTooltip />} cursor={{ fill: "hsl(var(--muted))" }} />
-                                        <Bar
-                                            dataKey="events"
-                                            fill="hsl(var(--primary))"
-                                            radius={[4, 4, 0, 0]}
-                                            maxBarSize={24}
-                                        />
-                                        <Bar
-                                            dataKey="matches"
-                                            fill="hsl(var(--accent))"
-                                            radius={[4, 4, 0, 0]}
-                                            maxBarSize={24}
-                                        />
-                                    </BarChart>
-                                </ResponsiveContainer>
-                            </Card>
+                                <div className="flex gap-3 text-[11px] text-muted-foreground">
+                                    <span className="flex items-center gap-1.5">
+                                        <span className="w-2.5 h-2.5 rounded-sm bg-primary inline-block" />
+                                        Events
+                                    </span>
+                                    <span className="flex items-center gap-1.5">
+                                        <span className="w-2.5 h-2.5 rounded-sm bg-accent inline-block" />
+                                        Matches
+                                    </span>
+                                </div>
+                            </div>
+                            <ResponsiveContainer width="100%" height={200}>
+                                <BarChart data={mockMonthlyActivity} barGap={4}>
+                                    <CartesianGrid
+                                        strokeDasharray="3 3"
+                                        stroke="hsl(var(--border))"
+                                        vertical={false}
+                                    />
+                                    <XAxis
+                                        dataKey="month"
+                                        tick={{ fontSize: 11, fill: "hsl(var(--muted-foreground))" }}
+                                        axisLine={false}
+                                        tickLine={false}
+                                    />
+                                    <YAxis
+                                        tick={{ fontSize: 11, fill: "hsl(var(--muted-foreground))" }}
+                                        axisLine={false}
+                                        tickLine={false}
+                                        width={28}
+                                    />
+                                    <Tooltip content={<CustomTooltip />} cursor={{ fill: "hsl(var(--muted))" }} />
+                                    <Bar
+                                        dataKey="events"
+                                        fill="hsl(var(--primary))"
+                                        radius={[4, 4, 0, 0]}
+                                        maxBarSize={24}
+                                    />
+                                    <Bar
+                                        dataKey="matches"
+                                        fill="hsl(var(--accent))"
+                                        radius={[4, 4, 0, 0]}
+                                        maxBarSize={24}
+                                    />
+                                </BarChart>
+                            </ResponsiveContainer>
+                        </Card>
                     </motion.div>
 
                     {/* ── Match history ── */}

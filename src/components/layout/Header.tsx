@@ -84,22 +84,20 @@ const Header = ({ onMenuClick, isSidebarOpen, isCollapsed }: HeaderProps) => {
                 </div>
 
                 {/* Right Section - Notifications & Profile */}
-                <div className="flex items-center gap-2 md:gap-4 lg:gap-6">
+                <div className="flex items-center gap-1 md:gap-2">
                     {/* Notifications */}
                     <div className="relative">
                         <button
                             onClick={() => setShowNotifications(!showNotifications)}
-                            className="relative p-2 hover:bg-secondary rounded-lg transition-colors"
+                            className="relative p-1.5 hover:bg-secondary rounded-lg transition-colors"
                         >
-                            <Bell className="w-5 h-5 md:w-6 md:h-6 text-foreground" />
+                            <Bell className="w-5 h-5 text-foreground" />
                             {unreadCount > 0 && (
                                 <motion.span
                                     initial={{ scale: 0 }}
                                     animate={{ scale: 1 }}
-                                    className="absolute top-0 right-0 w-5 h-5 md:w-6 md:h-6 bg-accent text-white text-xs md:text-sm font-bold rounded-full flex items-center justify-center"
-                                >
-                                    {unreadCount}
-                                </motion.span>
+                                    className="absolute top-0.5 right-0.5 w-2 h-2 bg-accent rounded-full"
+                                />
                             )}
                         </button>
 
@@ -171,14 +169,14 @@ const Header = ({ onMenuClick, isSidebarOpen, isCollapsed }: HeaderProps) => {
                     <div className="relative">
                         <button
                             onClick={() => setShowProfile(!showProfile)}
-                            className="flex items-center gap-2 p-2 hover:bg-secondary rounded-lg transition-colors"
+                            className="flex items-center gap-1.5 p-1.5 hover:bg-secondary rounded-lg transition-colors"
                         >
-                            <div className="w-8 h-8 md:w-9 md:h-9 rounded-full bg-primary flex items-center justify-center flex-shrink-0">
-                                <span className="text-primary-foreground font-bold text-xs md:text-sm">
+                            <div className="w-8 h-8 rounded-full bg-primary flex items-center justify-center flex-shrink-0">
+                                <span className="text-primary-foreground font-bold text-xs">
                                     {initials}
                                 </span>
                             </div>
-                            <ChevronDown className="w-4 h-4 md:w-5 md:h-5 text-muted-foreground hidden md:block" />
+                            <ChevronDown className="w-3.5 h-3.5 text-muted-foreground hidden md:block" />
                         </button>
 
                         {/* Profile Dropdown Menu */}
@@ -241,7 +239,7 @@ const Header = ({ onMenuClick, isSidebarOpen, isCollapsed }: HeaderProps) => {
             {/* Close dropdowns when clicking outside */}
             {(showNotifications || showProfile) && (
                 <div
-                    className="fixed inset-0 z-40 bg-black/20 backdrop-blur-sm"
+                    className="fixed inset-0 z-40 bg-black/20"
                     onClick={() => {
                         setShowNotifications(false);
                         setShowProfile(false);
