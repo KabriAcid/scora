@@ -13,13 +13,10 @@ import {
 import {
     TrendingUp,
     Target,
-    Activity,
     Award,
     Goal,
     CreditCard,
     ArrowLeftRight,
-    AlertTriangle,
-    CornerDownLeft,
     CheckCircle2,
     ChevronRight,
 } from "lucide-react";
@@ -31,7 +28,6 @@ import {
     mockAgentStats,
     mockAgentProfile,
     mockMonthlyActivity,
-    mockEventBreakdown,
     mockMatchPerformances,
 } from "@/data/agentMockData";
 
@@ -60,16 +56,6 @@ const KPI_CARDS = [
         trendUp: true,
     },
     {
-        label: "Events Recorded",
-        value: mockAgentStats.eventsRecorded,
-        suffix: "",
-        icon: Activity,
-        iconClass: "text-accent",
-        bgClass: "bg-accent/10",
-        trend: "+32 this month",
-        trendUp: true,
-    },
-    {
         label: "Accuracy Rate",
         value: mockAgentStats.accuracyRate,
         suffix: "%",
@@ -90,17 +76,6 @@ const KPI_CARDS = [
         trendUp: true,
     },
 ];
-
-// ── Event icon map ────────────────────────────────────────────────────────────
-
-const EVENT_ICON_MAP: Record<string, React.ElementType> = {
-    "Goals": Goal,
-    "Yellow Cards": CreditCard,
-    "Red Cards": AlertTriangle,
-    "Substitutions": ArrowLeftRight,
-    "Fouls": AlertTriangle,
-    "Corners": CornerDownLeft,
-};
 
 // ── Accuracy badge ─────────────────────────────────────────────────────────────
 
@@ -150,8 +125,6 @@ type Period = typeof PERIODS[number];
 const AgentStatsPage = () => {
     const [activePeriod, setActivePeriod] = useState<Period>("Last 6 months");
 
-    const totalEvents = mockEventBreakdown.reduce((s, e) => s + e.count, 0);
-
     return (
         <AgentLayout>
             <div className="min-h-screen bg-gradient-to-br from-background via-background to-secondary/10 py-6 md:py-8 px-4 md:px-6 lg:px-8">
@@ -198,7 +171,7 @@ const AgentStatsPage = () => {
                     {/* ── KPI cards ── */}
                     <motion.div
                         variants={itemVariants}
-                        className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4"
+                        className="grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-4"
                     >
                         {KPI_CARDS.map((kpi) => (
                             <Card key={kpi.label} className="p-4 border-none shadow-md bg-card">
@@ -222,10 +195,7 @@ const AgentStatsPage = () => {
                     </motion.div>
 
                     {/* ── Charts row ── */}
-                    <div className="grid grid-cols-1 lg:grid-cols-5 gap-4">
-
-                        {/* Monthly activity bar chart — 3 cols */}
-                        <motion.div variants={itemVariants} className="lg:col-span-3">
+                    <motion.div variants={itemVariants}>
                             <Card className="p-5 border-none shadow-md bg-card h-full">
                                 <div className="flex items-center justify-between mb-4">
                                     <div>
@@ -278,47 +248,7 @@ const AgentStatsPage = () => {
                                     </BarChart>
                                 </ResponsiveContainer>
                             </Card>
-                        </motion.div>
-
-                        {/* Event breakdown — 2 cols */}
-                        <motion.div variants={itemVariants} className="lg:col-span-2">
-                            <Card className="p-5 border-none shadow-md bg-card h-full">
-                                <div className="mb-4">
-                                    <h2 className="text-sm font-semibold text-foreground">Event Breakdown</h2>
-                                    <p className="text-xs text-muted-foreground">{totalEvents} total events logged</p>
-                                </div>
-                                <div className="space-y-3">
-                                    {mockEventBreakdown.map((e) => {
-                                        const Icon = EVENT_ICON_MAP[e.type] ?? Activity;
-                                        const pct = Math.round((e.count / totalEvents) * 100);
-                                        return (
-                                            <div key={e.type}>
-                                                <div className="flex items-center justify-between mb-1">
-                                                    <div className="flex items-center gap-1.5">
-                                                        <Icon className="w-3.5 h-3.5 text-muted-foreground" />
-                                                        <span className="text-xs text-muted-foreground">{e.type}</span>
-                                                    </div>
-                                                    <div className="flex items-center gap-1.5">
-                                                        <span className="text-xs font-semibold tabular-nums">{e.count}</span>
-                                                        <span className="text-[10px] text-muted-foreground w-7 text-right">{pct}%</span>
-                                                    </div>
-                                                </div>
-                                                <div className="h-1.5 bg-muted rounded-full overflow-hidden">
-                                                    <motion.div
-                                                        initial={{ width: 0 }}
-                                                        animate={{ width: `${pct}%` }}
-                                                        transition={{ duration: 0.6, ease: "easeOut", delay: 0.2 }}
-                                                        className="h-full rounded-full"
-                                                        style={{ backgroundColor: e.color }}
-                                                    />
-                                                </div>
-                                            </div>
-                                        );
-                                    })}
-                                </div>
-                            </Card>
-                        </motion.div>
-                    </div>
+                    </motion.div>
 
                     {/* ── Match history ── */}
                     <motion.div variants={itemVariants}>
@@ -383,42 +313,6 @@ const AgentStatsPage = () => {
                                 ))}
                             </div>
                         </Card>
-                    </motion.div>
-
-                    {/* ── Achievement shelf ── */}
-                    <motion.div variants={itemVariants}>
-                        <h2 className="text-sm font-semibold text-foreground mb-3">Achievements</h2>
-                        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-                            {[
-                                { icon: "🏅", title: "First Match", desc: "Logged your first match", earned: true },
-                                { icon: "⚡", title: "Speed Logger", desc: "5+ events in under 5 min", earned: true },
-                                { icon: "🎯", title: "Sharpshooter", desc: "100% accuracy on 3 matches", earned: true },
-                                { icon: "📅", title: "25 Matches", desc: "Log 25 total matches", earned: false, progress: 24, total: 25 },
-                            ].map((ach) => (
-                                <Card
-                                    key={ach.title}
-                                    className={cn(
-                                        "p-4 border-none shadow-sm text-center transition-all",
-                                        ach.earned ? "bg-card" : "bg-muted/30 opacity-60 grayscale"
-                                    )}
-                                >
-                                    <div className="text-2xl mb-2">{ach.icon}</div>
-                                    <p className="text-xs font-semibold text-foreground">{ach.title}</p>
-                                    <p className="text-[11px] text-muted-foreground mt-0.5 leading-tight">{ach.desc}</p>
-                                    {!ach.earned && ach.progress !== undefined && (
-                                        <div className="mt-2">
-                                            <div className="h-1 bg-border rounded-full overflow-hidden">
-                                                <div
-                                                    className="h-full bg-primary rounded-full"
-                                                    style={{ width: `${(ach.progress / ach.total!) * 100}%` }}
-                                                />
-                                            </div>
-                                            <p className="text-[10px] text-muted-foreground mt-0.5">{ach.progress}/{ach.total}</p>
-                                        </div>
-                                    )}
-                                </Card>
-                            ))}
-                        </div>
                     </motion.div>
 
                 </motion.div>
