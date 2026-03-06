@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { ListOrdered, Trophy } from "lucide-react";
+import { ListOrdered, Trophy, MapPin, CalendarDays } from "lucide-react";
 import AdminLayout from "@/components/layout/AdminLayout";
 import { topLeagues } from "@/data/adminMockData";
 import { EmptyState } from "../components/EmptyState";
@@ -43,18 +43,23 @@ const LeagueStandingsPage = () => {
         <AdminLayout>
             <div className="px-4 py-5 md:px-5 md:py-6 space-y-6 max-w-5xl mx-auto">
                 {/* Header */}
-                <div>
-                    <h1 className="text-lg font-bold text-foreground">Standings</h1>
-                    <p className="text-xs text-muted-foreground mt-0.5">
-                        View league table for any competition and season
-                    </p>
+                <div className="flex items-center gap-3">
+                    <div className="w-9 h-9 rounded-xl bg-primary/10 flex items-center justify-center flex-shrink-0">
+                        <ListOrdered className="w-5 h-5 text-primary" />
+                    </div>
+                    <div>
+                        <h1 className="text-lg font-bold text-foreground">Standings</h1>
+                        <p className="text-xs text-muted-foreground mt-0.5">
+                            View league table for any competition and season
+                        </p>
+                    </div>
                 </div>
 
                 {/* Selectors */}
                 <div className="flex flex-col sm:flex-row gap-3">
                     <div className="flex flex-col gap-1.5">
-                        <label className="text-xs font-medium text-muted-foreground">
-                            League
+                        <label className="text-xs font-medium text-muted-foreground flex items-center gap-1">
+                            <Trophy className="w-3 h-3" /> League
                         </label>
                         <select
                             value={selectedLeague}
@@ -69,8 +74,8 @@ const LeagueStandingsPage = () => {
                         </select>
                     </div>
                     <div className="flex flex-col gap-1.5">
-                        <label className="text-xs font-medium text-muted-foreground">
-                            Season
+                        <label className="text-xs font-medium text-muted-foreground flex items-center gap-1">
+                            <CalendarDays className="w-3 h-3" /> Season
                         </label>
                         <select
                             value={selectedSeason}

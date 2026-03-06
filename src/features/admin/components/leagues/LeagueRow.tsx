@@ -1,4 +1,4 @@
-import { MoreVertical, Pencil, Trash2, ExternalLink } from "lucide-react";
+import { MoreVertical, Pencil, Trash2, ExternalLink, MapPin, Users2, CheckCircle2, Clock, Zap } from "lucide-react";
 import { useState, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { cn } from "@/shared/utils/cn";
@@ -13,6 +13,7 @@ const StatusBadge = ({ status }: { status: LeagueSummary["status"] }) => {
         Upcoming: "bg-primary/10 text-primary",
         Completed: "bg-muted-foreground/15 text-muted-foreground",
     };
+    const Icon = status === "Active" ? Zap : status === "Upcoming" ? Clock : CheckCircle2;
     return (
         <span
             className={cn(
@@ -20,8 +21,10 @@ const StatusBadge = ({ status }: { status: LeagueSummary["status"] }) => {
                 styles[status]
             )}
         >
-            {status === "Active" && (
+            {status === "Active" ? (
                 <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+            ) : (
+                <Icon className="w-3 h-3" />
             )}
             {status}
         </span>
@@ -126,12 +129,16 @@ export const LeagueRow = ({ league, onEdit, onDelete }: LeagueRowProps) => {
                 <p className="text-sm font-semibold text-foreground truncate">
                     {league.name}
                 </p>
-                <p className="text-xs text-muted-foreground">{league.state}</p>
+                <p className="flex items-center gap-1 text-xs text-muted-foreground mt-0.5">
+                    <MapPin className="w-3 h-3 flex-shrink-0" />
+                    {league.state}
+                </p>
             </div>
 
             {/* Teams */}
             <div className="hidden sm:flex flex-col items-center gap-0.5 w-12">
-                <span className="text-sm font-semibold text-foreground">
+                <span className="flex items-center gap-1 text-sm font-semibold text-foreground">
+                    <Users2 className="w-3.5 h-3.5 text-muted-foreground" />
                     {league.teams}
                 </span>
                 <span className="text-[10px] text-muted-foreground">Teams</span>

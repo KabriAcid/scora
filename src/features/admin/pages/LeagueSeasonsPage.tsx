@@ -1,8 +1,10 @@
 import { useState } from "react";
-import { Plus, Layers, Calendar, CheckCircle2, Clock } from "lucide-react";
+import { Plus, Layers, Calendar, CheckCircle2, Clock, Trophy, CalendarDays } from "lucide-react";
 import AdminLayout from "@/components/layout/AdminLayout";
 import { topLeagues } from "@/data/adminMockData";
 import { EmptyState } from "../components/EmptyState";
+import { SeasonModal } from "../components/leagues/SeasonModal";
+import type { SeasonFormData } from "../components/leagues/SeasonModal";
 import { cn } from "@/shared/utils/cn";
 
 // ─── Mock season data ─────────────────────────────────────────────────────────
@@ -123,7 +125,7 @@ const SeasonCard = ({ season }: { season: Season }) => {
                 </div>
                 <div className="h-1.5 bg-muted rounded-full overflow-hidden">
                     <div
-                        className="h-full bg-primary rounded-full transition-all duration-500"
+                        className="h-full bg-accent rounded-full transition-all duration-500"
                         style={{ width: `${pct}%` }}
                     />
                 </div>
@@ -136,22 +138,47 @@ const SeasonCard = ({ season }: { season: Season }) => {
 
 const LeagueSeasonsPage = () => {
     const [selectedLeague, setSelectedLeague] = useState(topLeagues[0]?.id ?? "");
+    const [seasons, setSeasons] = useState<Season[]>(mockSeasons);
+    const [modalOpen, setModalOpen] = useState(false);
 
     const league = topLeagues.find((l) => l.id === selectedLeague);
-    const seasons = mockSeasons.filter((s) => s.leagueId === selectedLeague);
+    const filteredSeasons = seasons.filter((s) => s.leagueId === selectedLeague);
+
+    const handleSave = (data: SeasonFormData) => {
+        const newSeason: Season = {
+            id: `s-${Date.now()}`,
+            label: data.label,
+            leagueId: selectedLeague,
+            startDate: `${data.startMonth} ${data.startYear}`,
+            endDate: `${data.endMonth} ${data.endYear}`,
+            teams: data.teams,
+            fixtures: 0,
+            completed: 0,
+            status: data.status,
+        };
+        setSeasons((prev) => [newSeason, ...prev]);
+    };
 
     return (
         <AdminLayout>
             <div className="px-4 py-5 md:px-5 md:py-6 space-y-6 max-w-5xl mx-auto">
                 {/* Header */}
                 <div className="flex items-center justify-between gap-3">
-                    <div>
-                        <h1 className="text-lg font-bold text-foreground">Seasons</h1>
-                        <p className="text-xs text-muted-foreground mt-0.5">
-                            Manage seasons for each league
-                        </p>
+                    <div className="flex items-center gap-3">
+                        <div className="w-9 h-9 rounded-xl bg-primary/10 flex items-center justify-center flex-shrink-0">
+                            <Layers className="w-5 h-5 text-primary" />
+                        </div>
+                        <div>
+                            <h1 className="text-lg font-bold text-foreground">Seasons</h1>
+                            <p className="text-xs text-muted-foreground mt-0.5">
+                                Manage seasons for each league
+                            </p>
+                        </div>
                     </div>
-                    <button className="flex items-center gap-2 px-4 py-2 bg-primary text-primary-foreground text-xs font-semibold rounded-xl hover:bg-primary/90 transition-colors">
+                    <button
+                        onClick={() => setModalOpen(true)}
+                        className="flex items-center gap-2 px-4 py-2 bg-accent text-primary-foreground text-xs font-semibold rounded-xl hover:bg-accent/90 transition-colors"
+                    >
                         <Plus className="w-4 h-4" />
                         New Season
                     </button>
@@ -159,8 +186,8 @@ const LeagueSeasonsPage = () => {
 
                 {/* League selector */}
                 <div className="flex flex-col gap-1.5 max-w-xs">
-                    <label className="text-xs font-medium text-muted-foreground">
-                        League
+                    <label className="text-xs font-medium text-muted-foreground flex items-center gap-1">
+                        <Trophy className="w-3 h-3" /> League
                     </label>
                     <select
                         value={selectedLeague}
@@ -178,8 +205,10 @@ const LeagueSeasonsPage = () => {
                 {/* League info strip */}
                 {league && (
                     <div className="flex items-center gap-2 text-xs text-muted-foreground">
+                        <Trophy className="w-3.5 h-3.5 text-primary" />
                         <span className="font-semibold text-foreground">{league.name}</span>
                         <span>·</span>
+                        <CalendarDays className="w-3 h-3" />
                         <span>{league.state}</span>
                         <span>·</span>
                         <span>{league.teams} teams</span>
@@ -187,20 +216,28 @@ const LeagueSeasonsPage = () => {
                 )}
 
                 {/* Season cards / empty */}
-                {seasons.length === 0 ? (
+                {filteredSeasons.length === 0 ? (
                     <EmptyState
                         icon={<Layers className="w-7 h-7" />}
                         title="No seasons yet"
                         description="Create the first season to set up fixtures and standings."
-                        action={{ label: "New Season", onClick: () => { } }}
+                        action={{ label: "New Season", onClick: () => setModalOpen(true) }}
                     />
                 ) : (
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                        {seasons.map((s) => (
+                        {filteredSeasons.map((s) => (
                             <SeasonCard key={s.id} season={s} />
                         ))}
                     </div>
                 )}
+
+                {/* Modal */}
+                <SeasonModal
+                    leagueName={league?.name ?? ""}
+                    isOpen={modalOpen}
+                    onClose={() => setModalOpen(false)}
+                    onSave={handleSave}
+                />
             </div>
         </AdminLayout>
     );

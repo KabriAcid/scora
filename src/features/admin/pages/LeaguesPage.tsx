@@ -89,15 +89,20 @@ const LeaguesPage = () => {
       <div className="px-4 py-5 md:px-5 md:py-6 space-y-6 max-w-5xl mx-auto">
         {/* Page header */}
         <div className="flex items-center justify-between gap-3">
-          <div>
-            <h1 className="text-lg font-bold text-foreground">Leagues</h1>
-            <p className="text-xs text-muted-foreground mt-0.5">
-              Manage competitions and their configurations
-            </p>
+          <div className="flex items-center gap-3">
+            <div className="w-9 h-9 rounded-xl bg-primary/10 flex items-center justify-center flex-shrink-0">
+              <Trophy className="w-5 h-5 text-primary" />
+            </div>
+            <div>
+              <h1 className="text-lg font-bold text-foreground">Leagues</h1>
+              <p className="text-xs text-muted-foreground mt-0.5">
+                Manage competitions and their configurations
+              </p>
+            </div>
           </div>
           <button
             onClick={openCreate}
-            className="flex items-center gap-2 px-4 py-2 bg-primary text-primary-foreground text-xs font-semibold rounded-xl hover:bg-primary/90 transition-colors"
+            className="flex items-center gap-2 px-4 py-2 bg-accent text-primary-foreground text-xs font-semibold rounded-xl hover:bg-accent/90 transition-colors"
           >
             <Plus className="w-4 h-4" />
             New League

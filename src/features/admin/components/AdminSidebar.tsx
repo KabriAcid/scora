@@ -376,7 +376,7 @@ export const AdminSidebar = ({
               transition={{ delay: 0.05 }}
               className="flex items-center gap-2"
             >
-              <Logo size="md" showText={true} />
+              <Logo size="sm" showText={true} />
               <span className="text-[10px] font-bold text-primary uppercase tracking-widest bg-primary/10 px-1.5 py-0.5 rounded">
                 Admin
               </span>

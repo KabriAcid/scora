@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { CalendarDays, Circle } from "lucide-react";
+import { CalendarDays, Circle, CheckCircle2, Clock, AlertTriangle, Trophy, MapPin, LayoutList, Zap } from "lucide-react";
 import AdminLayout from "@/components/layout/AdminLayout";
 import { topLeagues } from "@/data/adminMockData";
 import { EmptyState } from "../components/EmptyState";
@@ -105,8 +105,12 @@ const FixtureRow = ({ fixture }: { fixture: Fixture }) => (
                     {fixture.awayTeam}
                 </span>
             </div>
-            <p className="text-[11px] text-muted-foreground mt-0.5">
-                {fixture.date} · {fixture.venue}
+            <p className="flex items-center gap-1 text-[11px] text-muted-foreground mt-0.5">
+                <CalendarDays className="w-3 h-3 flex-shrink-0" />
+                {fixture.date}
+                <span className="mx-0.5">·</span>
+                <MapPin className="w-3 h-3 flex-shrink-0" />
+                {fixture.venue}
             </p>
         </div>
 
@@ -117,9 +121,10 @@ const FixtureRow = ({ fixture }: { fixture: Fixture }) => (
                 statusStyles[fixture.status]
             )}
         >
-            {fixture.status === "Live" && (
-                <Circle className="w-2 h-2 fill-emerald-500 animate-pulse" />
-            )}
+            {fixture.status === "Live" && <Circle className="w-2 h-2 fill-emerald-500 animate-pulse" />}
+            {fixture.status === "Completed" && <CheckCircle2 className="w-3 h-3" />}
+            {fixture.status === "Scheduled" && <Clock className="w-3 h-3" />}
+            {fixture.status === "Postponed" && <AlertTriangle className="w-3 h-3" />}
             {fixture.status}
         </span>
     </div>
@@ -146,18 +151,23 @@ const LeagueFixturesPage = () => {
         <AdminLayout>
             <div className="px-4 py-5 md:px-5 md:py-6 space-y-6 max-w-5xl mx-auto">
                 {/* Header */}
-                <div>
-                    <h1 className="text-lg font-bold text-foreground">Fixtures</h1>
-                    <p className="text-xs text-muted-foreground mt-0.5">
-                        Browse and manage match schedule by league and season
-                    </p>
+                <div className="flex items-center gap-3">
+                    <div className="w-9 h-9 rounded-xl bg-primary/10 flex items-center justify-center flex-shrink-0">
+                        <CalendarDays className="w-5 h-5 text-primary" />
+                    </div>
+                    <div>
+                        <h1 className="text-lg font-bold text-foreground">Fixtures</h1>
+                        <p className="text-xs text-muted-foreground mt-0.5">
+                            Browse and manage match schedule by league and season
+                        </p>
+                    </div>
                 </div>
 
                 {/* Selectors row */}
                 <div className="flex flex-col sm:flex-row gap-3">
                     <div className="flex flex-col gap-1.5">
-                        <label className="text-xs font-medium text-muted-foreground">
-                            League
+                        <label className="text-xs font-medium text-muted-foreground flex items-center gap-1">
+                            <Trophy className="w-3 h-3" /> League
                         </label>
                         <select
                             value={selectedLeague}
@@ -172,8 +182,8 @@ const LeagueFixturesPage = () => {
                         </select>
                     </div>
                     <div className="flex flex-col gap-1.5">
-                        <label className="text-xs font-medium text-muted-foreground">
-                            Season
+                        <label className="text-xs font-medium text-muted-foreground flex items-center gap-1">
+                            <CalendarDays className="w-3 h-3" /> Season
                         </label>
                         <select
                             value={selectedSeason}
@@ -192,20 +202,29 @@ const LeagueFixturesPage = () => {
                 {/* Status pills */}
                 <div className="flex items-center gap-1.5 flex-wrap">
                     {(["All", "Scheduled", "Live", "Completed", "Postponed"] as const).map(
-                        (s) => (
-                            <button
-                                key={s}
-                                onClick={() => setStatusFilter(s)}
-                                className={cn(
-                                    "px-3 py-1 rounded-full text-xs font-medium transition-colors",
-                                    statusFilter === s
-                                        ? "bg-accent text-accent-foreground"
-                                        : "bg-secondary text-muted-foreground hover:bg-muted hover:text-foreground"
-                                )}
-                            >
-                                {s}
-                            </button>
-                        )
+                        (s) => {
+                            const icon =
+                                s === "All" ? <LayoutList className="w-3 h-3" /> :
+                                    s === "Scheduled" ? <Clock className="w-3 h-3" /> :
+                                        s === "Live" ? <Zap className="w-3 h-3" /> :
+                                            s === "Completed" ? <CheckCircle2 className="w-3 h-3" /> :
+                                                <AlertTriangle className="w-3 h-3" />;
+                            return (
+                                <button
+                                    key={s}
+                                    onClick={() => setStatusFilter(s)}
+                                    className={cn(
+                                        "px-3 py-1 rounded-full text-xs font-medium transition-colors flex items-center gap-1.5",
+                                        statusFilter === s
+                                            ? "bg-accent text-accent-foreground"
+                                            : "bg-secondary text-muted-foreground hover:bg-muted hover:text-foreground"
+                                    )}
+                                >
+                                    {icon}
+                                    {s}
+                                </button>
+                            );
+                        }
                     )}
                 </div>
 

@@ -1,4 +1,4 @@
-import { Search, X } from "lucide-react";
+import { Search, X, MapPin, LayoutList, Zap, Clock, CheckCircle2 } from "lucide-react";
 import { cn } from "@/shared/utils/cn";
 
 // ─── Nigerian states shortlist (expand as needed) ─────────────────────────────
@@ -17,6 +17,13 @@ export const NIGERIAN_STATES = [
 ] as const;
 
 export const STATUS_OPTIONS = ["All", "Active", "Upcoming", "Completed"] as const;
+
+const STATUS_ICONS: Record<typeof STATUS_OPTIONS[number], React.ReactNode> = {
+    All: <LayoutList className="w-3 h-3" />,
+    Active: <Zap className="w-3 h-3" />,
+    Upcoming: <Clock className="w-3 h-3" />,
+    Completed: <CheckCircle2 className="w-3 h-3" />,
+};
 
 export interface LeagueFilterState {
     search: string;
@@ -73,17 +80,20 @@ export const LeagueFilters = ({
                 </div>
 
                 {/* State dropdown */}
-                <select
-                    value={filters.state}
-                    onChange={(e) => set({ state: e.target.value })}
-                    className="h-9 px-3 text-sm bg-secondary border border-border rounded-lg text-foreground focus:outline-none focus:ring-2 focus:ring-primary/30 transition min-w-[140px]"
-                >
-                    {NIGERIAN_STATES.map((s) => (
-                        <option key={s} value={s}>
-                            {s}
-                        </option>
-                    ))}
-                </select>
+                <div className="relative">
+                    <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-muted-foreground pointer-events-none" />
+                    <select
+                        value={filters.state}
+                        onChange={(e) => set({ state: e.target.value })}
+                        className="h-9 pl-8 pr-3 text-sm bg-secondary border border-border rounded-lg text-foreground focus:outline-none focus:ring-2 focus:ring-primary/30 transition min-w-[140px]"
+                    >
+                        {NIGERIAN_STATES.map((s) => (
+                            <option key={s} value={s}>
+                                {s}
+                            </option>
+                        ))}
+                    </select>
+                </div>
             </div>
 
             {/* Status pills + count */}
@@ -94,12 +104,13 @@ export const LeagueFilters = ({
                             key={s}
                             onClick={() => set({ status: s })}
                             className={cn(
-                                "px-3 py-1 rounded-full text-xs font-medium transition-colors",
+                                "px-3 py-1 rounded-full text-xs font-medium transition-colors flex items-center gap-1.5",
                                 filters.status === s
                                     ? "bg-accent text-accent-foreground"
                                     : "bg-secondary text-muted-foreground hover:bg-muted hover:text-foreground"
                             )}
                         >
+                            {STATUS_ICONS[s]}
                             {s}
                         </button>
                     ))}
