@@ -1,6 +1,6 @@
 import { useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Camera, ImageIcon } from "lucide-react";
+import { Camera, ImageIcon, Images } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import type { MatchEvent } from "@/shared/types/agent";
@@ -18,7 +18,9 @@ export const MatchPhotoCapture = ({
     currentMinute,
     onEventLogged,
 }: MatchPhotoCaptureProps) => {
-    const inputRef = useRef<HTMLInputElement>(null);
+    // Two separate inputs: one forces the device camera, one opens the gallery/picker
+    const cameraInputRef = useRef<HTMLInputElement>(null);
+    const galleryInputRef = useRef<HTMLInputElement>(null);
     const [previews, setPreviews] = useState<{ url: string; minute: number }[]>(
         [],
     );
@@ -63,24 +65,49 @@ export const MatchPhotoCapture = ({
                 )}
             </div>
 
-            {/* Hidden file input — capture="environment" opens rear camera on mobile */}
+            {/*
+              Camera input — capture="environment" bypasses the gallery and opens
+              the device's rear camera directly on mobile.
+            */}
             <input
-                ref={inputRef}
+                ref={cameraInputRef}
                 type="file"
                 accept="image/*"
-                {...{ capture: "environment" }}
+                capture="environment"
                 className="hidden"
                 onChange={handleFileChange}
             />
 
-            <Button
-                variant="outline"
-                onClick={() => inputRef.current?.click()}
-                className="w-full gap-2 border-dashed border-primary/40 hover:border-primary hover:bg-primary/5 transition-colors"
-            >
-                <Camera className="w-4 h-4 text-primary" />
-                <span className="text-sm font-medium">Take / Upload Photo</span>
-            </Button>
+            {/*
+              Gallery input — no capture attribute, so the OS shows the full
+              media picker (gallery + files) on both mobile and desktop.
+            */}
+            <input
+                ref={galleryInputRef}
+                type="file"
+                accept="image/*"
+                className="hidden"
+                onChange={handleFileChange}
+            />
+
+            <div className="flex gap-2">
+                <Button
+                    variant="outline"
+                    onClick={() => cameraInputRef.current?.click()}
+                    className="flex-1 gap-2 border-dashed border-primary/40 hover:border-primary hover:bg-primary/5 transition-colors"
+                >
+                    <Camera className="w-4 h-4 text-primary" />
+                    <span className="text-sm font-medium">Camera</span>
+                </Button>
+                <Button
+                    variant="outline"
+                    onClick={() => galleryInputRef.current?.click()}
+                    className="flex-1 gap-2 border-dashed border-border hover:border-primary/40 hover:bg-primary/5 transition-colors"
+                >
+                    <Images className="w-4 h-4 text-muted-foreground" />
+                    <span className="text-sm font-medium">Gallery</span>
+                </Button>
+            </div>
 
             <AnimatePresence>
                 {previews.length > 0 && (
