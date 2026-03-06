@@ -245,3 +245,130 @@ export const mockAgentProfile = {
     avatar: null, // Placeholder avatar
     status: "active" as const,
 };
+
+// ── Stats page data ──────────────────────────────────────────────────────────
+
+export interface MonthlyActivity {
+    month: string;
+    matches: number;
+    events: number;
+}
+
+export interface EventBreakdown {
+    type: string;
+    count: number;
+    color: string;
+}
+
+export interface MatchPerformance {
+    id: string;
+    date: string;
+    homeTeam: string;
+    awayTeam: string;
+    homeTeamLogo: string;
+    awayTeamLogo: string;
+    league: string;
+    totalEvents: number;
+    goals: number;
+    cards: number;
+    substitutions: number;
+    accuracyScore: number; // 0–100
+    status: "completed";
+}
+
+export const mockMonthlyActivity: MonthlyActivity[] = [
+    { month: "Sep", matches: 3, events: 22 },
+    { month: "Oct", matches: 4, events: 31 },
+    { month: "Nov", matches: 3, events: 28 },
+    { month: "Dec", matches: 5, events: 41 },
+    { month: "Jan", matches: 4, events: 33 },
+    { month: "Feb", matches: 5, events: 32 },
+];
+
+export const mockEventBreakdown: EventBreakdown[] = [
+    { type: "Goals", count: 47, color: "hsl(var(--success))" },
+    { type: "Yellow Cards", count: 38, color: "hsl(48 96% 53%)" },
+    { type: "Red Cards", count: 6, color: "hsl(var(--destructive))" },
+    { type: "Substitutions", count: 52, color: "hsl(var(--primary))" },
+    { type: "Fouls", count: 29, color: "hsl(var(--accent))" },
+    { type: "Corners", count: 15, color: "hsl(var(--muted-foreground))" },
+];
+
+export const mockMatchPerformances: MatchPerformance[] = [
+    {
+        id: "match-1",
+        date: "2026-02-28",
+        homeTeam: "Katsina Utd",
+        awayTeam: "Sheffield Guga",
+        homeTeamLogo: "/images/clubs/katsina-utd.png",
+        awayTeamLogo: "/images/clubs/sheffield-guga.png",
+        league: "Katsina League",
+        totalEvents: 14,
+        goals: 3,
+        cards: 4,
+        substitutions: 5,
+        accuracyScore: 100,
+        status: "completed",
+    },
+    {
+        id: "match-5",
+        date: "2026-02-21",
+        homeTeam: "K-Soro FC",
+        awayTeam: "Lazio KTS",
+        homeTeamLogo: "/images/clubs/ksoro.png",
+        awayTeamLogo: "/images/clubs/lazio-kts.png",
+        league: "Katsina League",
+        totalEvents: 11,
+        goals: 2,
+        cards: 2,
+        substitutions: 6,
+        accuracyScore: 98,
+        status: "completed",
+    },
+    {
+        id: "match-3",
+        date: "2026-02-14",
+        homeTeam: "Dan Buran FC",
+        awayTeam: "Katsina City",
+        homeTeamLogo: "/images/clubs/dan-buran.png",
+        awayTeamLogo: "/images/clubs/katsina-city.png",
+        league: "Katsina Cup",
+        totalEvents: 9,
+        goals: 1,
+        cards: 3,
+        substitutions: 4,
+        accuracyScore: 96,
+        status: "completed",
+    },
+    {
+        id: "match-dec-2",
+        date: "2026-01-30",
+        homeTeam: "Malumfashi FC",
+        awayTeam: "Remo Stars Kats",
+        homeTeamLogo: "/images/clubs/malumfashi.png",
+        awayTeamLogo: "/images/clubs/remo-kats.png",
+        league: "Northern Championship",
+        totalEvents: 13,
+        goals: 4,
+        cards: 1,
+        substitutions: 6,
+        accuracyScore: 100,
+        status: "completed",
+    },
+    {
+        id: "match-dec-1",
+        date: "2026-01-17",
+        homeTeam: "Eleven Shooting",
+        awayTeam: "Katsina Utd",
+        homeTeamLogo: "/images/clubs/eleven-shooting.png",
+        awayTeamLogo: "/images/clubs/katsina-utd.png",
+        league: "Katsina League",
+        totalEvents: 8,
+        goals: 2,
+        cards: 2,
+        substitutions: 3,
+        accuracyScore: 94,
+        status: "completed",
+    },
+];
+

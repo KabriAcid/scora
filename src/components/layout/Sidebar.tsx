@@ -121,8 +121,8 @@ const Sidebar = ({
         initial={isMobile ? "closed" : "open"}
         animate={isMobile ? (isOpen ? "open" : "closed") : "open"}
         variants={sidebarVariants}
-        transition={{ duration: 0.3, ease: "easeInOut" }}
-        className={`fixed lg:static top-0 left-0 h-screen ${sidebarWidth} bg-white text-foreground transition-all duration-300 flex flex-col z-50 overflow-hidden border-r border-border`}
+        transition={{ duration: 0.18, ease: "easeOut" }}
+        className={`fixed lg:static top-0 left-0 h-screen ${sidebarWidth} bg-white text-foreground transition-[width] duration-200 flex flex-col z-50 overflow-hidden border-r border-border`}
       >
         {/* Header with close button */}
         <div className="p-4 flex items-center justify-between border-b border-border">

@@ -10,6 +10,7 @@ import CalendarPage from "@/features/guest/pages/CalendarPage";
 import StatsPage from "@/features/guest/pages/StatsPage";
 import TermsPage from "@/features/guest/pages/TermsPage";
 import AgentLoginPage from "@/features/agent/pages/AgentLoginPage";
+import AgentRequestAccessPage from "@/features/agent/pages/AgentRequestAccessPage";
 import AgentDashboard from "@/features/agent/pages/AgentDashboard";
 import LiveMatchPage from "@/features/agent/pages/LiveMatchPage";
 import AgentCalendarPage from "@/features/agent/pages/AgentCalendarPage";
@@ -40,6 +41,7 @@ const App = () => (
           {/* Agent Routes */}
           <Route path="/agent" element={<AgentLoginPage />} />
           <Route path="/agent/login" element={<AgentLoginPage />} />
+          <Route path="/agent/request-access" element={<AgentRequestAccessPage />} />
           <Route path="/agent/dashboard" element={<AgentDashboard />} />
           <Route path="/agent/match/:id" element={<LiveMatchPage />} />
           <Route path="/agent/calendar" element={<AgentCalendarPage />} />

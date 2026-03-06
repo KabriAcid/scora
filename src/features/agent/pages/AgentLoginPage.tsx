@@ -4,7 +4,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { motion } from "framer-motion";
 import type { Variants } from "framer-motion";
-import { Eye, EyeOff, Mail, Lock, Shield, Zap } from "lucide-react";
+import { Eye, EyeOff, Mail, Lock, Shield, Zap, HomeIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card } from "@/components/ui/card";
@@ -19,14 +19,20 @@ import {
     FormMessage,
 } from "@/components/ui/form";
 import ForgotPasswordModal from "@/components/common/ForgotPasswordModal";
+import { toast } from "sonner";
 
 // Validation schema
 const loginSchema = z.object({
-    email: z.string().email("Please enter a valid email address"),
+    email: z
+        .string()
+        .trim()
+        .toLowerCase()
+        .email("Please enter a valid email address"),
     password: z
         .string()
-        .min(6, "Password must be at least 6 characters")
-        .min(1, "Password is required"),
+        .trim()
+        .min(1, "Password is required")
+        .min(6, "Password must be at least 6 characters"),
     rememberMe: z.boolean().default(false),
 });
 
@@ -47,6 +53,7 @@ const AgentLoginPage = () => {
 
     const form = useForm<LoginFormValues>({
         resolver: zodResolver(loginSchema),
+        mode: "onTouched",
         defaultValues: {
             email: "",
             password: "",
@@ -68,7 +75,9 @@ const AgentLoginPage = () => {
             navigate("/agent/dashboard");
         } catch (error) {
             console.error("Login error:", error);
-            form.setError("root", { message: "Login failed. Please try again." });
+            toast.error("Login failed", {
+                description: "Invalid credentials. Please try again.",
+            });
         } finally {
             setIsLoading(false);
         }
@@ -146,7 +155,7 @@ const AgentLoginPage = () => {
                             <div className="inline-flex items-center justify-center w-20 h-20 bg-white/10 backdrop-blur-md rounded-2xl mb-6">
                                 <Shield className="w-10 h-10 text-accent" />
                             </div>
-                            <h1 className="text-5xl font-bold mb-4">Live Agent Hub</h1>
+                            <h1 className="text-3xl xl:text-5xl font-bold mb-4">Live Agent Hub</h1>
                             <p className="text-lg text-primary-foreground/80">
                                 Real-time match event recording platform for professional agents
                             </p>
@@ -188,7 +197,7 @@ const AgentLoginPage = () => {
                     <div className="w-full max-w-md">
                         {/* Header */}
                         <motion.div variants={itemVariants} className="mb-8">
-                            <h2 className="text-3xl font-bold text-foreground mb-2">
+                            <h2 className="text-2xl sm:text-3xl font-bold text-foreground mb-2">
                                 Agent Login
                             </h2>
                             <p className="text-muted-foreground">
@@ -198,23 +207,12 @@ const AgentLoginPage = () => {
 
                         {/* Card with form */}
                         <motion.div variants={itemVariants}>
-                            <Card className="p-8 bg-card shadow-lg border-border/50">
+                            <Card className="p-5 sm:p-8 bg-card shadow-lg border-border/50">
                                 <Form {...form}>
                                     <form
                                         onSubmit={form.handleSubmit(onSubmit)}
                                         className="space-y-6"
                                     >
-                                        {/* Error message */}
-                                        {form.formState.errors.root && (
-                                            <motion.div
-                                                initial={{ opacity: 0, y: -10 }}
-                                                animate={{ opacity: 1, y: 0 }}
-                                                className="p-4 bg-destructive/10 border border-destructive/30 rounded-lg text-destructive text-sm"
-                                            >
-                                                {form.formState.errors.root.message}
-                                            </motion.div>
-                                        )}
-
                                         {/* Email field */}
                                         <FormField
                                             control={form.control}
@@ -337,12 +335,12 @@ const AgentLoginPage = () => {
                         <motion.div variants={itemVariants} className="mt-6 text-center">
                             <p className="text-sm text-muted-foreground">
                                 Don't have an account?{" "}
-                                <a
-                                    href="#signup"
-                                    className="text-accent hover:text-accent/80 font-semibold transition-colors"
+                                <span
+                                    onClick={() => navigate("/agent/request-access")}
+                                    className="text-accent hover:text-accent/80 font-semibold transition-colors cursor-pointer"
                                 >
                                     Request access
-                                </a>
+                                </span>
                             </p>
                         </motion.div>
 
@@ -356,7 +354,7 @@ const AgentLoginPage = () => {
                                     onClick={() => navigate("/")}
                                     className="text-accent hover:text-accent/80 transition-colors cursor-pointer font-medium"
                                 >
-                                    Back to Homepage
+                                    <HomeIcon className="inline m-0 p-0 mr-3 mb-2" /> Back to Homepage
                                 </a>
                             </p>
                         </motion.div>
