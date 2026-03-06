@@ -1,55 +1,51 @@
 import { useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Camera, ImageIcon, Images } from "lucide-react";
+import { Camera, ImageIcon, Images, X } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import type { MatchEvent } from "@/shared/types/agent";
+
+interface PhotoPreview {
+    id: string;
+    url: string;
+    minute: number;
+}
 
 interface MatchPhotoCaptureProps {
     matchId: string | undefined;
-    activeTeam: string;
     currentMinute: number;
-    onEventLogged: (event: MatchEvent) => void;
 }
 
 export const MatchPhotoCapture = ({
     matchId: _matchId, // TODO: used in POST /api/matches/:id/media when backend ready
-    activeTeam,
     currentMinute,
-    onEventLogged,
 }: MatchPhotoCaptureProps) => {
     // Two separate inputs: one forces the device camera, one opens the gallery/picker
     const cameraInputRef = useRef<HTMLInputElement>(null);
     const galleryInputRef = useRef<HTMLInputElement>(null);
-    const [previews, setPreviews] = useState<{ url: string; minute: number }[]>(
-        [],
-    );
+    const [previews, setPreviews] = useState<PhotoPreview[]>([]);
 
     const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.currentTarget.files?.[0];
         if (!file) return;
 
         const url = URL.createObjectURL(file);
-        const minute = currentMinute;
+        const id = crypto.randomUUID();
 
-        setPreviews((prev) => [{ url, minute }, ...prev]);
+        setPreviews((prev) => [{ id, url, minute: currentMinute }, ...prev]);
 
-        const event: MatchEvent = {
-            id: crypto.randomUUID(),
-            type: "photo",
-            player: "Match Photo",
-            team: activeTeam,
-            minute,
-            timestamp: new Date(),
-            photoUrl: url,
-            // TODO: upload file and replace blob URL with CDN URL
-            // await fetch(`/api/matches/${_matchId}/media`, { method: "POST", body: formData })
-        };
-
-        onEventLogged(event);
+        // TODO: upload file and replace blob URL with CDN URL
+        // await fetch(`/api/matches/${_matchId}/media`, { method: "POST", body: formData })
 
         // Reset so the same file can be re-selected
         e.currentTarget.value = "";
+    };
+
+    const handleRemove = (id: string) => {
+        setPreviews((prev) => {
+            const target = prev.find((p) => p.id === id);
+            if (target) URL.revokeObjectURL(target.url); // free memory
+            return prev.filter((p) => p.id !== id);
+        });
     };
 
     return (
@@ -66,9 +62,9 @@ export const MatchPhotoCapture = ({
             </div>
 
             {/*
-              Camera input — capture="environment" bypasses the gallery and opens
-              the device's rear camera directly on mobile.
-            */}
+        Camera input — capture="environment" bypasses the gallery and opens
+        the device’s rear camera directly on mobile.
+      */}
             <input
                 ref={cameraInputRef}
                 type="file"
@@ -79,9 +75,9 @@ export const MatchPhotoCapture = ({
             />
 
             {/*
-              Gallery input — no capture attribute, so the OS shows the full
-              media picker (gallery + files) on both mobile and desktop.
-            */}
+        Gallery input — no capture attribute, so the OS shows the full
+        media picker (gallery + files) on both mobile and desktop.
+      */}
             <input
                 ref={galleryInputRef}
                 type="file"
@@ -120,13 +116,13 @@ export const MatchPhotoCapture = ({
                     >
                         <div className="mt-3 grid grid-cols-4 gap-2">
                             <AnimatePresence initial={false}>
-                                {previews.map(({ url, minute }, i) => (
+                                {previews.map(({ id, url, minute }) => (
                                     <motion.div
-                                        key={url}
+                                        key={id}
                                         initial={{ opacity: 0, scale: 0.85 }}
                                         animate={{ opacity: 1, scale: 1 }}
                                         exit={{ opacity: 0, scale: 0.85 }}
-                                        transition={{ duration: 0.2, delay: i === 0 ? 0 : 0 }}
+                                        transition={{ duration: 0.2 }}
                                         className="relative group"
                                     >
                                         <img
@@ -134,9 +130,18 @@ export const MatchPhotoCapture = ({
                                             alt={`match photo ${minute}'`}
                                             className="w-full aspect-square object-cover rounded-lg border border-border"
                                         />
+                                        {/* Minute stamp */}
                                         <span className="absolute bottom-0.5 right-0.5 text-[9px] font-bold text-white bg-black/60 px-1 rounded">
                                             {minute}'
                                         </span>
+                                        {/* Remove button — visible on hover */}
+                                        <button
+                                            onClick={() => handleRemove(id)}
+                                            className="absolute top-0.5 left-0.5 w-5 h-5 flex items-center justify-center rounded-full bg-black/70 text-white opacity-0 group-hover:opacity-100 transition-opacity hover:bg-destructive"
+                                            title="Remove photo"
+                                        >
+                                            <X className="w-3 h-3" />
+                                        </button>
                                     </motion.div>
                                 ))}
                             </AnimatePresence>

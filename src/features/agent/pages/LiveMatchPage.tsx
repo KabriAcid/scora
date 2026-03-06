@@ -384,9 +384,7 @@ const LiveMatchPage = () => {
               {matchPhase !== "idle" && (
                 <MatchPhotoCapture
                   matchId={id}
-                  activeTeam={activeTeam ?? match.homeTeam}
                   currentMinute={getCurrentMinute()}
-                  onEventLogged={handleLogEvent}
                 />
               )}
               <EventTimeline
