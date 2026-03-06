@@ -49,6 +49,21 @@ export interface HeadToHead {
   competition: string;
 }
 
+// Phase of match when the photo was captured
+export type MediaPhase = "pre-match" | "in-match" | "post-match";
+
+export interface MatchMediaEntry {
+  id: string;
+  phase: MediaPhase;
+  /** Minute indicator — only relevant for in-match entries */
+  minute?: number;
+  photoUrl: string;
+  /** Short contextual label shown on the card */
+  label: string;
+  /** Wall-clock display string e.g. "45 min ago" */
+  postedAt: string;
+}
+
 export interface MatchDetail {
   matchId: string;
   league: string;
@@ -66,6 +81,8 @@ export interface MatchDetail {
     homeTeamStanding: TeamStanding;
     awayTeamStanding: TeamStanding;
   };
+  /** Optional match-day media captured by field agents */
+  media?: MatchMediaEntry[];
 }
 
 // Match detail data
@@ -493,7 +510,106 @@ export const matchDetailsData: Record<string, MatchDetail> = {
   },
 };
 
-// Helper function to get match details
+// Inject sample media into match "1"
+if (matchDetailsData["1"]) {
+  matchDetailsData["1"].media = [
+    {
+      id: "m1-pre-1",
+      phase: "pre-match",
+      photoUrl: "https://picsum.photos/seed/stadium1/640/420",
+      label: "Stadium gates opening",
+      postedAt: "3 hrs ago",
+    },
+    {
+      id: "m1-pre-2",
+      phase: "pre-match",
+      photoUrl: "https://picsum.photos/seed/warmup1/640/420",
+      label: "Teams warming up",
+      postedAt: "2 hrs 30 min ago",
+    },
+    {
+      id: "m1-pre-3",
+      phase: "pre-match",
+      photoUrl: "https://picsum.photos/seed/crowd22/640/420",
+      label: "Fans filling the stands",
+      postedAt: "2 hrs ago",
+    },
+    {
+      id: "m1-live-1",
+      phase: "in-match",
+      minute: 12,
+      photoUrl: "https://picsum.photos/seed/kick12/640/420",
+      label: "Early pressure from home side",
+      postedAt: "1 hr 48 min ago",
+    },
+    {
+      id: "m1-live-2",
+      phase: "in-match",
+      minute: 34,
+      photoUrl: "https://picsum.photos/seed/goal34/640/420",
+      label: "Goal mouth scramble",
+      postedAt: "1 hr 26 min ago",
+    },
+    {
+      id: "m1-live-3",
+      phase: "in-match",
+      minute: 56,
+      photoUrl: "https://picsum.photos/seed/tackle56/640/420",
+      label: "Strong tackle in midfield",
+      postedAt: "1 hr 4 min ago",
+    },
+    {
+      id: "m1-live-4",
+      phase: "in-match",
+      minute: 78,
+      photoUrl: "https://picsum.photos/seed/save78/640/420",
+      label: "Outstanding save by the keeper",
+      postedAt: "42 min ago",
+    },
+    {
+      id: "m1-post-1",
+      phase: "post-match",
+      photoUrl: "https://picsum.photos/seed/celeb99/640/420",
+      label: "Players celebrate final whistle",
+      postedAt: "20 min ago",
+    },
+    {
+      id: "m1-post-2",
+      phase: "post-match",
+      photoUrl: "https://picsum.photos/seed/handshake01/640/420",
+      label: "Post-match handshakes",
+      postedAt: "12 min ago",
+    },
+  ];
+}
+
+// Inject sample pre-match media into match "2" (live match)
+if (matchDetailsData["2"]) {
+  matchDetailsData["2"].media = [
+    {
+      id: "m2-pre-1",
+      phase: "pre-match",
+      photoUrl: "https://picsum.photos/seed/arena2a/640/420",
+      label: "Pitch inspection",
+      postedAt: "1 hr ago",
+    },
+    {
+      id: "m2-pre-2",
+      phase: "pre-match",
+      photoUrl: "https://picsum.photos/seed/players2b/640/420",
+      label: "Squad arriving at the ground",
+      postedAt: "45 min ago",
+    },
+    {
+      id: "m2-live-1",
+      phase: "in-match",
+      minute: 23,
+      photoUrl: "https://picsum.photos/seed/live2c/640/420",
+      label: "Fast counter-attack",
+      postedAt: "17 min ago",
+    },
+  ];
+}
 export const getMatchDetails = (matchId: string): MatchDetail | undefined => {
   return matchDetailsData[matchId];
 };

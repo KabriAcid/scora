@@ -9,6 +9,7 @@ import { MatchSummary } from "@/features/guest/components/MatchSummary";
 import { MatchH2H } from "@/features/guest/components/MatchH2H";
 import { MatchStatsTab } from "@/features/guest/components/MatchStatsTab";
 import { MatchStandingsTable } from "@/features/guest/components/MatchStandingsTable";
+import { MatchMediaTab } from "@/features/guest/components/MatchMediaTab";
 import { Navigation } from "@/components/common/Navigation";
 import { getMatchById } from "@/data/matches";
 import { getMatchDetails } from "@/data/matchDetails";
@@ -83,73 +84,44 @@ const MatchDetail = () => {
             className="mt-6"
           >
             <Tabs defaultValue="lineups" className="w-full">
-              <TabsList className="grid w-full grid-cols-5 mb-6">
+              <TabsList className="flex w-full overflow-x-auto scrollbar-hide gap-0 mb-6">
                 <TabsTrigger
                   value="stats"
-                  className="text-xs data-[state=active]:bg-accent data-[state=active]:text-accent-foreground"
+                  className="flex-shrink-0 text-xs data-[state=active]:bg-accent data-[state=active]:text-accent-foreground"
                 >
                   Stats
                 </TabsTrigger>
                 <TabsTrigger
                   value="summary"
-                  className="text-xs data-[state=active]:bg-accent data-[state=active]:text-accent-foreground"
+                  className="flex-shrink-0 text-xs data-[state=active]:bg-accent data-[state=active]:text-accent-foreground"
                 >
                   Summary
                 </TabsTrigger>
                 <TabsTrigger
                   value="lineups"
-                  className="text-xs data-[state=active]:bg-accent data-[state=active]:text-accent-foreground"
+                  className="flex-shrink-0 text-xs data-[state=active]:bg-accent data-[state=active]:text-accent-foreground"
                 >
                   Lineups
                 </TabsTrigger>
                 <TabsTrigger
                   value="table"
-                  className="text-xs data-[state=active]:bg-accent data-[state=active]:text-accent-foreground"
+                  className="flex-shrink-0 text-xs data-[state=active]:bg-accent data-[state=active]:text-accent-foreground"
                 >
                   Table
                 </TabsTrigger>
                 <TabsTrigger
                   value="h2h"
-                  className="text-xs data-[state=active]:bg-accent data-[state=active]:text-accent-foreground"
+                  className="flex-shrink-0 text-xs data-[state=active]:bg-accent data-[state=active]:text-accent-foreground"
                 >
                   H2H
                 </TabsTrigger>
+                <TabsTrigger
+                  value="media"
+                  className="flex-shrink-0 text-xs data-[state=active]:bg-accent data-[state=active]:text-accent-foreground"
+                >
+                  Media
+                </TabsTrigger>
               </TabsList>
-
-              <TabsContent value="lineups">
-                <div className="space-y-4">
-                  <Skeleton className="h-32 w-full bg-muted" />
-                  <Skeleton className="h-48 w-full bg-muted" />
-                  <Skeleton className="h-32 w-full bg-muted" />
-                </div>
-              </TabsContent>
-
-              <TabsContent value="stats">
-                <div className="space-y-4">
-                  <Skeleton className="h-24 w-full bg-muted" />
-                  <Skeleton className="h-24 w-full bg-muted" />
-                </div>
-              </TabsContent>
-
-              <TabsContent value="summary">
-                <div className="space-y-4">
-                  <Skeleton className="h-40 w-full bg-muted" />
-                </div>
-              </TabsContent>
-
-              <TabsContent value="table">
-                <div className="space-y-4">
-                  <Skeleton className="h-64 w-full bg-muted" />
-                </div>
-              </TabsContent>
-
-              <TabsContent value="h2h">
-                <div className="space-y-4">
-                  <Skeleton className="h-32 w-full bg-muted" />
-                  <Skeleton className="h-32 w-full bg-muted" />
-                </div>
-              </TabsContent>
-            </Tabs>
           </motion.div>
         </div>
       </motion.div>
@@ -214,36 +186,42 @@ const MatchDetail = () => {
           className="mt-6"
         >
           <Tabs defaultValue="lineups" className="w-full">
-            <TabsList className="grid w-full grid-cols-5 mb-6">
+            <TabsList className="flex w-full overflow-x-auto scrollbar-hide gap-0 mb-6">
               <TabsTrigger
                 value="stats"
-                className="text-xs data-[state=active]:bg-accent data-[state=active]:text-accent-foreground"
+                className="flex-shrink-0 text-xs data-[state=active]:bg-accent data-[state=active]:text-accent-foreground"
               >
                 Stats
               </TabsTrigger>
               <TabsTrigger
                 value="summary"
-                className="text-xs data-[state=active]:bg-accent data-[state=active]:text-accent-foreground"
+                className="flex-shrink-0 text-xs data-[state=active]:bg-accent data-[state=active]:text-accent-foreground"
               >
                 Summary
               </TabsTrigger>
               <TabsTrigger
                 value="lineups"
-                className="text-xs data-[state=active]:bg-accent data-[state=active]:text-accent-foreground"
+                className="flex-shrink-0 text-xs data-[state=active]:bg-accent data-[state=active]:text-accent-foreground"
               >
                 Lineups
               </TabsTrigger>
               <TabsTrigger
                 value="table"
-                className="text-xs data-[state=active]:bg-accent data-[state=active]:text-accent-foreground"
+                className="flex-shrink-0 text-xs data-[state=active]:bg-accent data-[state=active]:text-accent-foreground"
               >
                 Table
               </TabsTrigger>
               <TabsTrigger
                 value="h2h"
-                className="text-xs data-[state=active]:bg-accent data-[state=active]:text-accent-foreground"
+                className="flex-shrink-0 text-xs data-[state=active]:bg-accent data-[state=active]:text-accent-foreground"
               >
                 H2H
+              </TabsTrigger>
+              <TabsTrigger
+                value="media"
+                className="flex-shrink-0 text-xs data-[state=active]:bg-accent data-[state=active]:text-accent-foreground"
+              >
+                Media
               </TabsTrigger>
             </TabsList>
 
@@ -300,6 +278,13 @@ const MatchDetail = () => {
                   <p>Head-to-head data not available</p>
                 </div>
               )}
+            </TabsContent>
+
+            <TabsContent value="media">
+              <MatchMediaTab
+                media={matchDetails?.media ?? []}
+                matchStatus={match.status}
+              />
             </TabsContent>
           </Tabs>
         </motion.div>
