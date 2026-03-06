@@ -163,7 +163,7 @@ const StatsPage = () => {
             </div>
             <div>
               <h1 className="text-base font-bold leading-tight">Player Statistics</h1>
-              <p className="text-xs text-muted-foreground">Katsina State League</p>
+              <p className="text-xs text-muted-foreground">All Nigerian Leagues</p>
             </div>
           </div>
 
