@@ -211,11 +211,10 @@ export const PlayerRosterQuickActions = ({
         <motion.button
           whileTap={{ scale: 0.95 }}
           onClick={() => onSelectTeam(homeTeam)}
-          className={`flex-1 p-2 rounded-lg border-2 transition-all ${
-            activeTeam === homeTeam
+          className={`flex-1 p-2 rounded-lg border-2 transition-all ${activeTeam === homeTeam
               ? "border-primary bg-primary/10"
               : "border-border hover:border-primary/50"
-          }`}
+            }`}
         >
           <img
             src={homeTeamLogo}
@@ -229,11 +228,10 @@ export const PlayerRosterQuickActions = ({
         <motion.button
           whileTap={{ scale: 0.95 }}
           onClick={() => onSelectTeam(awayTeam)}
-          className={`flex-1 p-2 rounded-lg border-2 transition-all ${
-            activeTeam === awayTeam
+          className={`flex-1 p-2 rounded-lg border-2 transition-all ${activeTeam === awayTeam
               ? "border-accent bg-accent/10"
               : "border-border hover:border-accent/50"
-          }`}
+            }`}
         >
           <img
             src={awayTeamLogo}
@@ -287,14 +285,13 @@ export const PlayerRosterQuickActions = ({
                   <motion.div
                     key={player.id}
                     variants={playerVariants}
-                    className={`p-3 rounded-lg transition-colors ${
-                      isDismissed
+                    className={`p-3 rounded-lg transition-colors ${isDismissed
                         ? "bg-destructive/10 border border-destructive/20"
                         : "bg-secondary/40 hover:bg-secondary/60"
-                    }`}
+                      }`}
                   >
                     <div className="flex items-center justify-between mb-2">
-                      <div className="flex-1 flex items-center gap-2">
+                      <div className="flex-1 flex items-center gap-2 flex-wrap">
                         <p className="text-sm font-semibold text-foreground">
                           #{player.number} {player.name}
                           {player.position && (
@@ -305,7 +302,7 @@ export const PlayerRosterQuickActions = ({
                         </p>
                         {/* Card pip indicators */}
                         {(yellowCount > 0 || redCount > 0) && (
-                          <div className="flex items-center gap-0.5 ml-1">
+                          <div className="flex items-center gap-0.5">
                             {Array.from({ length: yellowCount }).map((_, i) => (
                               <span
                                 key={`y-${i}`}
@@ -322,6 +319,12 @@ export const PlayerRosterQuickActions = ({
                             ))}
                           </div>
                         )}
+                        {/* Suspended badge */}
+                        {isDismissed && (
+                          <span className="inline-flex items-center text-[10px] font-bold uppercase tracking-wide px-1.5 py-0.5 rounded-full bg-destructive/20 text-destructive border border-destructive/30">
+                            Suspended
+                          </span>
+                        )}
                       </div>
                     </div>
                     <div className="flex gap-2 flex-wrap">
@@ -332,16 +335,29 @@ export const PlayerRosterQuickActions = ({
                           (event.type === "yellow_card" && yellowCount > 0) ||
                           (event.type === "red_card" && redCount > 0);
 
+                        // A second yellow always triggers suspension — block it too
+                        const wouldSuspend =
+                          event.type === "yellow_card" && yellowCount >= 1;
+
+                        const isDisabled = isDismissed || wouldSuspend;
+
                         return (
                           <Button
                             key={event.type}
                             size="sm"
                             variant="outline"
+                            disabled={isDisabled}
                             onClick={() =>
                               handleQuickAction(player, event.type)
                             }
-                            className="text-xs h-8 px-2 gap-1 hover:bg-primary hover:text-primary-foreground"
-                            title={event.label}
+                            className="text-xs h-8 px-2 gap-1 hover:bg-primary hover:text-primary-foreground disabled:opacity-40 disabled:cursor-not-allowed disabled:pointer-events-none"
+                            title={
+                              isDisabled
+                                ? isDismissed
+                                  ? "Player is suspended"
+                                  : "Second yellow would result in suspension — log a red card instead"
+                                : event.label
+                            }
                           >
                             {!hideBtnIcon && (
                               <img
