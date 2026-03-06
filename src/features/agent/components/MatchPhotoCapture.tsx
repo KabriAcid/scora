@@ -1,70 +1,115 @@
-import { useRef, useState } from "react";
+﻿import { useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Camera, ImageIcon, Images, X } from "lucide-react";
+import { Camera, ChevronDown, Images, X } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { cn } from "@/shared/utils/cn";
+import { SLOT_CONFIG, MediaSlot } from "@/data/matchDetails";
 
-interface PhotoPreview {
+const ALL_SLOTS: MediaSlot[] = [1, 2, 3];
+
+interface SlotPhoto {
     id: string;
     url: string;
-    minute: number;
 }
 
 interface MatchPhotoCaptureProps {
     matchId: string | undefined;
-    currentMinute: number;
 }
 
 export const MatchPhotoCapture = ({
-    matchId: _matchId, // TODO: used in POST /api/matches/:id/media when backend ready
-    currentMinute,
+    matchId: _matchId,
 }: MatchPhotoCaptureProps) => {
-    // Two separate inputs: one forces the device camera, one opens the gallery/picker
     const cameraInputRef = useRef<HTMLInputElement>(null);
     const galleryInputRef = useRef<HTMLInputElement>(null);
-    const [previews, setPreviews] = useState<PhotoPreview[]>([]);
+    const pendingSlotRef = useRef<MediaSlot | null>(null);
+
+    const [isOpen, setIsOpen] = useState(true);
+    const [slots, setSlots] = useState<Record<MediaSlot, SlotPhoto | null>>({
+        1: null,
+        2: null,
+        3: null,
+    });
+
+    const openUpload = (slot: MediaSlot, mode: "camera" | "gallery") => {
+        pendingSlotRef.current = slot;
+        if (mode === "camera") {
+            cameraInputRef.current?.click();
+        } else {
+            galleryInputRef.current?.click();
+        }
+    };
 
     const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const slot = pendingSlotRef.current;
         const file = e.currentTarget.files?.[0];
-        if (!file) return;
+        if (!file || slot === null) return;
 
         const url = URL.createObjectURL(file);
         const id = crypto.randomUUID();
 
-        setPreviews((prev) => [{ id, url, minute: currentMinute }, ...prev]);
+        setSlots((prev) => ({ ...prev, [slot]: { id, url } }));
 
-        // TODO: upload file and replace blob URL with CDN URL
-        // await fetch(`/api/matches/${_matchId}/media`, { method: "POST", body: formData })
-
-        // Reset so the same file can be re-selected
         e.currentTarget.value = "";
+        pendingSlotRef.current = null;
     };
 
-    const handleRemove = (id: string) => {
-        setPreviews((prev) => {
-            const target = prev.find((p) => p.id === id);
-            if (target) URL.revokeObjectURL(target.url); // free memory
-            return prev.filter((p) => p.id !== id);
+    const handleRemove = (slot: MediaSlot) => {
+        setSlots((prev) => {
+            const existing = prev[slot];
+            if (existing) URL.revokeObjectURL(existing.url);
+            return { ...prev, [slot]: null };
         });
     };
 
+    const filledCount = ALL_SLOTS.filter((s) => slots[s] !== null).length;
+
     return (
         <Card className="p-4 bg-card/50 border-none shadow-xl">
-            <div className="flex items-center justify-between mb-3">
+            {/* Collapsible header */}
+            <button
+                onClick={() => setIsOpen((o) => !o)}
+                className="flex items-center justify-between w-full mb-0 group"
+            >
                 <h2 className="text-sm font-semibold text-muted-foreground uppercase tracking-wide">
                     Match Photos
                 </h2>
-                {previews.length > 0 && (
+                <div className="flex items-center gap-2">
                     <span className="text-xs text-muted-foreground tabular-nums">
-                        {previews.length} captured
+                        {filledCount} / {ALL_SLOTS.length}
                     </span>
-                )}
+                    <motion.div
+                        animate={{ rotate: isOpen ? 180 : 0 }}
+                        transition={{ duration: 0.2 }}
+                    >
+                        <ChevronDown className="w-4 h-4 text-muted-foreground group-hover:text-foreground transition-colors" />
+                    </motion.div>
+                </div>
+            </button>
+
+            <AnimatePresence initial={false}>
+            {isOpen && (
+            <motion.div
+                key="body"
+                initial={{ opacity: 0, height: 0 }}
+                animate={{ opacity: 1, height: "auto" }}
+                exit={{ opacity: 0, height: 0 }}
+                transition={{ duration: 0.25, ease: "easeInOut" }}
+                className="overflow-hidden"
+            >
+            <div className="mt-3">
+            <div className="flex gap-1.5 mb-4">
+                {ALL_SLOTS.map((slot) => (
+                    <div
+                        key={slot}
+                        className={cn(
+                            "h-1 flex-1 rounded-full transition-colors duration-300",
+                            slots[slot] ? "bg-primary" : "bg-muted"
+                        )}
+                    />
+                ))}
             </div>
 
-            {/*
-        Camera input — capture="environment" bypasses the gallery and opens
-        the device’s rear camera directly on mobile.
-      */}
             <input
                 ref={cameraInputRef}
                 type="file"
@@ -73,11 +118,6 @@ export const MatchPhotoCapture = ({
                 className="hidden"
                 onChange={handleFileChange}
             />
-
-            {/*
-        Gallery input — no capture attribute, so the OS shows the full
-        media picker (gallery + files) on both mobile and desktop.
-      */}
             <input
                 ref={galleryInputRef}
                 type="file"
@@ -86,76 +126,88 @@ export const MatchPhotoCapture = ({
                 onChange={handleFileChange}
             />
 
-            <div className="flex gap-2">
-                <Button
-                    variant="outline"
-                    onClick={() => cameraInputRef.current?.click()}
-                    className="flex-1 gap-2 border-dashed border-primary/40 hover:border-primary hover:bg-primary/5 transition-colors"
-                >
-                    <Camera className="w-4 h-4 text-primary" />
-                    <span className="text-sm font-medium">Camera</span>
-                </Button>
-                <Button
-                    variant="outline"
-                    onClick={() => galleryInputRef.current?.click()}
-                    className="flex-1 gap-2 border-dashed border-border hover:border-primary/40 hover:bg-primary/5 transition-colors"
-                >
-                    <Images className="w-4 h-4 text-muted-foreground" />
-                    <span className="text-sm font-medium">Gallery</span>
-                </Button>
-            </div>
+            <div className="flex flex-col gap-3">
+                {ALL_SLOTS.map((slot) => {
+                    const config = SLOT_CONFIG[slot];
+                    const photo = slots[slot];
 
-            <AnimatePresence>
-                {previews.length > 0 && (
-                    <motion.div
-                        initial={{ opacity: 0, height: 0 }}
-                        animate={{ opacity: 1, height: "auto" }}
-                        exit={{ opacity: 0, height: 0 }}
-                        transition={{ duration: 0.25 }}
-                        className="overflow-hidden"
-                    >
-                        <div className="mt-3 grid grid-cols-4 gap-2">
-                            <AnimatePresence initial={false}>
-                                {previews.map(({ id, url, minute }) => (
-                                    <motion.div
-                                        key={id}
-                                        initial={{ opacity: 0, scale: 0.85 }}
-                                        animate={{ opacity: 1, scale: 1 }}
-                                        exit={{ opacity: 0, scale: 0.85 }}
-                                        transition={{ duration: 0.2 }}
-                                        className="relative group"
+                    return (
+                        <motion.div
+                            key={slot}
+                            layout
+                            initial={{ opacity: 0, y: 6 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 0.2, delay: (slot - 1) * 0.05 }}
+                        >
+                            {photo ? (
+                                <div className="relative rounded-xl overflow-hidden border border-border group aspect-video bg-muted">
+                                    <img
+                                        src={photo.url}
+                                        alt={config.label}
+                                        className="w-full h-full object-cover"
+                                    />
+                                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
+                                    <span
+                                        className={cn(
+                                            "absolute bottom-2 left-2 text-[10px] font-semibold px-2 py-0.5 rounded-full border",
+                                            config.badgeClass
+                                        )}
                                     >
-                                        <img
-                                            src={url}
-                                            alt={`match photo ${minute}'`}
-                                            className="w-full aspect-square object-cover rounded-lg border border-border"
-                                        />
-                                        {/* Minute stamp */}
-                                        <span className="absolute bottom-0.5 right-0.5 text-[9px] font-bold text-white bg-black/60 px-1 rounded">
-                                            {minute}'
-                                        </span>
-                                        {/* Remove button — visible on hover */}
-                                        <button
-                                            onClick={() => handleRemove(id)}
-                                            className="absolute top-0.5 left-0.5 w-5 h-5 flex items-center justify-center rounded-full bg-black/70 text-white opacity-0 group-hover:opacity-100 transition-opacity hover:bg-destructive"
-                                            title="Remove photo"
+                                        {config.badge}
+                                    </span>
+                                    <button
+                                        onClick={() => handleRemove(slot)}
+                                        className="absolute top-1.5 right-1.5 w-6 h-6 flex items-center justify-center rounded-full bg-black/70 text-white opacity-0 group-hover:opacity-100 transition-opacity hover:bg-destructive"
+                                        title="Remove photo"
+                                    >
+                                        <X className="w-3.5 h-3.5" />
+                                    </button>
+                                </div>
+                            ) : (
+                                <div className="rounded-xl border border-dashed border-border bg-muted/20 p-3">
+                                    <div className="flex items-center gap-2 mb-2.5">
+                                        <span
+                                            className={cn(
+                                                "text-[10px] font-semibold px-2 py-0.5 rounded-full border",
+                                                config.badgeClass
+                                            )}
                                         >
-                                            <X className="w-3 h-3" />
-                                        </button>
-                                    </motion.div>
-                                ))}
-                            </AnimatePresence>
-                        </div>
-                    </motion.div>
-                )}
-            </AnimatePresence>
-
-            {previews.length === 0 && (
-                <div className="mt-3 flex items-center justify-center gap-2 text-xs text-muted-foreground/50 py-2">
-                    <ImageIcon className="w-3.5 h-3.5" />
-                    Photos will appear here
-                </div>
+                                            {config.badge}
+                                        </span>
+                                        <span className="text-xs text-muted-foreground">
+                                            {config.label}
+                                        </span>
+                                    </div>
+                                    <div className="flex gap-2">
+                                        <Button
+                                            size="sm"
+                                            variant="outline"
+                                            onClick={() => openUpload(slot, "camera")}
+                                            className="flex-1 gap-1.5 h-8 border-primary/30 hover:border-primary hover:bg-primary/5"
+                                        >
+                                            <Camera className="w-3.5 h-3.5 text-primary" />
+                                            <span className="text-xs">Camera</span>
+                                        </Button>
+                                        <Button
+                                            size="sm"
+                                            variant="outline"
+                                            onClick={() => openUpload(slot, "gallery")}
+                                            className="flex-1 gap-1.5 h-8 hover:border-primary/40 hover:bg-primary/5"
+                                        >
+                                            <Images className="w-3.5 h-3.5 text-muted-foreground" />
+                                            <span className="text-xs">Gallery</span>
+                                        </Button>
+                                    </div>
+                                </div>
+                            )}
+                        </motion.div>
+                    );
+                })}
+            </div>
+            </div>
+            </motion.div>
             )}
+            </AnimatePresence>
         </Card>
     );
 };

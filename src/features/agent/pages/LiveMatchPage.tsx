@@ -382,10 +382,7 @@ const LiveMatchPage = () => {
               className="lg:col-start-1 lg:row-start-2 space-y-4"
             >
               {/* Photo capture — available from pre-match (idle) through full time */}
-              <MatchPhotoCapture
-                matchId={id}
-                currentMinute={getCurrentMinute()}
-              />
+              <MatchPhotoCapture matchId={id} />
               <EventTimeline
                 events={events}
                 homeTeam={match.homeTeam}
