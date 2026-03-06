@@ -77,6 +77,12 @@ export const EVENT_ICONS: Record<string, EventTypeConfig> = {
     title: "Injury",
     color: "text-red-500",
   },
+  photo: {
+    type: "photo",
+    icon: "/images/event-camera.svg",
+    title: "Photo",
+    color: "text-primary",
+  },
 };
 
 // Array of available event types for event logging

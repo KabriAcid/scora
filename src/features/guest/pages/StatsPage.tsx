@@ -13,6 +13,14 @@ import {
 
 // ─── filter config ────────────────────────────────────────────────────────────
 
+const STATES = [
+  { id: "all", label: "All States" },
+  { id: "kano", label: "Kano" },
+  { id: "katsina", label: "Katsina" },
+  { id: "kaduna", label: "Kaduna" },
+  { id: "gombe", label: "Gombe" },
+];
+
 const LEAGUES = [
   { id: "premier-league", label: "Premier League" },
   { id: "katsina-cup", label: "Katsina Cup" },
@@ -116,16 +124,20 @@ const StatItem = ({
 
 const StatsPage = () => {
   const [activeTab, setActiveTab] = useState<StatCategory | "all">("scorers");
+  const [activeState, setActiveState] = useState(STATES[0].id);
   const [activeLeague, setActiveLeague] = useState(LEAGUES[0].id);
   const [activeSeason, setActiveSeason] = useState(SEASONS[0]);
+  const [stateOpen, setStateOpen] = useState(false);
   const [leagueOpen, setLeagueOpen] = useState(false);
   const [seasonOpen, setSeasonOpen] = useState(false);
+  const stateRef = useRef<HTMLDivElement>(null);
   const leagueRef = useRef<HTMLDivElement>(null);
   const seasonRef = useRef<HTMLDivElement>(null);
 
   // Close dropdowns on outside click
   useEffect(() => {
     const handler = (e: MouseEvent) => {
+      if (stateRef.current && !stateRef.current.contains(e.target as Node)) setStateOpen(false);
       if (leagueRef.current && !leagueRef.current.contains(e.target as Node)) setLeagueOpen(false);
       if (seasonRef.current && !seasonRef.current.contains(e.target as Node)) setSeasonOpen(false);
     };
@@ -143,7 +155,7 @@ const StatsPage = () => {
       setLoading(false);
     }, 400);
     return () => clearTimeout(t);
-  }, [activeTab, activeLeague, activeSeason]);
+  }, [activeTab, activeState, activeLeague, activeSeason]);
 
   const getCategoryTitle = () => tabs.find((t) => t.id === activeTab)?.label ?? "Top Scorers";
 
@@ -167,12 +179,51 @@ const StatsPage = () => {
             </div>
           </div>
 
-          {/* League + Season filters */}
+          {/* State + League + Season filters */}
           <div className="flex items-center gap-2">
+            {/* State dropdown */}
+            <div className="relative flex-1" ref={stateRef}>
+              <button
+                onClick={() => { setStateOpen((o) => !o); setLeagueOpen(false); setSeasonOpen(false); }}
+                className="w-full flex items-center justify-between gap-1 px-3 py-1 rounded-full text-xs font-semibold bg-card text-muted-foreground hover:bg-card/80 transition-colors"
+              >
+                <span className="truncate">{STATES.find(s => s.id === activeState)?.label}</span>
+                <motion.span animate={{ rotate: stateOpen ? 180 : 0 }} transition={{ duration: 0.2 }} className="flex-shrink-0">
+                  <ChevronDown className="w-3 h-3" />
+                </motion.span>
+              </button>
+              <AnimatePresence>
+                {stateOpen && (
+                  <motion.div
+                    initial={{ opacity: 0, y: -6, scale: 0.95 }}
+                    animate={{ opacity: 1, y: 0, scale: 1 }}
+                    exit={{ opacity: 0, y: -6, scale: 0.95 }}
+                    transition={{ duration: 0.15 }}
+                    className="absolute left-0 top-full mt-1 bg-background border border-border rounded-xl shadow-xl z-50 overflow-hidden min-w-full"
+                  >
+                    {STATES.map((state) => (
+                      <button
+                        key={state.id}
+                        onClick={() => { setActiveState(state.id); setStateOpen(false); }}
+                        className={cn(
+                          "w-full text-left px-3 py-2 text-xs font-medium transition-colors",
+                          state.id === activeState
+                            ? "text-primary font-semibold bg-primary/5"
+                            : "text-muted-foreground hover:bg-secondary"
+                        )}
+                      >
+                        {state.label}
+                      </button>
+                    ))}
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
+
             {/* League dropdown */}
             <div className="relative flex-1" ref={leagueRef}>
               <button
-                onClick={() => { setLeagueOpen((o) => !o); setSeasonOpen(false); }}
+                onClick={() => { setLeagueOpen((o) => !o); setStateOpen(false); setSeasonOpen(false); }}
                 className="w-full flex items-center justify-between gap-1 px-3 py-1 rounded-full text-xs font-semibold bg-card text-muted-foreground hover:bg-card/80 transition-colors"
               >
                 <span className="truncate">{LEAGUES.find(l => l.id === activeLeague)?.label}</span>
@@ -211,7 +262,7 @@ const StatsPage = () => {
             {/* Season dropdown */}
             <div className="relative flex-shrink-0" ref={seasonRef}>
               <button
-                onClick={() => { setSeasonOpen((o) => !o); setLeagueOpen(false); }}
+                onClick={() => { setSeasonOpen((o) => !o); setStateOpen(false); setLeagueOpen(false); }}
                 className="flex items-center gap-1 px-3 py-1 rounded-full text-xs font-semibold bg-card text-muted-foreground hover:bg-card/80 transition-colors whitespace-nowrap"
               >
                 {activeSeason}
@@ -274,7 +325,7 @@ const StatsPage = () => {
       <main className="p-4">
         <div className="flex items-baseline justify-between mb-3">
           <h2 className="text-sm font-bold text-foreground">{getCategoryTitle()}</h2>
-          <p className="text-xs text-muted-foreground">{activeSeason} · {LEAGUES.find(l => l.id === activeLeague)?.label}</p>
+          <p className="text-xs text-muted-foreground">{activeSeason} · {LEAGUES.find(l => l.id === activeLeague)?.label}{activeState !== "all" ? ` · ${STATES.find(s => s.id === activeState)?.label}` : ""}</p>
         </div>
 
         <AnimatePresence mode="wait">
@@ -292,7 +343,7 @@ const StatsPage = () => {
             </motion.div>
           ) : (
             <motion.div
-              key={activeTab + activeLeague + activeSeason}
+              key={activeTab + activeState + activeLeague + activeSeason}
               initial={{ opacity: 0, y: 8 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0 }}

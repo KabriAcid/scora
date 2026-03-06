@@ -10,7 +10,8 @@ export type EventType =
   | "foul"
   | "corner"
   | "offside"
-  | "injury";
+  | "injury"
+  | "photo";
 
 export type MatchStatus = "scheduled" | "live" | "completed";
 
@@ -23,6 +24,8 @@ export interface MatchEvent {
   half?: "first" | "second";
   description?: string;
   timestamp: Date;
+  /** Blob URL (or future CDN URL) for photo events */
+  photoUrl?: string;
 }
 
 export interface AssignedMatch {

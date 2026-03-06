@@ -25,6 +25,7 @@ import { EventTimeline } from "@/features/agent/components/EventTimeline";
 import { LiveMatchStats } from "@/features/agent/components/LiveMatchStats";
 import { PlayerRosterQuickActions } from "@/features/agent/components/PlayerRosterQuickActions";
 import { LiveMatchPageSkeleton } from "@/features/agent/components/LiveMatchSkeleton";
+import { MatchPhotoCapture } from "@/features/agent/components/MatchPhotoCapture";
 import { mockAssignedMatches } from "@/data/agentMockData";
 import type { MatchEvent, AssignedMatch } from "@/shared/types/agent";
 
@@ -298,9 +299,9 @@ const LiveMatchPage = () => {
           <div className="grid grid-cols-1 lg:grid-cols-[1fr_340px] gap-6 md:gap-8">
             {/* 1 — Player Roster with Quick Actions (lg: col 1 row 1) */}
             {matchPhase !== "idle" &&
-            matchPhase !== "half_time" &&
-            matchPhase !== "full_time" &&
-            activeTeam ? (
+              matchPhase !== "half_time" &&
+              matchPhase !== "full_time" &&
+              activeTeam ? (
               <motion.div
                 variants={itemVariants}
                 className="lg:col-start-1 lg:row-start-1"
@@ -375,11 +376,19 @@ const LiveMatchPage = () => {
               />
             </motion.div>
 
-            {/* 3 — Event Timeline (lg: col 1, row 2) */}
+            {/* 3 — Photo Capture + Event Timeline (lg: col 1, row 2) */}
             <motion.div
               variants={itemVariants}
-              className="lg:col-start-1 lg:row-start-2"
+              className="lg:col-start-1 lg:row-start-2 space-y-4"
             >
+              {matchPhase !== "idle" && (
+                <MatchPhotoCapture
+                  matchId={id}
+                  activeTeam={activeTeam ?? match.homeTeam}
+                  currentMinute={getCurrentMinute()}
+                  onEventLogged={handleLogEvent}
+                />
+              )}
               <EventTimeline
                 events={events}
                 homeTeam={match.homeTeam}
