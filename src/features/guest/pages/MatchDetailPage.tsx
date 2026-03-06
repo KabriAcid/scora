@@ -122,6 +122,43 @@ const MatchDetail = () => {
                   Media
                 </TabsTrigger>
               </TabsList>
+
+              <TabsContent value="lineups">
+                <div className="space-y-4">
+                  <Skeleton className="h-32 w-full bg-muted" />
+                  <Skeleton className="h-48 w-full bg-muted" />
+                  <Skeleton className="h-32 w-full bg-muted" />
+                </div>
+              </TabsContent>
+              <TabsContent value="stats">
+                <div className="space-y-4">
+                  <Skeleton className="h-24 w-full bg-muted" />
+                  <Skeleton className="h-24 w-full bg-muted" />
+                </div>
+              </TabsContent>
+              <TabsContent value="summary">
+                <div className="space-y-4">
+                  <Skeleton className="h-40 w-full bg-muted" />
+                </div>
+              </TabsContent>
+              <TabsContent value="table">
+                <div className="space-y-4">
+                  <Skeleton className="h-64 w-full bg-muted" />
+                </div>
+              </TabsContent>
+              <TabsContent value="h2h">
+                <div className="space-y-4">
+                  <Skeleton className="h-32 w-full bg-muted" />
+                  <Skeleton className="h-32 w-full bg-muted" />
+                </div>
+              </TabsContent>
+              <TabsContent value="media">
+                <div className="space-y-4">
+                  <Skeleton className="h-48 w-full bg-muted rounded-2xl" />
+                  <Skeleton className="h-48 w-full bg-muted rounded-2xl" />
+                </div>
+              </TabsContent>
+            </Tabs>
           </motion.div>
         </div>
       </motion.div>

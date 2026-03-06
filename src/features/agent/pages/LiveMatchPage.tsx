@@ -381,12 +381,11 @@ const LiveMatchPage = () => {
               variants={itemVariants}
               className="lg:col-start-1 lg:row-start-2 space-y-4"
             >
-              {matchPhase !== "idle" && (
-                <MatchPhotoCapture
-                  matchId={id}
-                  currentMinute={getCurrentMinute()}
-                />
-              )}
+              {/* Photo capture — available from pre-match (idle) through full time */}
+              <MatchPhotoCapture
+                matchId={id}
+                currentMinute={getCurrentMinute()}
+              />
               <EventTimeline
                 events={events}
                 homeTeam={match.homeTeam}

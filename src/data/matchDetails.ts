@@ -13,14 +13,14 @@ export interface MatchEvent {
   time: string;
   team: "home" | "away";
   type:
-    | "goal"
-    | "yellow"
-    | "red"
-    | "substitution"
-    | "penalty"
-    | "offside"
-    | "corner"
-    | "foul";
+  | "goal"
+  | "yellow"
+  | "red"
+  | "substitution"
+  | "penalty"
+  | "offside"
+  | "corner"
+  | "foul";
   player: string;
   assist?: string;
   description?: string;
@@ -52,14 +52,39 @@ export interface HeadToHead {
 // Phase of match when the photo was captured
 export type MediaPhase = "pre-match" | "in-match" | "post-match";
 
+/** 3 fixed sequential upload slots every match gets */
+export type MediaSlot = 1 | 2 | 3;
+
+export interface SlotConfig {
+  label: string;
+  badge: string;
+  badgeClass: string;
+}
+
+/** Single source of truth for slot labels — shared by agent capture & guest media tab */
+export const SLOT_CONFIG: Record<MediaSlot, SlotConfig> = {
+  1: {
+    label: "Pre-Match",
+    badge: "Pre-Match",
+    badgeClass: "bg-primary/15 text-primary border-primary/25",
+  },
+  2: {
+    label: "1st Half",
+    badge: "1st Half",
+    badgeClass: "bg-green-500/15 text-green-500 border-green-500/25",
+  },
+  3: {
+    label: "Full Time",
+    badge: "Full Time",
+    badgeClass: "bg-accent/15 text-accent border-accent/25",
+  },
+};
+
 export interface MatchMediaEntry {
   id: string;
-  phase: MediaPhase;
-  /** Minute indicator — only relevant for in-match entries */
-  minute?: number;
+  /** Which of the 3 sequential upload slots this photo belongs to */
+  slot: MediaSlot;
   photoUrl: string;
-  /** Short contextual label shown on the card */
-  label: string;
   /** Wall-clock display string e.g. "45 min ago" */
   postedAt: string;
 }
@@ -510,106 +535,43 @@ export const matchDetailsData: Record<string, MatchDetail> = {
   },
 };
 
-// Inject sample media into match "1"
+// Inject sample media into match "1" (finished — all 3 slots filled)
 if (matchDetailsData["1"]) {
   matchDetailsData["1"].media = [
     {
-      id: "m1-pre-1",
-      phase: "pre-match",
-      photoUrl: "https://picsum.photos/seed/stadium1/640/420",
-      label: "Stadium gates opening",
+      id: "m1-slot-1",
+      slot: 1,
+      photoUrl: "/images/players/players-training.png",
       postedAt: "3 hrs ago",
     },
     {
-      id: "m1-pre-2",
-      phase: "pre-match",
-      photoUrl: "https://picsum.photos/seed/warmup1/640/420",
-      label: "Teams warming up",
-      postedAt: "2 hrs 30 min ago",
+      id: "m1-slot-2",
+      slot: 2,
+      photoUrl: "/images/players/hero-training.jpg",
+      postedAt: "1 hr 30 min ago",
     },
     {
-      id: "m1-pre-3",
-      phase: "pre-match",
-      photoUrl: "https://picsum.photos/seed/crowd22/640/420",
-      label: "Fans filling the stands",
-      postedAt: "2 hrs ago",
-    },
-    {
-      id: "m1-live-1",
-      phase: "in-match",
-      minute: 12,
-      photoUrl: "https://picsum.photos/seed/kick12/640/420",
-      label: "Early pressure from home side",
-      postedAt: "1 hr 48 min ago",
-    },
-    {
-      id: "m1-live-2",
-      phase: "in-match",
-      minute: 34,
-      photoUrl: "https://picsum.photos/seed/goal34/640/420",
-      label: "Goal mouth scramble",
-      postedAt: "1 hr 26 min ago",
-    },
-    {
-      id: "m1-live-3",
-      phase: "in-match",
-      minute: 56,
-      photoUrl: "https://picsum.photos/seed/tackle56/640/420",
-      label: "Strong tackle in midfield",
-      postedAt: "1 hr 4 min ago",
-    },
-    {
-      id: "m1-live-4",
-      phase: "in-match",
-      minute: 78,
-      photoUrl: "https://picsum.photos/seed/save78/640/420",
-      label: "Outstanding save by the keeper",
-      postedAt: "42 min ago",
-    },
-    {
-      id: "m1-post-1",
-      phase: "post-match",
-      photoUrl: "https://picsum.photos/seed/celeb99/640/420",
-      label: "Players celebrate final whistle",
+      id: "m1-slot-3",
+      slot: 3,
+      photoUrl: "/images/players/team-photo.jpg",
       postedAt: "20 min ago",
-    },
-    {
-      id: "m1-post-2",
-      phase: "post-match",
-      photoUrl: "https://picsum.photos/seed/handshake01/640/420",
-      label: "Post-match handshakes",
-      postedAt: "12 min ago",
     },
   ];
 }
 
-// Inject sample pre-match media into match "2" (live match)
+// Inject sample media into match "2" (live — only pre-match slot filled so far)
 if (matchDetailsData["2"]) {
   matchDetailsData["2"].media = [
     {
-      id: "m2-pre-1",
-      phase: "pre-match",
-      photoUrl: "https://picsum.photos/seed/arena2a/640/420",
-      label: "Pitch inspection",
+      id: "m2-slot-1",
+      slot: 1,
+      photoUrl: "/images/players/training-ground.jpg",
       postedAt: "1 hr ago",
-    },
-    {
-      id: "m2-pre-2",
-      phase: "pre-match",
-      photoUrl: "https://picsum.photos/seed/players2b/640/420",
-      label: "Squad arriving at the ground",
-      postedAt: "45 min ago",
-    },
-    {
-      id: "m2-live-1",
-      phase: "in-match",
-      minute: 23,
-      photoUrl: "https://picsum.photos/seed/live2c/640/420",
-      label: "Fast counter-attack",
-      postedAt: "17 min ago",
     },
   ];
 }
+
+// Helper function to get match details
 export const getMatchDetails = (matchId: string): MatchDetail | undefined => {
   return matchDetailsData[matchId];
 };
