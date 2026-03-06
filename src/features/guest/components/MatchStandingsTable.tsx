@@ -62,7 +62,7 @@ export const MatchStandingsTable = ({
                         {/* Position */}
                         <span
                             className={cn(
-                                "text-sm font-bold pl-2",
+                                "text-xs font-bold pl-2",
                                 entry.position <= 4 && "text-success",
                                 entry.position >= 18 && "text-destructive"
                             )}
@@ -75,47 +75,47 @@ export const MatchStandingsTable = ({
                             <img
                                 src={entry.team.badgeUrl}
                                 alt={entry.team.shortName}
-                                className="w-8 h-8 object-contain flex-shrink-0"
+                                className="w-6 h-6 object-contain flex-shrink-0"
                             />
-                            <span className="text-sm font-semibold truncate">
+                            <span className="text-xs font-semibold truncate">
                                 {entry.team.responsiveName}
                             </span>
                         </div>
 
                         {/* P */}
-                        <span className="text-sm text-center font-medium">
+                        <span className="text-xs text-center font-medium">
                             {entry.played}
                         </span>
 
                         {/* W */}
-                        <span className="text-sm text-center text-success font-medium">
+                        <span className="text-xs text-center text-success font-medium">
                             {entry.win}
                         </span>
 
                         {/* D */}
-                        <span className="text-sm text-center text-muted-foreground font-medium">
+                        <span className="text-xs text-center text-muted-foreground font-medium">
                             {entry.draw}
                         </span>
 
                         {/* L */}
-                        <span className="text-sm text-center text-destructive font-medium">
+                        <span className="text-xs text-center text-destructive font-medium">
                             {entry.loss}
                         </span>
 
                         {/* GF (Goals For) */}
-                        <span className="text-sm text-center font-medium text-success/80">
+                        <span className="text-xs text-center font-medium text-success/80">
                             {entry.gf}
                         </span>
 
                         {/* GA (Goals Against) */}
-                        <span className="text-sm text-center font-medium text-destructive/80">
+                        <span className="text-xs text-center font-medium text-destructive/80">
                             {entry.ga}
                         </span>
 
                         {/* GD (Goal Difference) */}
                         <span
                             className={cn(
-                                "text-sm text-center font-bold",
+                                "text-xs text-center font-bold",
                                 entry.gd > 0 && "text-success",
                                 entry.gd < 0 && "text-destructive",
                                 entry.gd === 0 && "text-muted-foreground"
@@ -127,7 +127,7 @@ export const MatchStandingsTable = ({
 
                         {/* Points */}
                         <div className="text-right">
-                            <span className="text-lg font-bold text-primary">
+                            <span className="text-sm font-bold text-primary">
                                 {entry.points}
                             </span>
                         </div>
