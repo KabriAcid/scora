@@ -1,6 +1,6 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { BarChart3, Trophy, Award, AlertCircle } from "lucide-react";
+import { BarChart3, Trophy, Award, AlertCircle, ChevronDown } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Navigation } from "@/components/common/Navigation";
@@ -10,6 +10,16 @@ import {
   StatCategory,
   PlayerStat,
 } from "@/data/playerStats";
+
+// ─── filter config ────────────────────────────────────────────────────────────
+
+const LEAGUES = [
+  { id: "premier-league", label: "Premier League" },
+  { id: "katsina-cup", label: "Katsina Cup" },
+  { id: "northern-championship", label: "Northern Champ." },
+];
+
+const SEASONS = ["2024/25", "2023/24", "2022/23", "2021/22"];
 
 interface StatTab {
   id: StatCategory | "all";
@@ -25,21 +35,25 @@ const tabs: StatTab[] = [
   { id: "cleansheets", label: "Clean Sheets" },
 ];
 
+// ─── skeleton ─────────────────────────────────────────────────────────────────
+
 const StatItemSkeleton = () => (
   <motion.div
     initial={{ opacity: 0, x: -20 }}
     animate={{ opacity: 1, x: 0 }}
     className="flex items-center gap-3 p-4 bg-card/50 rounded-xl"
   >
-    <Skeleton className="h-5 w-6 rounded" />
+    <Skeleton className="h-4 w-5 rounded" />
     <Skeleton className="h-8 w-8 rounded-full" />
-    <div className="flex-1 space-y-1">
-      <Skeleton className="h-4 w-32" />
+    <div className="flex-1 space-y-1.5">
+      <Skeleton className="h-3.5 w-32" />
       <Skeleton className="h-3 w-20" />
     </div>
-    <Skeleton className="h-6 w-8" />
+    <Skeleton className="h-5 w-8 rounded" />
   </motion.div>
 );
+
+// ─── stat item ────────────────────────────────────────────────────────────────
 
 const StatItem = ({
   player,
@@ -51,71 +65,87 @@ const StatItem = ({
   category: StatCategory | "all";
 }) => {
   const getStatColor = () => {
-    if (category === "scorers" || category === "assists") return "text-success";
+    if (category === "scorers" || category === "assists") return "text-primary";
     if (category === "red") return "text-destructive";
     if (category === "yellow") return "text-yellow-500";
     if (category === "cleansheets") return "text-primary";
     return "text-primary";
   };
 
+  const isTop3 = index < 3;
+
   return (
     <motion.div
       initial={{ opacity: 0, x: -20 }}
       animate={{ opacity: 1, x: 0 }}
       transition={{ delay: index * 0.03 }}
-      whileHover={{ backgroundColor: "hsl(var(--accent)/0.1)" }}
-      className="flex items-center gap-3 p-4 bg-card/50 rounded-xl cursor-pointer transition-colors"
+      whileHover={{ backgroundColor: "hsl(var(--secondary))" }}
+      className="flex items-center gap-3 px-4 py-3 bg-card/50 rounded-xl cursor-pointer transition-colors"
     >
       {/* Position */}
       <span
-        className={cn(
-          "text-sm font-bold w-6",
-          index < 3 ? "text-primary" : "text-muted-foreground"
-        )}
+        className="text-xs font-medium w-5 text-center flex-shrink-0 text-muted-foreground/50"
       >
         {index + 1}
       </span>
 
       {/* Team Badge */}
-      <motion.img
-        whileHover={{ scale: 1.1, rotate: 5 }}
+      <img
         src={player.teamBadge}
         alt={player.teamName}
-        className="w-8 h-8 object-contain flex-shrink-0"
+        className="w-7 h-7 object-contain flex-shrink-0"
       />
 
       {/* Player Info */}
       <div className="flex-1 min-w-0">
-        <p className="text-sm font-semibold truncate">{player.name}</p>
-        <p className="text-xs text-muted-foreground">{player.teamName}</p>
+        <p className={cn("text-sm font-semibold truncate", isTop3 ? "text-foreground" : "text-foreground/90")}>
+          {player.name}
+        </p>
+        <p className="text-xs text-muted-foreground truncate">{player.teamName}</p>
       </div>
 
       {/* Stat Value */}
-      <div className={cn("text-lg font-bold", getStatColor())}>
+      <span className={cn("text-sm font-bold tabular-nums flex-shrink-0", getStatColor())}>
         {player.value}
-      </div>
+      </span>
     </motion.div>
   );
 };
 
+// ─── page ─────────────────────────────────────────────────────────────────────
+
 const StatsPage = () => {
   const [activeTab, setActiveTab] = useState<StatCategory | "all">("scorers");
+  const [activeLeague, setActiveLeague] = useState(LEAGUES[0].id);
+  const [activeSeason, setActiveSeason] = useState(SEASONS[0]);
+  const [leagueOpen, setLeagueOpen] = useState(false);
+  const [seasonOpen, setSeasonOpen] = useState(false);
+  const leagueRef = useRef<HTMLDivElement>(null);
+  const seasonRef = useRef<HTMLDivElement>(null);
+
+  // Close dropdowns on outside click
+  useEffect(() => {
+    const handler = (e: MouseEvent) => {
+      if (leagueRef.current && !leagueRef.current.contains(e.target as Node)) setLeagueOpen(false);
+      if (seasonRef.current && !seasonRef.current.contains(e.target as Node)) setSeasonOpen(false);
+    };
+    document.addEventListener("mousedown", handler);
+    return () => document.removeEventListener("mousedown", handler);
+  }, []);
   const [stats, setStats] = useState<PlayerStat[]>([]);
   const [loading, setLoading] = useState(true);
   const [navTab, setNavTab] = useState("stats");
 
   useEffect(() => {
     setLoading(true);
-    setTimeout(() => {
+    const t = setTimeout(() => {
       setStats(getStatsByCategory(activeTab as StatCategory));
       setLoading(false);
-    }, 500);
-  }, [activeTab]);
+    }, 400);
+    return () => clearTimeout(t);
+  }, [activeTab, activeLeague, activeSeason]);
 
-  const getCategoryTitle = () => {
-    const tab = tabs.find((t) => t.id === activeTab);
-    return tab?.label || "Top Scorers";
-  };
+  const getCategoryTitle = () => tabs.find((t) => t.id === activeTab)?.label ?? "Top Scorers";
 
   return (
     <div className="min-h-screen bg-background pb-24">
@@ -125,69 +155,148 @@ const StatsPage = () => {
         animate={{ opacity: 1, y: 0 }}
         className="sticky top-0 z-20 bg-background/80 backdrop-blur-xl border-b border-border/50"
       >
-        <div className="p-4">
-          <div className="flex items-center gap-3 mb-4">
-            <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center">
-              <BarChart3 className="w-5 h-5 text-primary" />
+        <div className="px-4 pt-4 pb-3 space-y-3">
+          {/* Title row */}
+          <div className="flex items-center gap-3">
+            <div className="w-9 h-9 rounded-xl bg-primary/10 flex items-center justify-center">
+              <BarChart3 className="w-4 h-4 text-primary" />
             </div>
             <div>
-              <h1 className="text-lg font-bold">Player Statistics</h1>
-              <p className="text-xs text-muted-foreground">2024/25 Season</p>
+              <h1 className="text-base font-bold leading-tight">Player Statistics</h1>
+              <p className="text-xs text-muted-foreground">Katsina State League</p>
             </div>
           </div>
 
-          {/* Horizontal Scrollable Tabs */}
-          <div className="relative -mx-4 px-4">
-            <div className="flex gap-2 overflow-x-auto pb-2 scrollbar-hide">
-              {tabs.map((tab) => (
-                <motion.button
-                  key={tab.id}
-                  onClick={() => setActiveTab(tab.id)}
-                  whileTap={{ scale: 0.95 }}
-                  className={cn(
-                    "flex items-center gap-2 px-4 py-2 rounded-full text-xs font-semibold whitespace-nowrap transition-all",
-                    activeTab === tab.id
-                      ? "bg-accent text-accent-foreground shadow-lg"
-                      : "bg-card text-muted-foreground hover:bg-accent/20"
-                  )}
-                >
-                  {tab.icon && <tab.icon className="w-3.5 h-3.5" />}
-                  {tab.label}
-                </motion.button>
-              ))}
+          {/* League + Season filters */}
+          <div className="flex items-center gap-2">
+            {/* League dropdown */}
+            <div className="relative flex-1" ref={leagueRef}>
+              <button
+                onClick={() => { setLeagueOpen((o) => !o); setSeasonOpen(false); }}
+                className="w-full flex items-center justify-between gap-1 px-3 py-1 rounded-full text-xs font-semibold bg-card text-muted-foreground hover:bg-card/80 transition-colors"
+              >
+                <span className="truncate">{LEAGUES.find(l => l.id === activeLeague)?.label}</span>
+                <motion.span animate={{ rotate: leagueOpen ? 180 : 0 }} transition={{ duration: 0.2 }} className="flex-shrink-0">
+                  <ChevronDown className="w-3 h-3" />
+                </motion.span>
+              </button>
+              <AnimatePresence>
+                {leagueOpen && (
+                  <motion.div
+                    initial={{ opacity: 0, y: -6, scale: 0.95 }}
+                    animate={{ opacity: 1, y: 0, scale: 1 }}
+                    exit={{ opacity: 0, y: -6, scale: 0.95 }}
+                    transition={{ duration: 0.15 }}
+                    className="absolute left-0 top-full mt-1 bg-background border border-border rounded-xl shadow-xl z-50 overflow-hidden min-w-full"
+                  >
+                    {LEAGUES.map((league) => (
+                      <button
+                        key={league.id}
+                        onClick={() => { setActiveLeague(league.id); setLeagueOpen(false); }}
+                        className={cn(
+                          "w-full text-left px-3 py-2 text-xs font-medium transition-colors",
+                          league.id === activeLeague
+                            ? "text-primary font-semibold bg-primary/5"
+                            : "text-muted-foreground hover:bg-secondary"
+                        )}
+                      >
+                        {league.label}
+                      </button>
+                    ))}
+                  </motion.div>
+                )}
+              </AnimatePresence>
             </div>
+
+            {/* Season dropdown */}
+            <div className="relative flex-shrink-0" ref={seasonRef}>
+              <button
+                onClick={() => { setSeasonOpen((o) => !o); setLeagueOpen(false); }}
+                className="flex items-center gap-1 px-3 py-1 rounded-full text-xs font-semibold bg-card text-muted-foreground hover:bg-card/80 transition-colors whitespace-nowrap"
+              >
+                {activeSeason}
+                <motion.span animate={{ rotate: seasonOpen ? 180 : 0 }} transition={{ duration: 0.2 }}>
+                  <ChevronDown className="w-3 h-3" />
+                </motion.span>
+              </button>
+              <AnimatePresence>
+                {seasonOpen && (
+                  <motion.div
+                    initial={{ opacity: 0, y: -6, scale: 0.95 }}
+                    animate={{ opacity: 1, y: 0, scale: 1 }}
+                    exit={{ opacity: 0, y: -6, scale: 0.95 }}
+                    transition={{ duration: 0.15 }}
+                    className="absolute right-0 top-full mt-1 bg-background border border-border rounded-xl shadow-xl z-50 overflow-hidden min-w-[100px]"
+                  >
+                    {SEASONS.map((s) => (
+                      <button
+                        key={s}
+                        onClick={() => { setActiveSeason(s); setSeasonOpen(false); }}
+                        className={cn(
+                          "w-full text-left px-3 py-2 text-xs font-medium transition-colors",
+                          s === activeSeason
+                            ? "text-primary font-semibold bg-primary/5"
+                            : "text-muted-foreground hover:bg-secondary"
+                        )}
+                      >
+                        {s}
+                      </button>
+                    ))}
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
+          </div>
+
+          {/* Category tabs */}
+          <div className="flex gap-2 overflow-x-auto pb-0.5 scrollbar-hide">
+            {tabs.map((tab) => (
+              <motion.button
+                key={tab.id}
+                onClick={() => setActiveTab(tab.id)}
+                whileTap={{ scale: 0.95 }}
+                className={cn(
+                  "flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold whitespace-nowrap transition-all flex-shrink-0",
+                  activeTab === tab.id
+                    ? "bg-accent text-accent-foreground shadow"
+                    : "bg-card text-muted-foreground hover:bg-accent/20"
+                )}
+              >
+                {tab.icon && <tab.icon className="w-3 h-3" />}
+                {tab.label}
+              </motion.button>
+            ))}
           </div>
         </div>
       </motion.header>
 
       {/* Main Content */}
       <main className="p-4">
-        <motion.div
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="mb-4"
-        >
-          <h2 className="text-base font-bold text-foreground">
-            {getCategoryTitle()}
-          </h2>
-          <p className="text-xs text-muted-foreground mt-1">
-            Leading performers of the season
-          </p>
-        </motion.div>
+        <div className="flex items-baseline justify-between mb-3">
+          <h2 className="text-sm font-bold text-foreground">{getCategoryTitle()}</h2>
+          <p className="text-xs text-muted-foreground">{activeSeason} · {LEAGUES.find(l => l.id === activeLeague)?.label}</p>
+        </div>
 
         <AnimatePresence mode="wait">
           {loading ? (
-            <div className="space-y-2">
-              {[...Array(10)].map((_, i) => (
-                <StatItemSkeleton key={i} />
-              ))}
-            </div>
-          ) : (
             <motion.div
-              key={activeTab}
+              key="skeleton"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
+              className="space-y-2"
+            >
+              {[...Array(10)].map((_, i) => (
+                <StatItemSkeleton key={i} />
+              ))}
+            </motion.div>
+          ) : (
+            <motion.div
+              key={activeTab + activeLeague + activeSeason}
+              initial={{ opacity: 0, y: 8 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.2 }}
               className="space-y-2"
             >
               {stats.map((player, index) => (
@@ -201,7 +310,7 @@ const StatsPage = () => {
 
               {stats.length === 0 && (
                 <Card className="p-8 text-center bg-card/50 border-border/50">
-                  <p className="text-muted-foreground">No data available</p>
+                  <p className="text-sm text-muted-foreground">No data available</p>
                 </Card>
               )}
             </motion.div>
