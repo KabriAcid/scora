@@ -26,6 +26,7 @@ import { LiveMatchStats } from "@/features/agent/components/LiveMatchStats";
 import { PlayerRosterQuickActions } from "@/features/agent/components/PlayerRosterQuickActions";
 import { LiveMatchPageSkeleton } from "@/features/agent/components/LiveMatchSkeleton";
 import { MatchPhotoCapture } from "@/features/agent/components/MatchPhotoCapture";
+import { useCachedAudio } from "@/shared/hooks/useCachedAudio";
 import { mockAssignedMatches } from "@/data/agentMockData";
 import type { MatchEvent, AssignedMatch } from "@/shared/types/agent";
 
@@ -45,6 +46,9 @@ const LiveMatchPage = () => {
   );
   const [homeScore, setHomeScore] = useState(match?.homeScore || 0);
   const [awayScore, setAwayScore] = useState(match?.awayScore || 0);
+
+  // Preload ding sound — cached after first download for instant replay
+  const playDing = useCachedAudio("/sounds/ding.mp3");
 
   // Simulate initial page load
   useEffect(() => {
@@ -104,6 +108,7 @@ const LiveMatchPage = () => {
 
       // Update scores if goal
       if (event.type === "goal") {
+        playDing();
         if (event.team === match?.homeTeam) {
           setHomeScore((prev) => prev + 1);
         } else if (event.team === match?.awayTeam) {
@@ -111,7 +116,7 @@ const LiveMatchPage = () => {
         }
       }
     },
-    [match, matchPhase],
+    [match, matchPhase, playDing],
   );
 
   // Remove event handler — reverses score if it was a goal

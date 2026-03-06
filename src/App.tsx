@@ -17,6 +17,7 @@ import AgentCalendarPage from "@/features/agent/pages/AgentCalendarPage";
 import AssignedMatchesPage from "@/features/agent/pages/AssignedMatchesPage";
 import AgentNotificationsPage from "@/features/agent/pages/AgentNotificationsPage";
 import AgentSettingsPage from "@/features/agent/pages/AgentSettingsPage";
+import AgentStatsPage from "@/features/agent/pages/AgentStatsPage";
 import AdminLoginPage from "@/features/admin/pages/AdminLoginPage";
 import { AdminRoutes } from "@/routes/AdminRoutes";
 import NotFound from "@/NotFound";
@@ -48,6 +49,7 @@ const App = () => (
           <Route path="/agent/matches" element={<AssignedMatchesPage />} />
           <Route path="/agent/notifications" element={<AgentNotificationsPage />} />
           <Route path="/agent/settings" element={<AgentSettingsPage />} />
+          <Route path="/agent/stats" element={<AgentStatsPage />} />
 
           {/* Admin Routes */}
           <Route path="/admin/login" element={<AdminLoginPage />} />
