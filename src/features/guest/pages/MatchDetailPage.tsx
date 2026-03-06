@@ -87,37 +87,37 @@ const MatchDetail = () => {
               <TabsList className="flex w-full overflow-x-auto scrollbar-hide bg-transparent rounded-none p-0 h-auto border-b border-border mb-6">
                 <TabsTrigger
                   value="stats"
-                  className="flex-shrink-0 px-4 py-2.5 rounded-none text-xs font-medium text-muted-foreground -mb-px data-[state=active]:bg-transparent data-[state=active]:shadow-none data-[state=active]:text-foreground data-[state=active]:border-b-2 data-[state=active]:border-primary border-b-2 border-transparent"
+                  className="flex-shrink-0 px-4 py-2.5 rounded-none text-xs font-medium text-muted-foreground -mb-px data-[state=active]:bg-accent data-[state=active]:text-accent-foreground data-[state=active]:shadow-none"
                 >
                   Stats
                 </TabsTrigger>
                 <TabsTrigger
                   value="summary"
-                  className="flex-shrink-0 px-4 py-2.5 rounded-none text-xs font-medium text-muted-foreground -mb-px data-[state=active]:bg-transparent data-[state=active]:shadow-none data-[state=active]:text-foreground data-[state=active]:border-b-2 data-[state=active]:border-primary border-b-2 border-transparent"
+                  className="flex-shrink-0 px-4 py-2.5 rounded-none text-xs font-medium text-muted-foreground -mb-px data-[state=active]:bg-accent data-[state=active]:text-accent-foreground data-[state=active]:shadow-none"
                 >
                   Summary
                 </TabsTrigger>
                 <TabsTrigger
                   value="lineups"
-                  className="flex-shrink-0 px-4 py-2.5 rounded-none text-xs font-medium text-muted-foreground -mb-px data-[state=active]:bg-transparent data-[state=active]:shadow-none data-[state=active]:text-foreground data-[state=active]:border-b-2 data-[state=active]:border-primary border-b-2 border-transparent"
+                  className="flex-shrink-0 px-4 py-2.5 rounded-none text-xs font-medium text-muted-foreground -mb-px data-[state=active]:bg-accent data-[state=active]:text-accent-foreground data-[state=active]:shadow-none"
                 >
                   Lineups
                 </TabsTrigger>
                 <TabsTrigger
                   value="table"
-                  className="flex-shrink-0 px-4 py-2.5 rounded-none text-xs font-medium text-muted-foreground -mb-px data-[state=active]:bg-transparent data-[state=active]:shadow-none data-[state=active]:text-foreground data-[state=active]:border-b-2 data-[state=active]:border-primary border-b-2 border-transparent"
+                  className="flex-shrink-0 px-4 py-2.5 rounded-none text-xs font-medium text-muted-foreground -mb-px data-[state=active]:bg-accent data-[state=active]:text-accent-foreground data-[state=active]:shadow-none"
                 >
                   Table
                 </TabsTrigger>
                 <TabsTrigger
                   value="h2h"
-                  className="flex-shrink-0 px-4 py-2.5 rounded-none text-xs font-medium text-muted-foreground -mb-px data-[state=active]:bg-transparent data-[state=active]:shadow-none data-[state=active]:text-foreground data-[state=active]:border-b-2 data-[state=active]:border-primary border-b-2 border-transparent"
+                  className="flex-shrink-0 px-4 py-2.5 rounded-none text-xs font-medium text-muted-foreground -mb-px data-[state=active]:bg-accent data-[state=active]:text-accent-foreground data-[state=active]:shadow-none"
                 >
                   H2H
                 </TabsTrigger>
                 <TabsTrigger
                   value="media"
-                  className="flex-shrink-0 px-4 py-2.5 rounded-none text-xs font-medium text-muted-foreground -mb-px data-[state=active]:bg-transparent data-[state=active]:shadow-none data-[state=active]:text-foreground data-[state=active]:border-b-2 data-[state=active]:border-primary border-b-2 border-transparent"
+                  className="flex-shrink-0 px-4 py-2.5 rounded-none text-xs font-medium text-muted-foreground -mb-px data-[state=active]:bg-accent data-[state=active]:text-accent-foreground data-[state=active]:shadow-none"
                 >
                   Media
                 </TabsTrigger>
@@ -226,37 +226,37 @@ const MatchDetail = () => {
             <TabsList className="flex w-full overflow-x-auto scrollbar-hide bg-transparent rounded-none p-0 h-auto border-b border-border mb-6">
               <TabsTrigger
                 value="stats"
-                className="flex-shrink-0 px-4 py-2.5 rounded-none text-xs font-medium text-muted-foreground -mb-px data-[state=active]:bg-transparent data-[state=active]:shadow-none data-[state=active]:text-foreground data-[state=active]:border-b-2 data-[state=active]:border-primary border-b-2 border-transparent"
+                className="flex-shrink-0 px-4 py-2.5 rounded-none text-xs font-medium text-muted-foreground -mb-px data-[state=active]:bg-accent data-[state=active]:text-accent-foreground data-[state=active]:shadow-none"
               >
                 Stats
               </TabsTrigger>
               <TabsTrigger
                 value="summary"
-                className="flex-shrink-0 px-4 py-2.5 rounded-none text-xs font-medium text-muted-foreground -mb-px data-[state=active]:bg-transparent data-[state=active]:shadow-none data-[state=active]:text-foreground data-[state=active]:border-b-2 data-[state=active]:border-primary border-b-2 border-transparent"
+                className="flex-shrink-0 px-4 py-2.5 rounded-none text-xs font-medium text-muted-foreground -mb-px data-[state=active]:bg-accent data-[state=active]:text-accent-foreground data-[state=active]:shadow-none"
               >
                 Summary
               </TabsTrigger>
               <TabsTrigger
                 value="lineups"
-                className="flex-shrink-0 px-4 py-2.5 rounded-none text-xs font-medium text-muted-foreground -mb-px data-[state=active]:bg-transparent data-[state=active]:shadow-none data-[state=active]:text-foreground data-[state=active]:border-b-2 data-[state=active]:border-primary border-b-2 border-transparent"
+                className="flex-shrink-0 px-4 py-2.5 rounded-none text-xs font-medium text-muted-foreground -mb-px data-[state=active]:bg-accent data-[state=active]:text-accent-foreground data-[state=active]:shadow-none"
               >
                 Lineups
               </TabsTrigger>
               <TabsTrigger
                 value="table"
-                className="flex-shrink-0 px-4 py-2.5 rounded-none text-xs font-medium text-muted-foreground -mb-px data-[state=active]:bg-transparent data-[state=active]:shadow-none data-[state=active]:text-foreground data-[state=active]:border-b-2 data-[state=active]:border-primary border-b-2 border-transparent"
+                className="flex-shrink-0 px-4 py-2.5 rounded-none text-xs font-medium text-muted-foreground -mb-px data-[state=active]:bg-accent data-[state=active]:text-accent-foreground data-[state=active]:shadow-none"
               >
                 Table
               </TabsTrigger>
               <TabsTrigger
                 value="h2h"
-                className="flex-shrink-0 px-4 py-2.5 rounded-none text-xs font-medium text-muted-foreground -mb-px data-[state=active]:bg-transparent data-[state=active]:shadow-none data-[state=active]:text-foreground data-[state=active]:border-b-2 data-[state=active]:border-primary border-b-2 border-transparent"
+                className="flex-shrink-0 px-4 py-2.5 rounded-none text-xs font-medium text-muted-foreground -mb-px data-[state=active]:bg-accent data-[state=active]:text-accent-foreground data-[state=active]:shadow-none"
               >
                 H2H
               </TabsTrigger>
               <TabsTrigger
                 value="media"
-                className="flex-shrink-0 px-4 py-2.5 rounded-none text-xs font-medium text-muted-foreground -mb-px data-[state=active]:bg-transparent data-[state=active]:shadow-none data-[state=active]:text-foreground data-[state=active]:border-b-2 data-[state=active]:border-primary border-b-2 border-transparent"
+                className="flex-shrink-0 px-4 py-2.5 rounded-none text-xs font-medium text-muted-foreground -mb-px data-[state=active]:bg-accent data-[state=active]:text-accent-foreground data-[state=active]:shadow-none"
               >
                 Media
               </TabsTrigger>
