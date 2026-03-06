@@ -1,6 +1,9 @@
 import { Routes, Route, Navigate } from "react-router-dom";
 import AdminDashboard from "@/features/admin/pages/AdminDashboard";
 import LeaguesPage from "@/features/admin/pages/LeaguesPage";
+import LeagueStandingsPage from "@/features/admin/pages/LeagueStandingsPage";
+import LeagueSeasonsPage from "@/features/admin/pages/LeagueSeasonsPage";
+import LeagueFixturesPage from "@/features/admin/pages/LeagueFixturesPage";
 import TeamsPage from "@/features/admin/pages/TeamsPage";
 import PlayersPage from "@/features/admin/pages/PlayersPage";
 import StadiumsPage from "@/features/admin/pages/StadiumsPage";
@@ -30,6 +33,30 @@ export const AdminRoutes = () => {
         element={
           <ProtectedRoute requiredRole="admin">
             <LeaguesPage />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="leagues/standings"
+        element={
+          <ProtectedRoute requiredRole="admin">
+            <LeagueStandingsPage />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="leagues/seasons"
+        element={
+          <ProtectedRoute requiredRole="admin">
+            <LeagueSeasonsPage />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="leagues/fixtures"
+        element={
+          <ProtectedRoute requiredRole="admin">
+            <LeagueFixturesPage />
           </ProtectedRoute>
         }
       />
