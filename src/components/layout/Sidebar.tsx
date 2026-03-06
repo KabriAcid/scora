@@ -133,7 +133,7 @@ const Sidebar = ({
               transition={{ delay: 0.1 }}
               className="flex items-center gap-2"
             >
-              <Logo size="md" showText={true} />
+              <Logo size="sm" showText={true} />
               <span className="text-xs text-muted-foreground">Agent</span>
             </motion.div>
           ) : (

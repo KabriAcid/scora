@@ -36,7 +36,7 @@ export const DateSelector = ({ selectedDate, onDateChange }: DateSelectorProps) 
         <PopoverTrigger asChild>
           <motion.button
             whileTap={{ scale: 0.98 }}
-            className="flex items-center gap-2 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
+            className="flex items-center gap-2 text-xs font-bold text-muted-foreground hover:text-foreground transition-colors"
           >
             <span>{format(selectedDate, "MMMM d, yyyy")}</span>
             <motion.div
@@ -64,7 +64,7 @@ export const DateSelector = ({ selectedDate, onDateChange }: DateSelectorProps) 
           {weekDates.map((date, index) => {
             const isSelected = isSameDay(date, selectedDate);
             const isToday = isSameDay(date, new Date());
-            
+
             return (
               <motion.button
                 key={date.toISOString()}
@@ -75,7 +75,7 @@ export const DateSelector = ({ selectedDate, onDateChange }: DateSelectorProps) 
                 whileTap={{ scale: 0.95 }}
                 onClick={() => onDateChange(date)}
                 className={cn(
-                  "relative flex flex-col items-center justify-center min-w-[48px] h-16 rounded-xl transition-all",
+                  "relative flex flex-col items-center justify-center min-w-[40px] h-12 rounded-xl transition-all",
                   isSelected
                     ? "bg-accent text-accent-foreground shadow-lg"
                     : "bg-card text-muted-foreground hover:bg-accent/20"
@@ -84,10 +84,10 @@ export const DateSelector = ({ selectedDate, onDateChange }: DateSelectorProps) 
                 {isToday && !isSelected && (
                   <div className="absolute top-1 w-1.5 h-1.5 rounded-full bg-accent" />
                 )}
-                <span className="text-[10px] font-medium mb-1 uppercase opacity-70">
+                <span className="text-[9px] font-medium mb-0.5 uppercase opacity-70">
                   {format(date, "EEE")}
                 </span>
-                <span className="text-lg font-bold">{format(date, "d")}</span>
+                <span className="text-sm font-bold">{format(date, "d")}</span>
               </motion.button>
             );
           })}

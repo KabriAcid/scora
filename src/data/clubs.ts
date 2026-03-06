@@ -44,20 +44,20 @@ export const clubs: PremierLeagueClub[] = [
     id: "katsina-academy",
     name: "Katsina Football Academy",
     shortName: "KFA",
-    responsiveName: "Katsina Acad",
+    responsiveName: "Katsina Academy",
     badgeUrl: "https://resources.premierleague.com/premierleague/badges/t36.svg",
     primaryColor: "#006400"
   },
   {
     id: "sheffield-guga",
-    name: "FC Sheffield K/Guga",
+    name: "Sheffield Guga",
     shortName: "SHE",
     responsiveName: "Sheffield Guga",
     badgeUrl: "https://resources.premierleague.com/premierleague/badges/t8.svg",
     primaryColor: "#CC0000"
   },
   {
-    id: "afdin-fc",
+    id: "eleven-shooting",
     name: "Eleven Shooting",
     shortName: "ELS",
     responsiveName: "Eleven Shooting",
@@ -81,7 +81,7 @@ export const clubs: PremierLeagueClub[] = [
     primaryColor: "#000000"
   },
   {
-    id: "ranchers-katsina",
+    id: "abukur-royals",
     name: "Abukur Royals",
     shortName: "ABR",
     responsiveName: "Abukur Royals",
@@ -97,7 +97,7 @@ export const clubs: PremierLeagueClub[] = [
     primaryColor: "#ADD8E6"
   },
   {
-    id: "nursing-home",
+    id: "abukur-pillars",
     name: "Abukur Pillars",
     shortName: "ABP",
     responsiveName: "Abukur Pillars",
@@ -113,10 +113,10 @@ export const clubs: PremierLeagueClub[] = [
     primaryColor: "#A52A2A"
   },
   {
-    id: "southern-stars",
-    name: "Southern Stars Katsina",
-    shortName: "SST",
-    responsiveName: "S. Stars",
+    id: "remo-united",
+    name: "Remo United",
+    shortName: "REM",
+    responsiveName: "Remo United",
     badgeUrl: "https://resources.premierleague.com/premierleague/badges/t1.svg",
     primaryColor: "#000080"
   },
@@ -124,7 +124,7 @@ export const clubs: PremierLeagueClub[] = [
     id: "golden-arrow",
     name: "Golden Arrow FC",
     shortName: "GAR",
-    responsiveName: "G. Arrow",
+    responsiveName: "Golden Arrow",
     badgeUrl: "https://resources.premierleague.com/premierleague/badges/t4.svg",
     primaryColor: "#DAA520"
   },
@@ -148,7 +148,7 @@ export const clubs: PremierLeagueClub[] = [
     id: "mani-ultimate",
     name: "Mani Ultimate FC",
     shortName: "MAN",
-    responsiveName: "Mani Ult.",
+    responsiveName: "Mani Ultimate",
     badgeUrl: "https://resources.premierleague.com/premierleague/badges/t6.svg",
     primaryColor: "#4682B4"
   },

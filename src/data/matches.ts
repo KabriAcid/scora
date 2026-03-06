@@ -21,6 +21,8 @@ export interface Match {
     matchTime?: string;
     date?: string;
     time?: string;
+    homeRedCards?: number;
+    awayRedCards?: number;
 }
 
 // Competition definitions
@@ -62,7 +64,7 @@ export const liveMatches: Match[] = [
     {
         id: "2",
         homeTeam: getClubById("faskari-united")!,
-        awayTeam: getClubById("nursing-home")!,
+        awayTeam: getClubById("abukur-pillars")!,
         homeScore: 0,
         awayScore: 3,
         status: "live",
@@ -70,6 +72,7 @@ export const liveMatches: Match[] = [
         stadium: "Faskari Stadium",
         week: "Week 10",
         matchTime: "78",
+        homeRedCards: 1,
     },
     {
         id: "3",
@@ -82,6 +85,7 @@ export const liveMatches: Match[] = [
         stadium: "Gawo Park",
         week: "Week 10",
         matchTime: "65",
+        awayRedCards: 1,
     },
     {
         id: "4",
@@ -94,6 +98,8 @@ export const liveMatches: Match[] = [
         stadium: "Baure Arena",
         week: "Week 10",
         matchTime: "52",
+        homeRedCards: 1,
+        awayRedCards: 1,
     },
 ];
 
@@ -150,7 +156,7 @@ export const todayMatches: Match[] = [
     {
         id: "9",
         homeTeam: getClubById("faskari-united")!,
-        awayTeam: getClubById("nursing-home")!,
+        awayTeam: getClubById("abukur-pillars")!,
         homeScore: 1,
         awayScore: 0,
         status: "finished",

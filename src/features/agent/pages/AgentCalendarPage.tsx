@@ -181,7 +181,7 @@ const AgentCalendarPage = () => {
                                         className={cn(
                                             "flex-shrink-0 flex flex-col items-center px-3 sm:px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-colors min-w-[52px] sm:min-w-[60px]",
                                             isSelected
-                                                ? "bg-primary text-primary-foreground shadow-md"
+                                                ? "bg-accent text-primary-foreground shadow-md"
                                                 : "bg-secondary text-muted-foreground hover:bg-secondary/70 hover:text-foreground"
                                         )}
                                     >

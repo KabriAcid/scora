@@ -143,7 +143,7 @@ export const mockAssignedMatches: AssignedMatch[] = [
         awayTeamLogo: clubs[13].badgeUrl,
         status: "completed",
         startTime: new Date(Date.now() - 1000 * 60 * 60 * 2), // 2 hours ago
-        venue: "Southern Stars Park, Katsina",
+        venue: "Remo Stars Park, Katsina",
         league: "Katsina League",
         homeScore: 1,
         awayScore: 1,

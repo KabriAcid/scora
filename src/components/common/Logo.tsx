@@ -8,7 +8,7 @@ interface LogoProps {
 }
 
 const sizeConfig = {
-  sm: { image: "h-6 w-6", text: "text-sm" },
+  sm: { image: "h-4 w-4", text: "text-sm" },
   md: { image: "h-8 w-8", text: "text-base" },
   lg: { image: "h-10 w-10", text: "text-lg" },
   xl: { image: "h-12 w-12", text: "text-xl" },

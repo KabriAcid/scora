@@ -12,6 +12,8 @@ interface CompactMatchItemProps {
     status: "live" | "finished" | "upcoming";
     time?: string;
     matchTime?: string;
+    homeRedCards?: number;
+    awayRedCards?: number;
     onClick?: () => void;
 }
 
@@ -25,6 +27,8 @@ export const CompactMatchItem = ({
     status,
     time,
     matchTime,
+    homeRedCards = 0,
+    awayRedCards = 0,
     onClick,
 }: CompactMatchItemProps) => {
     const displayTime = status === "live" ? matchTime : time;
@@ -47,7 +51,7 @@ export const CompactMatchItem = ({
                         <div className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse mt-1" />
                     </>
                 ) : (
-                    <span className="text-sm font-semibold text-foreground">{time}</span>
+                    <span className="text-xs font-medium text-muted-foreground">{time}</span>
                 )}
             </div>
 
@@ -55,35 +59,53 @@ export const CompactMatchItem = ({
             <div className="flex-1 flex flex-col gap-2 min-w-0">
                 {/* Home Team */}
                 <div className="flex items-center gap-2 sm:gap-3">
-                    <img
-                        src={homeLogo}
-                        alt={homeTeam}
-                        className="w-6 h-6 sm:w-7 sm:h-7 object-contain flex-shrink-0"
-                    />
+                    <div className="relative flex-shrink-0">
+                        <img
+                            src={homeLogo}
+                            alt={homeTeam}
+                            className="w-6 h-6 sm:w-7 sm:h-7 object-contain"
+                        />
+                    </div>
                     <span className="text-sm sm:text-base font-medium text-foreground truncate">
                         {homeTeam}
                     </span>
+                    {homeRedCards > 0 && (
+                        <div className="flex gap-px flex-shrink-0">
+                            {Array.from({ length: homeRedCards }).map((_, i) => (
+                                <img key={i} src="/images/event-red-card.svg" alt="Red card" className="w-2 h-2.5" />
+                            ))}
+                        </div>
+                    )}
                 </div>
 
                 {/* Away Team */}
                 <div className="flex items-center gap-2 sm:gap-3">
-                    <img
-                        src={awayLogo}
-                        alt={awayTeam}
-                        className="w-6 h-6 sm:w-7 sm:h-7 object-contain flex-shrink-0"
-                    />
+                    <div className="relative flex-shrink-0">
+                        <img
+                            src={awayLogo}
+                            alt={awayTeam}
+                            className="w-6 h-6 sm:w-7 sm:h-7 object-contain"
+                        />
+                    </div>
                     <span className="text-sm sm:text-base font-medium text-foreground truncate">
                         {awayTeam}
                     </span>
+                    {awayRedCards > 0 && (
+                        <div className="flex gap-px flex-shrink-0">
+                            {Array.from({ length: awayRedCards }).map((_, i) => (
+                                <img key={i} src="/images/event-red-card.svg" alt="Red card" className="w-2 h-2.5" />
+                            ))}
+                        </div>
+                    )}
                 </div>
             </div>
 
             {/* Scores Section — shown for live and finished matches */}
             {(status === "finished" || status === "live") && (
-                <div className="flex flex-col gap-2 min-w-[32px] items-end">
+                <div className="flex flex-col gap-2 min-w-[28px] items-end">
                     <span
                         className={cn(
-                            "text-lg sm:text-xl font-bold",
+                            "text-sm font-bold",
                             status === "live"
                                 ? "text-green-500"
                                 : homeScore !== undefined && awayScore !== undefined && homeScore > awayScore
@@ -95,7 +117,7 @@ export const CompactMatchItem = ({
                     </span>
                     <span
                         className={cn(
-                            "text-lg sm:text-xl font-bold",
+                            "text-sm font-bold",
                             status === "live"
                                 ? "text-green-500"
                                 : homeScore !== undefined && awayScore !== undefined && awayScore > homeScore

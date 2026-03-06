@@ -15,6 +15,8 @@ interface MatchCardProps {
   matchTime?: string; // e.g., "90+4" for live matches
   homeLogo?: string;
   awayLogo?: string;
+  homeRedCards?: number;
+  awayRedCards?: number;
   variant?: "dark" | "light";
   onClick?: () => void;
 }
@@ -30,6 +32,8 @@ export const MatchCard = ({
   matchTime,
   homeLogo,
   awayLogo,
+  homeRedCards = 0,
+  awayRedCards = 0,
   variant = "dark",
   onClick,
 }: MatchCardProps) => {
@@ -90,7 +94,7 @@ export const MatchCard = ({
           <div className="text-center mb-3">
             {stadium && (
               <h3 className={cn(
-                "font-semibold text-base mb-1",
+                "font-bold text-sm mb-1",
                 isDark ? "text-primary-foreground" : "text-gray-900"
               )}>
                 {stadium}
@@ -110,7 +114,7 @@ export const MatchCard = ({
           <div className="flex items-center justify-between gap-4">
             {/* Home Team */}
             <div className="flex flex-col items-center flex-1 gap-1.5">
-              <div className="w-16 h-16 rounded-full flex items-center justify-center overflow-hidden">
+              <div className="relative w-16 h-16 flex items-center justify-center">
                 {homeLogo ? (
                   <img src={homeLogo} alt={homeTeam} className="w-12 h-12 object-contain" />
                 ) : (
@@ -121,6 +125,13 @@ export const MatchCard = ({
                     {homeTeam.substring(0, 3).toUpperCase()}
                   </span>
                 )}
+                {homeRedCards > 0 && (
+                  <div className="absolute -top-1 -right-1 flex gap-0.5">
+                    {Array.from({ length: homeRedCards }).map((_, i) => (
+                      <img key={i} src="/images/event-red-card.svg" alt="Red card" className="w-3 h-4 drop-shadow" />
+                    ))}
+                  </div>
+                )}
               </div>
               <div className="text-center">
                 <p className={cn(
@@ -130,7 +141,7 @@ export const MatchCard = ({
                   {homeTeam}
                 </p>
                 <p className={cn(
-                  "text-xs",
+                  "text-xs mt-0.5",
                   isDark ? "text-primary-foreground/60" : "text-gray-500"
                 )}>
                   Home
@@ -184,7 +195,7 @@ export const MatchCard = ({
 
             {/* Away Team */}
             <div className="flex flex-col items-center flex-1 gap-1.5">
-              <div className="w-16 h-16 rounded-full flex items-center justify-center overflow-hidden">
+              <div className="relative w-16 h-16 flex items-center justify-center">
                 {awayLogo ? (
                   <img src={awayLogo} alt={awayTeam} className="w-12 h-12 object-contain" />
                 ) : (
@@ -195,6 +206,13 @@ export const MatchCard = ({
                     {awayTeam.substring(0, 3).toUpperCase()}
                   </span>
                 )}
+                {awayRedCards > 0 && (
+                  <div className="absolute -top-1 -right-1 flex gap-0.5">
+                    {Array.from({ length: awayRedCards }).map((_, i) => (
+                      <img key={i} src="/images/event-red-card.svg" alt="Red card" className="w-3 h-4 drop-shadow" />
+                    ))}
+                  </div>
+                )}
               </div>
               <div className="text-center">
                 <p className={cn(
@@ -204,7 +222,7 @@ export const MatchCard = ({
                   {awayTeam}
                 </p>
                 <p className={cn(
-                  "text-xs",
+                  "text-xs mt-0.5",
                   isDark ? "text-primary-foreground/60" : "text-gray-500"
                 )}>
                   Away

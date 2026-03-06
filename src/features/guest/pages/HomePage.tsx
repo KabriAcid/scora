@@ -80,7 +80,7 @@ const Index = () => {
         className="sticky top-0 z-40 bg-background/80 backdrop-blur-xl border-b border-border/50"
       >
         <div className="flex items-center justify-between p-4">
-          <Logo />
+          <Logo size="sm" />
           <div className="flex items-center gap-2">
             <Button variant="ghost" size="icon" className="rounded-xl">
               <Search className="w-5 h-5" />
@@ -159,6 +159,8 @@ const Index = () => {
                   stadium={liveMatches[liveIndex].stadium}
                   week={liveMatches[liveIndex].week}
                   matchTime={liveMatches[liveIndex].matchTime}
+                  homeRedCards={liveMatches[liveIndex].homeRedCards}
+                  awayRedCards={liveMatches[liveIndex].awayRedCards}
                   variant="dark"
                   onClick={() => navigate(`/match/${liveMatches[liveIndex].id}`)}
                 />
@@ -174,8 +176,8 @@ const Index = () => {
                   key={i}
                   onClick={() => setLiveIndex(i)}
                   className={`rounded-full transition-all duration-200 ${i === liveIndex
-                      ? "w-5 h-1.5 bg-primary"
-                      : "w-1.5 h-1.5 bg-muted-foreground/30"
+                    ? "w-5 h-1.5 bg-primary"
+                    : "w-1.5 h-1.5 bg-muted-foreground/30"
                     }`}
                 />
               ))}
@@ -295,6 +297,8 @@ const Index = () => {
                               status={match.status}
                               time={match.time}
                               matchTime={match.matchTime}
+                              homeRedCards={match.homeRedCards}
+                              awayRedCards={match.awayRedCards}
                               onClick={() => handleMatchClick(match.id)}
                             />
                           </motion.div>
