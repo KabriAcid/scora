@@ -125,8 +125,8 @@ export const AdminSidebar = ({
       <motion.aside
         initial={isMobile ? { x: "-100%" } : { x: 0 }}
         animate={isMobile ? { x: isOpen ? 0 : "-100%" } : { x: 0 }}
-        transition={{ duration: 0.3, ease: "easeInOut" }}
-        className={`fixed lg:static top-0 left-0 h-screen ${sidebarWidth} bg-card text-foreground transition-all duration-300 flex flex-col z-50 overflow-hidden border-r border-border`}
+        transition={{ duration: 0.18, ease: "easeOut" }}
+        className={`fixed lg:static top-0 left-0 h-screen ${sidebarWidth} bg-card text-foreground transition-[width] duration-200 flex flex-col z-50 overflow-hidden border-r border-border`}
       >
         {/* Logo + role badge */}
         <div className="h-16 px-4 flex items-center justify-between border-b border-border flex-shrink-0">
@@ -179,9 +179,8 @@ export const AdminSidebar = ({
               title={isCollapsed ? "Expand sidebar" : "Collapse sidebar"}
             >
               <ChevronRight
-                className={`w-5 h-5 text-muted-foreground transition-transform duration-300 ${
-                  isCollapsed ? "rotate-0" : "rotate-180"
-                }`}
+                className={`w-5 h-5 text-muted-foreground transition-transform duration-200 ${isCollapsed ? "rotate-0" : "rotate-180"
+                  }`}
               />
             </motion.button>
           </div>

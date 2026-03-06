@@ -134,7 +134,7 @@ const AdminDashboard = () => {
         variants={containerVariants}
         initial="hidden"
         animate="visible"
-        className="p-5 md:p-7 space-y-6 max-w-7xl mx-auto"
+        className="px-4 py-5 md:px-5 md:py-6 space-y-6 max-w-7xl mx-auto"
       >
         {/*  Page header  */}
         <motion.div variants={itemVariants} className="flex flex-wrap items-start justify-between gap-4">
