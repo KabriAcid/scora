@@ -40,6 +40,19 @@ export interface LeagueSummary {
   status: "Active" | "Upcoming" | "Completed";
 }
 
+export interface TeamSummary {
+  id: string;
+  name: string;
+  shortCode: string;
+  state: string;
+  league: string;
+  players: number;
+  wins: number;
+  draws: number;
+  losses: number;
+  status: "Active" | "Inactive" | "Suspended";
+}
+
 export interface AgentSummary {
   id: string;
   name: string;
@@ -130,6 +143,107 @@ export const topLeagues: LeagueSummary[] = [
     fixtures: 22,
     completed: 0,
     status: "Upcoming",
+  },
+];
+
+// ─── Team Summaries ──────────────────────────────────────────────────────────
+
+export const teamSummaries: TeamSummary[] = [
+  {
+    id: "t1",
+    name: "Kano Pillars FC",
+    shortCode: "KPL",
+    state: "Kano",
+    league: "Kano State League",
+    players: 24,
+    wins: 10,
+    draws: 3,
+    losses: 2,
+    status: "Active",
+  },
+  {
+    id: "t2",
+    name: "Kaduna United",
+    shortCode: "KDU",
+    state: "Kaduna",
+    league: "Kaduna Premier League",
+    players: 22,
+    wins: 8,
+    draws: 4,
+    losses: 3,
+    status: "Active",
+  },
+  {
+    id: "t3",
+    name: "Gombe Bulls FC",
+    shortCode: "GBL",
+    state: "Gombe",
+    league: "Gombe United League",
+    players: 20,
+    wins: 6,
+    draws: 5,
+    losses: 4,
+    status: "Active",
+  },
+  {
+    id: "t4",
+    name: "Jigawa Stars",
+    shortCode: "JGS",
+    state: "Jigawa",
+    league: "Jigawa State Cup",
+    players: 18,
+    wins: 0,
+    draws: 0,
+    losses: 0,
+    status: "Active",
+  },
+  {
+    id: "t5",
+    name: "Katsina Rangers",
+    shortCode: "KTR",
+    state: "Katsina",
+    league: "Katsina FA Cup",
+    players: 19,
+    wins: 5,
+    draws: 2,
+    losses: 7,
+    status: "Inactive",
+  },
+  {
+    id: "t6",
+    name: "Zamfara Warriors FC",
+    shortCode: "ZWF",
+    state: "Zamfara",
+    league: "Kano State League",
+    players: 21,
+    wins: 7,
+    draws: 3,
+    losses: 5,
+    status: "Active",
+  },
+  {
+    id: "t7",
+    name: "Sokoto Rovers",
+    shortCode: "SKR",
+    state: "Sokoto",
+    league: "Kano State League",
+    players: 17,
+    wins: 3,
+    draws: 1,
+    losses: 9,
+    status: "Suspended",
+  },
+  {
+    id: "t8",
+    name: "Bauchi City FC",
+    shortCode: "BCF",
+    state: "Bauchi",
+    league: "Gombe United League",
+    players: 23,
+    wins: 9,
+    draws: 2,
+    losses: 4,
+    status: "Active",
   },
 ];
 

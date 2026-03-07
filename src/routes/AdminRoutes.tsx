@@ -5,6 +5,8 @@ import LeagueStandingsPage from "@/features/admin/pages/LeagueStandingsPage";
 import LeagueSeasonsPage from "@/features/admin/pages/LeagueSeasonsPage";
 import LeagueFixturesPage from "@/features/admin/pages/LeagueFixturesPage";
 import TeamsPage from "@/features/admin/pages/TeamsPage";
+import TeamSquadsPage from "@/features/admin/pages/TeamSquadsPage";
+import TeamStatsPage from "@/features/admin/pages/TeamStatsPage";
 import PlayersPage from "@/features/admin/pages/PlayersPage";
 import StadiumsPage from "@/features/admin/pages/StadiumsPage";
 import FixturesPage from "@/features/admin/pages/FixturesPage";
@@ -65,6 +67,22 @@ export const AdminRoutes = () => {
         element={
           <ProtectedRoute requiredRole="admin">
             <TeamsPage />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="teams/squads"
+        element={
+          <ProtectedRoute requiredRole="admin">
+            <TeamSquadsPage />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="teams/stats"
+        element={
+          <ProtectedRoute requiredRole="admin">
+            <TeamStatsPage />
           </ProtectedRoute>
         }
       />

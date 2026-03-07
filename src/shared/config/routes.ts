@@ -35,6 +35,8 @@ export const ROUTES = {
     LEAGUES_SEASONS: "/admin/leagues/seasons",
     LEAGUES_FIXTURES: "/admin/leagues/fixtures",
     TEAMS: "/admin/teams",
+    TEAMS_SQUADS: "/admin/teams/squads",
+    TEAMS_STATS: "/admin/teams/stats",
     PLAYERS: "/admin/players",
     STADIUMS: "/admin/stadiums",
     FIXTURES: "/admin/fixtures",

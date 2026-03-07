@@ -17,6 +17,8 @@ import {
   ListOrdered,
   Layers,
   CalendarDays,
+  BarChart3,
+  BookUser,
 } from "lucide-react";
 import { Logo } from "@/components/common/Logo";
 import { ROUTES } from "@/shared/config/routes";
@@ -83,7 +85,26 @@ const navItems: NavItemConfig[] = [
     id: "teams",
     label: "Teams",
     icon: <Shield className="w-5 h-5" />,
-    path: ROUTES.ADMIN.TEAMS,
+    children: [
+      {
+        id: "teams-all",
+        label: "All Teams",
+        icon: <Shield className="w-4 h-4" />,
+        path: ROUTES.ADMIN.TEAMS,
+      },
+      {
+        id: "teams-squads",
+        label: "Squads",
+        icon: <BookUser className="w-4 h-4" />,
+        path: ROUTES.ADMIN.TEAMS_SQUADS,
+      },
+      {
+        id: "teams-stats",
+        label: "Statistics",
+        icon: <BarChart3 className="w-4 h-4" />,
+        path: ROUTES.ADMIN.TEAMS_STATS,
+      },
+    ],
   },
   {
     id: "players",
@@ -194,7 +215,7 @@ const NavItemRow = ({ item, isCollapsed, onMobileClose }: NavItemRowProps) => {
     if (!showPopout) return;
     const handler = (e: MouseEvent) => {
       if (popoutRef.current && !popoutRef.current.contains(e.target as Node) &&
-          itemRef.current && !itemRef.current.contains(e.target as Node)) {
+        itemRef.current && !itemRef.current.contains(e.target as Node)) {
         setShowPopout(false);
       }
     };
