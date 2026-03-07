@@ -162,7 +162,7 @@ export const TeamRow = ({ team, onEdit, onDelete }: TeamRowProps) => {
 
             {/* Actions */}
             <ActionsMenu
-                onView={() => {}}
+                onView={() => { }}
                 onEdit={() => onEdit(team)}
                 onDelete={() => onDelete(team.id)}
             />

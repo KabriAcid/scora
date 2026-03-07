@@ -69,11 +69,11 @@ const TeamStatsPage = () => {
         const q = search.toLowerCase();
         const list = q
             ? allStats.filter(
-                  (t) =>
-                      t.name.toLowerCase().includes(q) ||
-                      t.league.toLowerCase().includes(q) ||
-                      t.state.toLowerCase().includes(q)
-              )
+                (t) =>
+                    t.name.toLowerCase().includes(q) ||
+                    t.league.toLowerCase().includes(q) ||
+                    t.state.toLowerCase().includes(q)
+            )
             : [...allStats];
 
         list.sort((a, b) => {
@@ -239,10 +239,10 @@ const TeamStatsPage = () => {
                                             i === 0
                                                 ? "text-amber-500"
                                                 : i === 1
-                                                ? "text-muted-foreground"
-                                                : i === 2
-                                                ? "text-amber-700"
-                                                : "text-muted-foreground/60"
+                                                    ? "text-muted-foreground"
+                                                    : i === 2
+                                                        ? "text-amber-700"
+                                                        : "text-muted-foreground/60"
                                         )}
                                     >
                                         {i + 1}
@@ -281,8 +281,8 @@ const TeamStatsPage = () => {
                                             team.goalDiff > 0
                                                 ? "text-emerald-600"
                                                 : team.goalDiff < 0
-                                                ? "text-destructive"
-                                                : "text-muted-foreground"
+                                                    ? "text-destructive"
+                                                    : "text-muted-foreground"
                                         )}
                                     >
                                         {team.goalDiff > 0 ? `+${team.goalDiff}` : team.goalDiff}
