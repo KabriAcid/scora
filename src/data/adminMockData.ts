@@ -56,11 +56,53 @@ export interface TeamSummary {
 export interface AgentSummary {
   id: string;
   name: string;
-  code: string;
+  agentCode: string;
   matchesLogged: number;
   accuracy: number;
   state: string;
-  status: "Active" | "Inactive";
+  status: "Active" | "Inactive" | "Pending";
+}
+
+export interface PlayerSummary {
+  id: string;
+  name: string;
+  number: number;
+  position: "GK" | "DEF" | "MID" | "FWD";
+  team: string;
+  league: string;
+  state: string;
+  age: number;
+  goals: number;
+  assists: number;
+  appearances: number;
+  status: "Active" | "Injured" | "Suspended";
+}
+
+export interface StadiumSummary {
+  id: string;
+  name: string;
+  city: string;
+  state: string;
+  capacity: number;
+  surface: "Natural Grass" | "Artificial Turf";
+  homeTeam: string;
+  fixturesHosted: number;
+  status: "Active" | "Under Renovation" | "Inactive";
+}
+
+export interface FixtureSummary {
+  id: string;
+  homeTeam: string;
+  awayTeam: string;
+  league: string;
+  stadium: string;
+  date: string;
+  time: string;
+  week: string;
+  agentAssigned: string | null;
+  status: "Scheduled" | "Live" | "Completed" | "Postponed";
+  homeScore: number | null;
+  awayScore: number | null;
 }
 
 // ─── Overview Stats ───────────────────────────────────────────────────────────
@@ -253,7 +295,7 @@ export const agentSummaries: AgentSummary[] = [
   {
     id: "a1",
     name: "Umar Farouk",
-    code: "SCR-003",
+    agentCode: "SCR-003",
     matchesLogged: 34,
     accuracy: 98,
     state: "Kano",
@@ -262,7 +304,7 @@ export const agentSummaries: AgentSummary[] = [
   {
     id: "a2",
     name: "Halima Bello",
-    code: "SCR-007",
+    agentCode: "SCR-007",
     matchesLogged: 28,
     accuracy: 95,
     state: "Kaduna",
@@ -271,7 +313,7 @@ export const agentSummaries: AgentSummary[] = [
   {
     id: "a3",
     name: "Musa Danladi",
-    code: "SCR-011",
+    agentCode: "SCR-011",
     matchesLogged: 21,
     accuracy: 91,
     state: "Katsina",
@@ -280,11 +322,29 @@ export const agentSummaries: AgentSummary[] = [
   {
     id: "a4",
     name: "Aisha Lawal",
-    code: "SCR-015",
+    agentCode: "SCR-015",
     matchesLogged: 17,
     accuracy: 88,
     state: "Gombe",
     status: "Inactive",
+  },
+  {
+    id: "a5",
+    name: "Ibrahim Sule",
+    agentCode: "SCR-019",
+    matchesLogged: 0,
+    accuracy: 100,
+    state: "Bauchi",
+    status: "Pending",
+  },
+  {
+    id: "a6",
+    name: "Fatima Garba",
+    agentCode: "SCR-022",
+    matchesLogged: 0,
+    accuracy: 100,
+    state: "Yobe",
+    status: "Pending",
   },
 ];
 
@@ -341,5 +401,360 @@ export const recentAdminActivity: ActivityItem[] = [
     entity: "Test Fixture",
     entityType: "fixture",
     time: new Date(n - 8 * 3_600_000),
+  },
+];
+
+// ─── Players ──────────────────────────────────────────────────────────────────
+
+export const playerSummaries: PlayerSummary[] = [
+  {
+    id: "p1",
+    name: "Ibrahim Musa",
+    number: 9,
+    position: "FWD",
+    team: "Kano Pillars FC",
+    league: "Kano State League",
+    state: "Kano",
+    age: 24,
+    goals: 14,
+    assists: 6,
+    appearances: 18,
+    status: "Active",
+  },
+  {
+    id: "p2",
+    name: "Yusuf Aliyu",
+    number: 1,
+    position: "GK",
+    team: "Kano Pillars FC",
+    league: "Kano State League",
+    state: "Kano",
+    age: 28,
+    goals: 0,
+    assists: 0,
+    appearances: 15,
+    status: "Active",
+  },
+  {
+    id: "p3",
+    name: "Emeka Okafor",
+    number: 5,
+    position: "DEF",
+    team: "Kaduna United",
+    league: "Kaduna Premier League",
+    state: "Kaduna",
+    age: 26,
+    goals: 2,
+    assists: 1,
+    appearances: 14,
+    status: "Active",
+  },
+  {
+    id: "p4",
+    name: "Chukwudi Eze",
+    number: 10,
+    position: "MID",
+    team: "Kaduna United",
+    league: "Kaduna Premier League",
+    state: "Kaduna",
+    age: 22,
+    goals: 5,
+    assists: 9,
+    appearances: 15,
+    status: "Active",
+  },
+  {
+    id: "p5",
+    name: "Abubakar Sani",
+    number: 7,
+    position: "MID",
+    team: "Gombe Bulls FC",
+    league: "Gombe United League",
+    state: "Gombe",
+    age: 25,
+    goals: 4,
+    assists: 7,
+    appearances: 15,
+    status: "Injured",
+  },
+  {
+    id: "p6",
+    name: "Ismail Bello",
+    number: 11,
+    position: "FWD",
+    team: "Gombe Bulls FC",
+    league: "Gombe United League",
+    state: "Gombe",
+    age: 21,
+    goals: 8,
+    assists: 3,
+    appearances: 14,
+    status: "Active",
+  },
+  {
+    id: "p7",
+    name: "Nathaniel Duku",
+    number: 4,
+    position: "DEF",
+    team: "Bauchi City FC",
+    league: "Gombe United League",
+    state: "Bauchi",
+    age: 27,
+    goals: 1,
+    assists: 2,
+    appearances: 13,
+    status: "Active",
+  },
+  {
+    id: "p8",
+    name: "Suleiman Garba",
+    number: 6,
+    position: "DEF",
+    team: "Katsina Rangers",
+    league: "Katsina FA Cup",
+    state: "Katsina",
+    age: 30,
+    goals: 0,
+    assists: 0,
+    appearances: 14,
+    status: "Suspended",
+  },
+  {
+    id: "p9",
+    name: "Aminu Umar",
+    number: 8,
+    position: "MID",
+    team: "Zamfara Warriors FC",
+    league: "Kano State League",
+    state: "Zamfara",
+    age: 23,
+    goals: 3,
+    assists: 5,
+    appearances: 15,
+    status: "Active",
+  },
+  {
+    id: "p10",
+    name: "David Ochoa",
+    number: 3,
+    position: "DEF",
+    team: "Jigawa Stars",
+    league: "Jigawa State Cup",
+    state: "Jigawa",
+    age: 24,
+    goals: 0,
+    assists: 1,
+    appearances: 0,
+    status: "Active",
+  },
+];
+
+// ─── Stadiums ─────────────────────────────────────────────────────────────────
+
+export const stadiumSummaries: StadiumSummary[] = [
+  {
+    id: "st1",
+    name: "Sani Abacha Stadium",
+    city: "Kano",
+    state: "Kano",
+    capacity: 25000,
+    surface: "Natural Grass",
+    homeTeam: "Kano Pillars FC",
+    fixturesHosted: 22,
+    status: "Active",
+  },
+  {
+    id: "st2",
+    name: "Ahmadu Bello Stadium",
+    city: "Kaduna",
+    state: "Kaduna",
+    capacity: 15000,
+    surface: "Natural Grass",
+    homeTeam: "Kaduna United",
+    fixturesHosted: 18,
+    status: "Active",
+  },
+  {
+    id: "st3",
+    name: "Pantami Stadium",
+    city: "Gombe",
+    state: "Gombe",
+    capacity: 8000,
+    surface: "Artificial Turf",
+    homeTeam: "Gombe Bulls FC",
+    fixturesHosted: 14,
+    status: "Active",
+  },
+  {
+    id: "st4",
+    name: "Muhammadu Dikko Stadium",
+    city: "Katsina",
+    state: "Katsina",
+    capacity: 12000,
+    surface: "Natural Grass",
+    homeTeam: "Katsina Rangers",
+    fixturesHosted: 10,
+    status: "Under Renovation",
+  },
+  {
+    id: "st5",
+    name: "Karkanda Ground",
+    city: "Kankara",
+    state: "Katsina",
+    capacity: 5000,
+    surface: "Natural Grass",
+    homeTeam: "Katsina Rangers",
+    fixturesHosted: 8,
+    status: "Active",
+  },
+  {
+    id: "st6",
+    name: "Zamfara Sports Complex",
+    city: "Gusau",
+    state: "Zamfara",
+    capacity: 6000,
+    surface: "Artificial Turf",
+    homeTeam: "Zamfara Warriors FC",
+    fixturesHosted: 12,
+    status: "Active",
+  },
+  {
+    id: "st7",
+    name: "Jigawa Township Stadium",
+    city: "Dutse",
+    state: "Jigawa",
+    capacity: 7500,
+    surface: "Natural Grass",
+    homeTeam: "Jigawa Stars",
+    fixturesHosted: 0,
+    status: "Active",
+  },
+  {
+    id: "st8",
+    name: "Abubakar Tafawa Balewa Ground",
+    city: "Bauchi",
+    state: "Bauchi",
+    capacity: 9000,
+    surface: "Natural Grass",
+    homeTeam: "Bauchi City FC",
+    fixturesHosted: 16,
+    status: "Inactive",
+  },
+];
+
+// ─── Fixtures ─────────────────────────────────────────────────────────────────
+
+export const fixtureSummaries: FixtureSummary[] = [
+  {
+    id: "f1",
+    homeTeam: "Kano Pillars FC",
+    awayTeam: "Kaduna United",
+    league: "Kano State League",
+    stadium: "Sani Abacha Stadium",
+    date: "2026-03-15",
+    time: "15:00",
+    week: "Week 19",
+    agentAssigned: "Umar Farouk",
+    status: "Scheduled",
+    homeScore: null,
+    awayScore: null,
+  },
+  {
+    id: "f2",
+    homeTeam: "Gombe Bulls FC",
+    awayTeam: "Bauchi City FC",
+    league: "Gombe United League",
+    stadium: "Pantami Stadium",
+    date: "2026-03-15",
+    time: "16:00",
+    week: "Week 16",
+    agentAssigned: "Halima Bello",
+    status: "Scheduled",
+    homeScore: null,
+    awayScore: null,
+  },
+  {
+    id: "f3",
+    homeTeam: "Zamfara Warriors FC",
+    awayTeam: "Kano Pillars FC",
+    league: "Kano State League",
+    stadium: "Zamfara Sports Complex",
+    date: "2026-03-11",
+    time: "15:00",
+    week: "Week 18",
+    agentAssigned: "Musa Danladi",
+    status: "Live",
+    homeScore: 1,
+    awayScore: 1,
+  },
+  {
+    id: "f4",
+    homeTeam: "Kaduna United",
+    awayTeam: "Sokoto Rovers",
+    league: "Kaduna Premier League",
+    stadium: "Ahmadu Bello Stadium",
+    date: "2026-03-08",
+    time: "15:00",
+    week: "Week 18",
+    agentAssigned: "Umar Farouk",
+    status: "Completed",
+    homeScore: 3,
+    awayScore: 0,
+  },
+  {
+    id: "f5",
+    homeTeam: "Katsina Rangers",
+    awayTeam: "Jigawa Stars",
+    league: "Katsina FA Cup",
+    stadium: "Karkanda Ground",
+    date: "2026-03-08",
+    time: "13:00",
+    week: "Week 7",
+    agentAssigned: "Aisha Lawal",
+    status: "Completed",
+    homeScore: 1,
+    awayScore: 2,
+  },
+  {
+    id: "f6",
+    homeTeam: "Bauchi City FC",
+    awayTeam: "Zamfara Warriors FC",
+    league: "Gombe United League",
+    stadium: "Abubakar Tafawa Balewa Ground",
+    date: "2026-03-22",
+    time: "16:00",
+    week: "Week 17",
+    agentAssigned: null,
+    status: "Scheduled",
+    homeScore: null,
+    awayScore: null,
+  },
+  {
+    id: "f7",
+    homeTeam: "Jigawa Stars",
+    awayTeam: "Kaduna United",
+    league: "Jigawa State Cup",
+    stadium: "Jigawa Township Stadium",
+    date: "2026-03-29",
+    time: "14:00",
+    week: "Week 1",
+    agentAssigned: null,
+    status: "Scheduled",
+    homeScore: null,
+    awayScore: null,
+  },
+  {
+    id: "f8",
+    homeTeam: "Kano Pillars FC",
+    awayTeam: "Gombe Bulls FC",
+    league: "Kano State League",
+    stadium: "Sani Abacha Stadium",
+    date: "2026-03-01",
+    time: "15:00",
+    week: "Week 17",
+    agentAssigned: "Halima Bello",
+    status: "Postponed",
+    homeScore: null,
+    awayScore: null,
   },
 ];

@@ -41,7 +41,7 @@ import {
 import { ROUTES } from "@/shared/config/routes";
 import { cn } from "@/shared/utils/cn";
 
-//  Helpers 
+//  Helpers
 
 function relativeTime(date: Date): string {
   const mins = Math.floor((Date.now() - date.getTime()) / 60_000);
@@ -75,20 +75,31 @@ const actionBg: Record<ActivityItem["action"], string> = {
   Assigned: "bg-accent/10",
 };
 
-//  Animation variants 
+//  Animation variants
 
 const containerVariants: Variants = {
   hidden: { opacity: 0 },
-  visible: { opacity: 1, transition: { staggerChildren: 0.06, delayChildren: 0.05 } },
+  visible: {
+    opacity: 1,
+    transition: { staggerChildren: 0.06, delayChildren: 0.05 },
+  },
 };
 const itemVariants: Variants = {
   hidden: { opacity: 0, y: 14 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.35, ease: "easeOut" } },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.35, ease: "easeOut" },
+  },
 };
 
-//  Custom Tooltip 
+//  Custom Tooltip
 
-const ChartTooltip = ({ active, payload, label }: {
+const ChartTooltip = ({
+  active,
+  payload,
+  label,
+}: {
   active?: boolean;
   payload?: { value: number; dataKey: string; color: string }[];
   label?: string;
@@ -99,23 +110,48 @@ const ChartTooltip = ({ active, payload, label }: {
       <p className="font-semibold text-foreground">{label}</p>
       {payload.map((p) => (
         <p key={p.dataKey} style={{ color: p.color }}>
-          {p.dataKey === "players" ? "Players" : "Fixtures"}: <span className="font-bold">{p.value}</span>
+          {p.dataKey === "players" ? "Players" : "Fixtures"}:{" "}
+          <span className="font-bold">{p.value}</span>
         </p>
       ))}
     </div>
   );
 };
 
-//  Quick Actions config 
+//  Quick Actions config
 
 const quickActions = [
-  { label: "Add Player", icon: Users, path: ROUTES.ADMIN.PLAYERS, iconClass: "text-primary", bgClass: "bg-primary/10" },
-  { label: "Add Team", icon: Shield, path: ROUTES.ADMIN.TEAMS, iconClass: "text-accent", bgClass: "bg-accent/10" },
-  { label: "Schedule Fixture", icon: Calendar, path: ROUTES.ADMIN.FIXTURES, iconClass: "text-green-500", bgClass: "bg-green-500/10" },
-  { label: "Manage Agents", icon: UserCheck, path: ROUTES.ADMIN.AGENTS, iconClass: "text-yellow-500", bgClass: "bg-yellow-500/10" },
+  {
+    label: "Add Player",
+    icon: Users,
+    path: ROUTES.ADMIN.PLAYERS,
+    iconClass: "text-primary",
+    bgClass: "bg-primary/10",
+  },
+  {
+    label: "Add Team",
+    icon: Shield,
+    path: ROUTES.ADMIN.TEAMS,
+    iconClass: "text-accent",
+    bgClass: "bg-accent/10",
+  },
+  {
+    label: "Schedule Fixture",
+    icon: Calendar,
+    path: ROUTES.ADMIN.FIXTURES,
+    iconClass: "text-green-500",
+    bgClass: "bg-green-500/10",
+  },
+  {
+    label: "Manage Agents",
+    icon: UserCheck,
+    path: ROUTES.ADMIN.AGENTS,
+    iconClass: "text-yellow-500",
+    bgClass: "bg-yellow-500/10",
+  },
 ];
 
-//  Dashboard 
+//  Dashboard
 
 const AdminDashboard = () => {
   const navigate = useNavigate();
@@ -137,9 +173,14 @@ const AdminDashboard = () => {
         className="px-4 py-5 md:px-5 md:py-6 space-y-6 max-w-7xl mx-auto"
       >
         {/*  Page header  */}
-        <motion.div variants={itemVariants} className="flex flex-wrap items-start justify-between gap-4">
+        <motion.div
+          variants={itemVariants}
+          className="flex flex-wrap items-start justify-between gap-4"
+        >
           <div>
-            <h1 className="text-xl md:text-2xl font-bold text-foreground">Dashboard</h1>
+            <h1 className="text-xl md:text-2xl font-bold text-foreground">
+              Dashboard
+            </h1>
             <p className="text-sm text-muted-foreground mt-0.5 flex items-center gap-1.5">
               <Clock className="w-3.5 h-3.5" />
               {today}
@@ -165,7 +206,10 @@ const AdminDashboard = () => {
         </motion.div>
 
         {/*  KPI Cards  */}
-        <motion.div variants={itemVariants} className="grid grid-cols-2 lg:grid-cols-4 gap-3 md:gap-4">
+        <motion.div
+          variants={itemVariants}
+          className="grid grid-cols-2 lg:grid-cols-4 gap-3 md:gap-4"
+        >
           <StatCard
             icon={<Users className="w-5 h-5" />}
             label="Total Players"
@@ -200,24 +244,64 @@ const AdminDashboard = () => {
         </motion.div>
 
         {/*  Secondary stat strip  */}
-        <motion.div variants={itemVariants} className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+        <motion.div
+          variants={itemVariants}
+          className="grid grid-cols-2 sm:grid-cols-4 gap-3"
+        >
           {[
-            { label: "Active Leagues", value: adminOverviewStats.totalLeagues, icon: Trophy, iconClass: "text-primary", bgClass: "bg-primary/10", path: ROUTES.ADMIN.LEAGUES },
-            { label: "Stadiums", value: adminOverviewStats.totalStadiums, icon: Building2, iconClass: "text-accent", bgClass: "bg-accent/10", path: ROUTES.ADMIN.STADIUMS },
-            { label: "Live Now", value: adminOverviewStats.liveMatches, icon: Radio, iconClass: "text-green-500", bgClass: "bg-green-500/10", path: ROUTES.ADMIN.FIXTURES },
-            { label: "Pending Agents", value: adminOverviewStats.pendingAgents, icon: AlertCircle, iconClass: "text-yellow-500", bgClass: "bg-yellow-500/10", path: ROUTES.ADMIN.AGENTS },
+            {
+              label: "Active Leagues",
+              value: adminOverviewStats.totalLeagues,
+              icon: Trophy,
+              iconClass: "text-primary",
+              bgClass: "bg-primary/10",
+              path: ROUTES.ADMIN.LEAGUES,
+            },
+            {
+              label: "Stadiums",
+              value: adminOverviewStats.totalStadiums,
+              icon: Building2,
+              iconClass: "text-accent",
+              bgClass: "bg-accent/10",
+              path: ROUTES.ADMIN.STADIUMS,
+            },
+            {
+              label: "Live Now",
+              value: adminOverviewStats.liveMatches,
+              icon: Radio,
+              iconClass: "text-green-500",
+              bgClass: "bg-green-500/10",
+              path: ROUTES.ADMIN.FIXTURES,
+            },
+            {
+              label: "Pending Agents",
+              value: adminOverviewStats.pendingAgents,
+              icon: AlertCircle,
+              iconClass: "text-yellow-500",
+              bgClass: "bg-yellow-500/10",
+              path: ROUTES.ADMIN.AGENTS,
+            },
           ].map((s) => (
             <button
               key={s.label}
               onClick={() => navigate(s.path)}
               className="flex items-center gap-3 p-3.5 rounded-xl bg-card border border-border hover:shadow-sm transition-all group text-left"
             >
-              <div className={cn("w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0", s.bgClass)}>
+              <div
+                className={cn(
+                  "w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0",
+                  s.bgClass,
+                )}
+              >
                 <s.icon className={cn("w-4 h-4", s.iconClass)} />
               </div>
               <div>
-                <p className="text-lg font-bold text-foreground tabular-nums leading-none">{s.value}</p>
-                <p className="text-[11px] text-muted-foreground mt-0.5">{s.label}</p>
+                <p className="text-lg font-bold text-foreground tabular-nums leading-none">
+                  {s.value}
+                </p>
+                <p className="text-[11px] text-muted-foreground mt-0.5">
+                  {s.label}
+                </p>
               </div>
               <ChevronRight className="w-3.5 h-3.5 text-muted-foreground ml-auto opacity-0 group-hover:opacity-100 transition-opacity" />
             </button>
@@ -231,26 +315,65 @@ const AdminDashboard = () => {
             <Card className="p-5 border-none shadow-md bg-card h-full">
               <div className="flex items-center justify-between mb-4">
                 <div>
-                  <h2 className="text-sm font-semibold text-foreground">Platform Growth</h2>
-                  <p className="text-xs text-muted-foreground">Player registrations & fixtures  last 6 months</p>
+                  <h2 className="text-sm font-semibold text-foreground">
+                    Platform Growth
+                  </h2>
+                  <p className="text-xs text-muted-foreground">
+                    Player registrations & fixtures last 6 months
+                  </p>
                 </div>
                 <div className="flex gap-3 text-[11px] text-muted-foreground">
                   <span className="flex items-center gap-1.5">
-                    <span className="w-2.5 h-2.5 rounded-sm bg-primary inline-block" /> Players
+                    <span className="w-2.5 h-2.5 rounded-sm bg-primary inline-block" />{" "}
+                    Players
                   </span>
                   <span className="flex items-center gap-1.5">
-                    <span className="w-2.5 h-2.5 rounded-sm bg-accent inline-block" /> Fixtures
+                    <span className="w-2.5 h-2.5 rounded-sm bg-accent inline-block" />{" "}
+                    Fixtures
                   </span>
                 </div>
               </div>
               <ResponsiveContainer width="100%" height={200}>
                 <BarChart data={monthlyTrends} barGap={4}>
-                  <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" vertical={false} />
-                  <XAxis dataKey="month" tick={{ fontSize: 11, fill: "hsl(var(--muted-foreground))" }} axisLine={false} tickLine={false} />
-                  <YAxis tick={{ fontSize: 11, fill: "hsl(var(--muted-foreground))" }} axisLine={false} tickLine={false} width={28} />
-                  <Tooltip content={<ChartTooltip />} cursor={{ fill: "hsl(var(--muted))" }} />
-                  <Bar dataKey="players" fill="hsl(var(--primary))" radius={[4, 4, 0, 0]} maxBarSize={20} />
-                  <Bar dataKey="fixtures" fill="hsl(var(--accent))" radius={[4, 4, 0, 0]} maxBarSize={20} />
+                  <CartesianGrid
+                    strokeDasharray="3 3"
+                    stroke="hsl(var(--border))"
+                    vertical={false}
+                  />
+                  <XAxis
+                    dataKey="month"
+                    tick={{
+                      fontSize: 11,
+                      fill: "hsl(var(--muted-foreground))",
+                    }}
+                    axisLine={false}
+                    tickLine={false}
+                  />
+                  <YAxis
+                    tick={{
+                      fontSize: 11,
+                      fill: "hsl(var(--muted-foreground))",
+                    }}
+                    axisLine={false}
+                    tickLine={false}
+                    width={28}
+                  />
+                  <Tooltip
+                    content={<ChartTooltip />}
+                    cursor={{ fill: "hsl(var(--muted))" }}
+                  />
+                  <Bar
+                    dataKey="players"
+                    fill="hsl(var(--primary))"
+                    radius={[4, 4, 0, 0]}
+                    maxBarSize={20}
+                  />
+                  <Bar
+                    dataKey="fixtures"
+                    fill="hsl(var(--accent))"
+                    radius={[4, 4, 0, 0]}
+                    maxBarSize={20}
+                  />
                 </BarChart>
               </ResponsiveContainer>
             </Card>
@@ -260,8 +383,12 @@ const AdminDashboard = () => {
           <motion.div variants={itemVariants} className="lg:col-span-2">
             <Card className="p-5 border-none shadow-md bg-card h-full flex flex-col">
               <div className="mb-4">
-                <h2 className="text-sm font-semibold text-foreground">Fixture Status</h2>
-                <p className="text-xs text-muted-foreground">{totalFixtures} total fixtures</p>
+                <h2 className="text-sm font-semibold text-foreground">
+                  Fixture Status
+                </h2>
+                <p className="text-xs text-muted-foreground">
+                  {totalFixtures} total fixtures
+                </p>
               </div>
               <div className="space-y-3.5 flex-1">
                 {fixtureStatusBreakdown.map((f) => {
@@ -269,17 +396,27 @@ const AdminDashboard = () => {
                   return (
                     <div key={f.status}>
                       <div className="flex items-center justify-between mb-1.5">
-                        <span className="text-xs text-muted-foreground">{f.status}</span>
+                        <span className="text-xs text-muted-foreground">
+                          {f.status}
+                        </span>
                         <div className="flex items-center gap-2">
-                          <span className="text-xs font-semibold tabular-nums text-foreground">{f.count}</span>
-                          <span className="text-[10px] text-muted-foreground w-6 text-right">{pct}%</span>
+                          <span className="text-xs font-semibold tabular-nums text-foreground">
+                            {f.count}
+                          </span>
+                          <span className="text-[10px] text-muted-foreground w-6 text-right">
+                            {pct}%
+                          </span>
                         </div>
                       </div>
                       <div className="h-2 bg-muted rounded-full overflow-hidden">
                         <motion.div
                           initial={{ width: 0 }}
                           animate={{ width: `${pct}%` }}
-                          transition={{ duration: 0.7, ease: "easeOut", delay: 0.3 }}
+                          transition={{
+                            duration: 0.7,
+                            ease: "easeOut",
+                            delay: 0.3,
+                          }}
                           className="h-full rounded-full"
                           style={{ backgroundColor: f.color }}
                         />
@@ -305,8 +442,12 @@ const AdminDashboard = () => {
             <Card className="border-none shadow-md bg-card overflow-hidden">
               <div className="px-5 py-4 border-b border-border flex items-center justify-between">
                 <div>
-                  <h2 className="text-sm font-semibold text-foreground">Active Leagues</h2>
-                  <p className="text-xs text-muted-foreground">Season progress overview</p>
+                  <h2 className="text-sm font-semibold text-foreground">
+                    Active Leagues
+                  </h2>
+                  <p className="text-xs text-muted-foreground">
+                    Season progress overview
+                  </p>
                 </div>
                 <button
                   onClick={() => navigate(ROUTES.ADMIN.LEAGUES)}
@@ -317,7 +458,9 @@ const AdminDashboard = () => {
               </div>
               <div className="divide-y divide-border">
                 {topLeagues.map((league) => {
-                  const progress = Math.round((league.completed / league.fixtures) * 100);
+                  const progress = Math.round(
+                    (league.completed / league.fixtures) * 100,
+                  );
                   return (
                     <motion.div
                       key={league.id}
@@ -330,31 +473,51 @@ const AdminDashboard = () => {
                         </div>
                         <div className="flex-1 min-w-0">
                           <div className="flex items-center gap-2">
-                            <p className="text-sm font-semibold text-foreground truncate">{league.name}</p>
+                            <p className="text-sm font-semibold text-foreground truncate">
+                              {league.name}
+                            </p>
                             <Badge
                               className={cn(
                                 "text-[10px] px-1.5 py-0 flex-shrink-0 border",
-                                league.status === "Active" && "bg-green-500/10 text-green-600 border-green-500/20",
-                                league.status === "Completed" && "bg-muted text-muted-foreground border-border",
-                                league.status === "Upcoming" && "bg-accent/10 text-accent border-accent/20",
+                                league.status === "Active" &&
+                                  "bg-green-500/10 text-green-600 border-green-500/20",
+                                league.status === "Completed" &&
+                                  "bg-muted text-muted-foreground border-border",
+                                league.status === "Upcoming" &&
+                                  "bg-accent/10 text-accent border-accent/20",
                               )}
                             >
                               {league.status}
                             </Badge>
                           </div>
-                          <p className="text-[11px] text-muted-foreground">{league.state}  {league.teams} teams</p>
+                          <p className="text-[11px] text-muted-foreground">
+                            {league.state} {league.teams} teams
+                          </p>
                         </div>
                         <div className="text-right flex-shrink-0">
-                          <p className="text-xs font-bold text-foreground tabular-nums">{league.completed}/{league.fixtures}</p>
-                          <p className="text-[10px] text-muted-foreground">fixtures</p>
+                          <p className="text-xs font-bold text-foreground tabular-nums">
+                            {league.completed}/{league.fixtures}
+                          </p>
+                          <p className="text-[10px] text-muted-foreground">
+                            fixtures
+                          </p>
                         </div>
                       </div>
                       <div className="h-1.5 bg-muted rounded-full overflow-hidden">
                         <motion.div
                           initial={{ width: 0 }}
                           animate={{ width: `${progress}%` }}
-                          transition={{ duration: 0.6, ease: "easeOut", delay: 0.2 }}
-                          className={cn("h-full rounded-full", progress === 100 ? "bg-muted-foreground" : "bg-primary")}
+                          transition={{
+                            duration: 0.6,
+                            ease: "easeOut",
+                            delay: 0.2,
+                          }}
+                          className={cn(
+                            "h-full rounded-full",
+                            progress === 100
+                              ? "bg-muted-foreground"
+                              : "bg-primary",
+                          )}
                         />
                       </div>
                     </motion.div>
@@ -370,25 +533,48 @@ const AdminDashboard = () => {
             <motion.div variants={itemVariants}>
               <Card className="border-none shadow-md bg-card overflow-hidden">
                 <div className="px-5 py-4 border-b border-border flex items-center justify-between">
-                  <h2 className="text-sm font-semibold text-foreground">Recent Activity</h2>
-                  <span className="text-[11px] text-muted-foreground">Last 24h</span>
+                  <h2 className="text-sm font-semibold text-foreground">
+                    Recent Activity
+                  </h2>
+                  <span className="text-[11px] text-muted-foreground">
+                    Last 24h
+                  </span>
                 </div>
                 <div className="divide-y divide-border/60">
                   {recentAdminActivity.slice(0, 5).map((item) => (
-                    <div key={item.id} className="flex items-center gap-3 px-4 py-3 hover:bg-muted/20 transition-colors">
-                      <div className={cn("w-7 h-7 rounded-lg flex items-center justify-center flex-shrink-0", actionBg[item.action])}>
+                    <div
+                      key={item.id}
+                      className="flex items-center gap-3 px-4 py-3 hover:bg-muted/20 transition-colors"
+                    >
+                      <div
+                        className={cn(
+                          "w-7 h-7 rounded-lg flex items-center justify-center flex-shrink-0",
+                          actionBg[item.action],
+                        )}
+                      >
                         <span className={actionColor[item.action]}>
                           {entityIcon[item.entityType]}
                         </span>
                       </div>
                       <div className="flex-1 min-w-0">
                         <p className="text-xs text-foreground truncate">
-                          <span className={cn("font-semibold", actionColor[item.action])}>{item.action}</span>{" "}
+                          <span
+                            className={cn(
+                              "font-semibold",
+                              actionColor[item.action],
+                            )}
+                          >
+                            {item.action}
+                          </span>{" "}
                           {item.entity}
                         </p>
-                        <p className="text-[10px] text-muted-foreground capitalize">{item.entityType}</p>
+                        <p className="text-[10px] text-muted-foreground capitalize">
+                          {item.entityType}
+                        </p>
                       </div>
-                      <span className="text-[10px] text-muted-foreground flex-shrink-0">{relativeTime(item.time)}</span>
+                      <span className="text-[10px] text-muted-foreground flex-shrink-0">
+                        {relativeTime(item.time)}
+                      </span>
                     </div>
                   ))}
                 </div>
@@ -398,7 +584,9 @@ const AdminDashboard = () => {
             {/* Quick Actions */}
             <motion.div variants={itemVariants}>
               <Card className="p-4 border-none shadow-md bg-card">
-                <h2 className="text-sm font-semibold text-foreground mb-3">Quick Actions</h2>
+                <h2 className="text-sm font-semibold text-foreground mb-3">
+                  Quick Actions
+                </h2>
                 <div className="grid grid-cols-2 gap-2.5">
                   {quickActions.map((qa) => (
                     <motion.button
@@ -408,10 +596,17 @@ const AdminDashboard = () => {
                       onClick={() => navigate(qa.path)}
                       className="flex flex-col items-center gap-2 p-3.5 rounded-xl border border-border bg-secondary/30 hover:bg-secondary transition-all"
                     >
-                      <div className={cn("w-8 h-8 rounded-lg flex items-center justify-center", qa.bgClass)}>
+                      <div
+                        className={cn(
+                          "w-8 h-8 rounded-lg flex items-center justify-center",
+                          qa.bgClass,
+                        )}
+                      >
                         <qa.icon className={cn("w-4 h-4", qa.iconClass)} />
                       </div>
-                      <span className="text-[11px] font-semibold text-foreground leading-tight text-center">{qa.label}</span>
+                      <span className="text-[11px] font-semibold text-foreground leading-tight text-center">
+                        {qa.label}
+                      </span>
                     </motion.button>
                   ))}
                 </div>
@@ -425,8 +620,12 @@ const AdminDashboard = () => {
           <Card className="border-none shadow-md bg-card overflow-hidden">
             <div className="px-5 py-4 border-b border-border flex items-center justify-between">
               <div>
-                <h2 className="text-sm font-semibold text-foreground">Top Agents</h2>
-                <p className="text-xs text-muted-foreground">Ranked by matches logged</p>
+                <h2 className="text-sm font-semibold text-foreground">
+                  Top Agents
+                </h2>
+                <p className="text-xs text-muted-foreground">
+                  Ranked by matches logged
+                </p>
               </div>
               <button
                 onClick={() => navigate(ROUTES.ADMIN.AGENTS)}
@@ -437,11 +636,17 @@ const AdminDashboard = () => {
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 divide-y sm:divide-y-0 sm:divide-x divide-border">
               {agentSummaries.map((agent, idx) => (
-                <div key={agent.id} className="px-5 py-4 flex items-center gap-3">
+                <div
+                  key={agent.id}
+                  className="px-5 py-4 flex items-center gap-3"
+                >
                   <div className="relative flex-shrink-0">
                     <div className="w-9 h-9 rounded-full bg-primary flex items-center justify-center">
                       <span className="text-primary-foreground font-bold text-xs">
-                        {agent.name.split(" ").map((n: string) => n[0]).join("")}
+                        {agent.name
+                          .split(" ")
+                          .map((n: string) => n[0])
+                          .join("")}
                       </span>
                     </div>
                     {idx === 0 && (
@@ -449,8 +654,12 @@ const AdminDashboard = () => {
                     )}
                   </div>
                   <div className="flex-1 min-w-0">
-                    <p className="text-xs font-semibold text-foreground truncate">{agent.name}</p>
-                    <p className="text-[10px] text-muted-foreground">{agent.code}  {agent.state}</p>
+                    <p className="text-xs font-semibold text-foreground truncate">
+                      {agent.name}
+                    </p>
+                    <p className="text-[10px] text-muted-foreground">
+                      {agent.agentCode} {agent.state}
+                    </p>
                     <div className="flex items-center gap-2 mt-1">
                       <span className="text-[10px] text-muted-foreground flex items-center gap-0.5">
                         <Calendar className="w-3 h-3" /> {agent.matchesLogged}
@@ -465,7 +674,7 @@ const AdminDashboard = () => {
                       "text-[9px] px-1.5 flex-shrink-0 border",
                       agent.status === "Active"
                         ? "bg-green-500/10 text-green-600 border-green-500/20"
-                        : "bg-muted text-muted-foreground border-border"
+                        : "bg-muted text-muted-foreground border-border",
                     )}
                   >
                     {agent.status}
@@ -475,7 +684,6 @@ const AdminDashboard = () => {
             </div>
           </Card>
         </motion.div>
-
       </motion.div>
     </AdminLayout>
   );
