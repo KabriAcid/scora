@@ -1,5 +1,12 @@
 import { useState, useEffect } from "react";
-import { Search, User, ChevronLeft, ChevronRight, Radio } from "lucide-react";
+import {
+  Search,
+  User,
+  ShieldCheck,
+  ChevronLeft,
+  ChevronRight,
+  Radio,
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { CompactMatchItem } from "@/features/guest/components/match/CompactMatchItem";
 import { CompetitionHeader } from "@/features/guest/components/match/CompetitionHeader";
@@ -19,15 +26,19 @@ const Index = () => {
   const [selectedDate, setSelectedDate] = useState<Date>(new Date());
   const [loading, setLoading] = useState(true);
   const [expandedCompetitions, setExpandedCompetitions] = useState<Set<string>>(
-    new Set()
+    new Set(),
   );
   const liveMatches = getLiveMatches();
   const [liveIndex, setLiveIndex] = useState(0);
 
-  const goToPrev = () => setLiveIndex((i) => (i - 1 + liveMatches.length) % liveMatches.length);
+  const goToPrev = () =>
+    setLiveIndex((i) => (i - 1 + liveMatches.length) % liveMatches.length);
   const goToNext = () => setLiveIndex((i) => (i + 1) % liveMatches.length);
 
-  const handleDragEnd = (_e: MouseEvent | TouchEvent | PointerEvent, info: { offset: { x: number } }) => {
+  const handleDragEnd = (
+    _e: MouseEvent | TouchEvent | PointerEvent,
+    info: { offset: { x: number } },
+  ) => {
     if (info.offset.x < -50) goToNext();
     else if (info.offset.x > 50) goToPrev();
   };
@@ -94,6 +105,13 @@ const Index = () => {
             >
               <User className="w-5 h-5" />
             </Button>
+            <button
+              onClick={() => navigate("/admin/login")}
+              title="Admin Portal"
+              className="w-9 h-9 flex items-center justify-center rounded-xl bg-primary/10 hover:bg-primary/20 text-primary transition-colors"
+            >
+              <ShieldCheck className="w-5 h-5" />
+            </button>
           </div>
         </div>
 
@@ -113,7 +131,9 @@ const Index = () => {
           <div className="flex items-center justify-between mb-3">
             <div className="flex items-center gap-2">
               <Radio className="w-4 h-4 text-green-500 animate-pulse" />
-              <span className="text-sm font-bold text-foreground">Live Now</span>
+              <span className="text-sm font-bold text-foreground">
+                Live Now
+              </span>
               <span className="text-xs font-semibold bg-green-500/15 text-green-600 rounded-full px-2 py-0.5">
                 {liveMatches.length}
               </span>
@@ -162,7 +182,9 @@ const Index = () => {
                   homeRedCards={liveMatches[liveIndex].homeRedCards}
                   awayRedCards={liveMatches[liveIndex].awayRedCards}
                   variant="dark"
-                  onClick={() => navigate(`/match/${liveMatches[liveIndex].id}`)}
+                  onClick={() =>
+                    navigate(`/match/${liveMatches[liveIndex].id}`)
+                  }
                 />
               </motion.div>
             </AnimatePresence>
@@ -175,10 +197,11 @@ const Index = () => {
                 <button
                   key={i}
                   onClick={() => setLiveIndex(i)}
-                  className={`rounded-full transition-all duration-200 ${i === liveIndex
-                    ? "w-5 h-1.5 bg-primary"
-                    : "w-1.5 h-1.5 bg-muted-foreground/30"
-                    }`}
+                  className={`rounded-full transition-all duration-200 ${
+                    i === liveIndex
+                      ? "w-5 h-1.5 bg-primary"
+                      : "w-1.5 h-1.5 bg-muted-foreground/30"
+                  }`}
                 />
               ))}
             </div>
@@ -307,7 +330,7 @@ const Index = () => {
                     )}
                   </AnimatePresence>
                 </motion.section>
-              )
+              ),
             )}
           </>
         )}

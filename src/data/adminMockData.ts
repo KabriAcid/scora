@@ -105,6 +105,76 @@ export interface FixtureSummary {
   awayScore: number | null;
 }
 
+// ─── Admin Profile & Stats ────────────────────────────────────────────────────
+
+export interface AdminRecord {
+  id: string;
+  name: string;
+  email: string;
+  role: "Super Admin" | "Admin" | "Moderator";
+  joinDate: Date;
+  lastActive: Date;
+  status: "Active" | "Suspended";
+}
+
+export const mockAdminProfile = {
+  id: "admin-001",
+  name: "Abdulrahman Yusuf",
+  email: "admin@scora.ng",
+  phone: "+234 802 345 6789",
+  role: "Super Administrator",
+  joinDate: new Date("2023-06-01"),
+  avatar: null as null,
+  status: "active" as const,
+};
+
+export const mockAdminStats = {
+  leaguesManaged: 12,
+  teamsRegistered: 48,
+  fixturesCreated: 320,
+  agentsOnboarded: 24,
+  actionsThisMonth: 87,
+};
+
+export const mockAdminList: AdminRecord[] = [
+  {
+    id: "admin-001",
+    name: "Abdulrahman Yusuf",
+    email: "admin@scora.ng",
+    role: "Super Admin",
+    joinDate: new Date("2023-06-01"),
+    lastActive: new Date(Date.now() - 5 * 60_000),
+    status: "Active",
+  },
+  {
+    id: "admin-002",
+    name: "Fatima Usman",
+    email: "fatima.usman@scora.ng",
+    role: "Admin",
+    joinDate: new Date("2024-02-15"),
+    lastActive: new Date(Date.now() - 2 * 3_600_000),
+    status: "Active",
+  },
+  {
+    id: "admin-003",
+    name: "Ibrahim Danlami",
+    email: "ibrahim.d@scora.ng",
+    role: "Moderator",
+    joinDate: new Date("2024-05-20"),
+    lastActive: new Date(Date.now() - 1 * 86_400_000),
+    status: "Active",
+  },
+  {
+    id: "admin-004",
+    name: "Blessing Okonkwo",
+    email: "blessing.o@scora.ng",
+    role: "Moderator",
+    joinDate: new Date("2024-08-10"),
+    lastActive: new Date(Date.now() - 3 * 86_400_000),
+    status: "Suspended",
+  },
+];
+
 // ─── Overview Stats ───────────────────────────────────────────────────────────
 
 export const adminOverviewStats = {
