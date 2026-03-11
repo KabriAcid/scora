@@ -536,9 +536,13 @@ const AdminDashboard = () => {
                   <h2 className="text-sm font-semibold text-foreground">
                     Recent Activity
                   </h2>
-                  <span className="text-[11px] text-muted-foreground">
-                    Last 24h
-                  </span>
+                  <button
+                    onClick={() => navigate(ROUTES.ADMIN.ACTIVITY)}
+                    className="flex items-center gap-0.5 text-[11px] font-medium text-accent hover:text-accent/80 transition-colors"
+                  >
+                    View all
+                    <ChevronRight className="w-3.5 h-3.5" />
+                  </button>
                 </div>
                 <div className="divide-y divide-border/60">
                   {recentAdminActivity.slice(0, 5).map((item) => (

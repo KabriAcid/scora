@@ -41,6 +41,7 @@ export const ROUTES = {
     STADIUMS: "/admin/stadiums",
     FIXTURES: "/admin/fixtures",
     AGENTS: "/admin/agents",
+    ACTIVITY: "/admin/activity",
     SETTINGS: "/admin/settings",
   },
 

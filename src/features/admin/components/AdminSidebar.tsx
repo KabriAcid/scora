@@ -11,6 +11,7 @@ import {
   Calendar,
   UserCheck,
   Settings,
+  ClipboardList,
   X,
   ChevronRight,
   ChevronDown,
@@ -24,7 +25,7 @@ import { Logo } from "@/components/common/Logo";
 import { ROUTES } from "@/shared/config/routes";
 import { cn } from "@/shared/utils/cn";
 
-//  Types 
+//  Types
 
 interface SubNavItem {
   id: string;
@@ -41,7 +42,7 @@ interface NavItemConfig {
   children?: SubNavItem[];
 }
 
-//  Nav Config 
+//  Nav Config
 
 const navItems: NavItemConfig[] = [
   {
@@ -131,6 +132,12 @@ const navItems: NavItemConfig[] = [
     path: ROUTES.ADMIN.AGENTS,
   },
   {
+    id: "activity",
+    label: "Activity Log",
+    icon: <ClipboardList className="w-5 h-5" />,
+    path: ROUTES.ADMIN.ACTIVITY,
+  },
+  {
     id: "settings",
     label: "Settings",
     icon: <Settings className="w-5 h-5" />,
@@ -138,15 +145,23 @@ const navItems: NavItemConfig[] = [
   },
 ];
 
-//  Sub-nav slide variant 
+//  Sub-nav slide variant
 
 const subMenuVariants: Variants = {
   hidden: { height: 0, opacity: 0 },
-  visible: { height: "auto", opacity: 1, transition: { duration: 0.2, ease: "easeOut" } },
-  exit: { height: 0, opacity: 0, transition: { duration: 0.15, ease: "easeIn" } },
+  visible: {
+    height: "auto",
+    opacity: 1,
+    transition: { duration: 0.2, ease: "easeOut" },
+  },
+  exit: {
+    height: 0,
+    opacity: 0,
+    transition: { duration: 0.15, ease: "easeIn" },
+  },
 };
 
-//  Props 
+//  Props
 
 interface AdminSidebarProps {
   isOpen: boolean;
@@ -155,7 +170,7 @@ interface AdminSidebarProps {
   onCollapsedChange: (collapsed: boolean) => void;
 }
 
-//  NavItemRow 
+//  NavItemRow
 
 interface NavItemRowProps {
   item: NavItemConfig;
@@ -180,7 +195,9 @@ const NavItemRow = ({ item, isCollapsed, onMobileClose }: NavItemRowProps) => {
     try {
       const stored = localStorage.getItem(storageKey);
       if (stored !== null) return JSON.parse(stored);
-    } catch { /* empty */ }
+    } catch {
+      /* empty */
+    }
     return isChildActive; // auto-open if a child is active on load
   });
 
@@ -196,7 +213,11 @@ const NavItemRow = ({ item, isCollapsed, onMobileClose }: NavItemRowProps) => {
       } else {
         const next = !isOpen;
         setIsOpen(next);
-        try { localStorage.setItem(storageKey, JSON.stringify(next)); } catch { /* empty */ }
+        try {
+          localStorage.setItem(storageKey, JSON.stringify(next));
+        } catch {
+          /* empty */
+        }
       }
     } else if (item.path) {
       navigate(item.path);
@@ -214,8 +235,12 @@ const NavItemRow = ({ item, isCollapsed, onMobileClose }: NavItemRowProps) => {
   useEffect(() => {
     if (!showPopout) return;
     const handler = (e: MouseEvent) => {
-      if (popoutRef.current && !popoutRef.current.contains(e.target as Node) &&
-        itemRef.current && !itemRef.current.contains(e.target as Node)) {
+      if (
+        popoutRef.current &&
+        !popoutRef.current.contains(e.target as Node) &&
+        itemRef.current &&
+        !itemRef.current.contains(e.target as Node)
+      ) {
         setShowPopout(false);
       }
     };
@@ -233,7 +258,7 @@ const NavItemRow = ({ item, isCollapsed, onMobileClose }: NavItemRowProps) => {
           isActive
             ? "bg-primary/10 text-primary"
             : "text-muted-foreground hover:bg-secondary hover:text-foreground",
-          isCollapsed && "justify-center px-2"
+          isCollapsed && "justify-center px-2",
         )}
         title={isCollapsed ? item.label : undefined}
       >
@@ -245,7 +270,7 @@ const NavItemRow = ({ item, isCollapsed, onMobileClose }: NavItemRowProps) => {
               <ChevronDown
                 className={cn(
                   "w-4 h-4 flex-shrink-0 transition-transform duration-200",
-                  isOpen ? "rotate-180" : "rotate-0"
+                  isOpen ? "rotate-180" : "rotate-0",
                 )}
               />
             )}
@@ -286,7 +311,7 @@ const NavItemRow = ({ item, isCollapsed, onMobileClose }: NavItemRowProps) => {
                         "w-full flex items-center gap-2.5 px-2.5 py-2 rounded-lg text-xs font-medium transition-colors",
                         childActive
                           ? "bg-primary/10 text-primary"
-                          : "text-muted-foreground hover:bg-secondary hover:text-foreground"
+                          : "text-muted-foreground hover:bg-secondary hover:text-foreground",
                       )}
                     >
                       <span className="flex-shrink-0">{child.icon}</span>
@@ -326,7 +351,7 @@ const NavItemRow = ({ item, isCollapsed, onMobileClose }: NavItemRowProps) => {
                   "w-full flex items-center gap-2.5 px-2.5 py-2 rounded-lg text-xs font-medium transition-colors",
                   childActive
                     ? "bg-primary/10 text-primary"
-                    : "text-muted-foreground hover:bg-secondary hover:text-foreground"
+                    : "text-muted-foreground hover:bg-secondary hover:text-foreground",
                 )}
               >
                 <span className="flex-shrink-0">{child.icon}</span>
@@ -340,7 +365,7 @@ const NavItemRow = ({ item, isCollapsed, onMobileClose }: NavItemRowProps) => {
   );
 };
 
-//  Component 
+//  Component
 
 export const AdminSidebar = ({
   isOpen,
@@ -442,7 +467,7 @@ export const AdminSidebar = ({
               <ChevronRight
                 className={cn(
                   "w-5 h-5 text-muted-foreground transition-transform duration-200",
-                  isCollapsed ? "rotate-0" : "rotate-180"
+                  isCollapsed ? "rotate-0" : "rotate-180",
                 )}
               />
             </motion.button>

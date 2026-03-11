@@ -11,6 +11,7 @@ import PlayersPage from "@/features/admin/pages/PlayersPage";
 import StadiumsPage from "@/features/admin/pages/StadiumsPage";
 import FixturesPage from "@/features/admin/pages/FixturesPage";
 import AgentsPage from "@/features/admin/pages/AgentsPage";
+import AdminActivityLogPage from "@/features/admin/pages/AdminActivityLogPage";
 import SettingsPage from "@/features/admin/pages/SettingsPage";
 import NotFound from "@/NotFound";
 import { ProtectedRoute } from "./ProtectedRoute";
@@ -115,6 +116,14 @@ export const AdminRoutes = () => {
         element={
           <ProtectedRoute requiredRole="admin">
             <AgentsPage />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="activity"
+        element={
+          <ProtectedRoute requiredRole="admin">
+            <AdminActivityLogPage />
           </ProtectedRoute>
         }
       />
