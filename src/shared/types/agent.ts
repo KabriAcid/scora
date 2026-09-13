@@ -3,68 +3,71 @@
  */
 
 export type EventType =
-  | "goal"
-  | "yellow_card"
-  | "red_card"
-  | "substitution"
-  | "foul"
-  | "corner"
-  | "offside"
-  | "injury"
-  | "photo";
+	| "goal"
+	| "yellow_card"
+	| "red_card"
+	| "substitution"
+	| "foul"
+	| "corner"
+	| "offside"
+	| "injury"
+	| "photo";
 
 export type MatchStatus = "scheduled" | "live" | "completed";
 
 export interface MatchEvent {
-  id: string;
-  type: EventType;
-  player: string;
-  team: string;
-  minute: number;
-  half?: "first" | "second";
-  description?: string;
-  timestamp: Date;
-  /** Blob URL (or future CDN URL) for photo events */
-  photoUrl?: string;
+	id: string;
+	type: EventType;
+	player: string;
+	team: string;
+	minute: number;
+	half?: "first" | "second";
+	description?: string;
+	assist?: string;
+	assistPlayer?: string;
+	assistPlayerId?: string;
+	timestamp: Date;
+	/** Blob URL (or future CDN URL) for photo events */
+	photoUrl?: string;
 }
 
 export interface AssignedMatch {
-  id: string;
-  homeTeam: string;
-  awayTeam: string;
-  homeTeamLogo: string;
-  awayTeamLogo: string;
-  status: MatchStatus;
-  startTime: Date;
-  venue: string;
-  league: string;
-  homeScore?: number;
-  awayScore?: number;
+	id: string;
+	homeTeam: string;
+	awayTeam: string;
+	homeTeamLogo: string;
+	awayTeamLogo: string;
+	status: MatchStatus;
+	startTime: Date;
+	venue: string;
+	league: string;
+	homeScore?: number;
+	awayScore?: number;
 }
 
 export interface AgentProfile {
-  id: string;
-  name: string;
-  email: string;
-  agentCode: string;
-  status: "active" | "inactive" | "on_break";
-  joinDate: Date;
+	id: string;
+	name: string;
+	email: string;
+	agentCode: string;
+	status: "active" | "inactive" | "on_break";
+	joinDate: Date;
 }
 
 export interface AgentStats {
-  matchesLogged: number;
-  eventsRecorded: number;
-  accuracyRate: number;
-  monthlyPerformance: number;
+	matchesLogged: number;
+	eventsRecorded: number;
+	accuracyRate: number;
+	monthlyPerformance: number;
 }
 
 export interface Notification {
-  id: string;
-  type: EventType | "match_assigned";
-  title: string;
-  description: string;
-  timestamp: Date;
-  isRead: boolean;
-  matchId?: string;
-  teamId?: string;
+	id: string;
+	type: EventType | "match_assigned";
+	title: string;
+	description: string;
+	timestamp: Date;
+	isRead: boolean;
+	matchId?: string;
+	teamId?: string;
 }
